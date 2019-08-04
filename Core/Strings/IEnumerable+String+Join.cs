@@ -9,6 +9,6 @@ namespace Core.Strings
     /// </summary>
     public static class IEnumerableStringJoin
     {
-        public static string Join(this IEnumerable<string> @this, string separator) => string.Join(separator, @this);
+        public static string StringJoin(this IEnumerable<string> @this, string separator) => string.Join(separator, @this);
     }
 }
