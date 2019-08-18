@@ -10,7 +10,7 @@ namespace CoreTests.Reactive
         private readonly object _sameValue = new object();
         private readonly object _differentValue = new object();
 
-        public class ValueTests : LiveDataTests
+        public class PropertyChangedTests : LiveDataTests
         {
             [Fact]
             public void GivenAInitialValue_ShouldRaisePropertyChanged_WhenValueSetIsNotEquals()
