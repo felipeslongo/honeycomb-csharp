@@ -16,6 +16,8 @@ namespace Core.Reactive
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/LiveData.html"/>
     public abstract class LiveData<T>
     {
+        public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
+
         private T _value;
 
         // ReSharper disable once MemberCanBeProtected.Global
@@ -41,12 +43,14 @@ namespace Core.Reactive
             protected set => SetValue(value);
         }
 
-        public void BindProperty<Target>(Target target, Expression<Func<Target, T>> outExpr)
+        public void BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
-            var expr = (MemberExpression)outExpr.Body;
+            var expr = (MemberExpression)propertyLambda.Body;
             var prop = (PropertyInfo)expr.Member;
-            prop.SetValue(target, Value, null);
+            if (prop.CanWrite == false)
+                throw new ArgumentException(MessagePropertyHasNoSetter, nameof(propertyLambda));
 
+            prop.SetValue(target, Value, null);
             PropertyChanged += (sender, args) => prop.SetValue(target, Value, null);
         }
 

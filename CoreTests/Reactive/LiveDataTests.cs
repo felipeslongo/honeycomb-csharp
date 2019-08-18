@@ -12,6 +12,7 @@ namespace CoreTests.Reactive
         public class BindPropertyTests : LiveDataTests
         {
             private int Property { get; set; }
+            private int PropertyWithNoSetter => Property;
 
             [Fact]
             public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenBindIsCalled()
@@ -33,6 +34,16 @@ namespace CoreTests.Reactive
                 liveData.Value = DifferentValue;
 
                 Assert.Equal(DifferentValue, Property);
+            }
+
+            [Fact]
+            public void GivenAPropertyWithNoSetter_ShouldRaiseException_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+
+                var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.PropertyWithNoSetter));
+
+                Assert.Contains(LiveData<int>.MessagePropertyHasNoSetter, exception.Message);
             }
         }
 
