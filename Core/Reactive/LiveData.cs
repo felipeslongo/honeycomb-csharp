@@ -47,7 +47,7 @@ namespace Core.Reactive
             var prop = (PropertyInfo)expr.Member;
             prop.SetValue(target, Value, null);
 
-            PropertyChanged += (sender, args) => prop.SetValue(target, Value, null); ;
+            PropertyChanged += (sender, args) => prop.SetValue(target, Value, null);
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
