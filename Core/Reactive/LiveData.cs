@@ -4,7 +4,7 @@ namespace Core.Reactive
 {
     /// <summary>
     /// LiveData is a data holder class that can be observed.
-    /// Use it to create observable properties in C#.
+    /// Use it to create observable properties in C# with only getter
     /// </summary>
     /// <remarks>
     /// Inspired by the LiveData class in Android Architecture Components
@@ -12,44 +12,43 @@ namespace Core.Reactive
     /// <typeparam name="T">Wrapped type</typeparam>
     /// <see cref="https://developer.android.com/topic/libraries/architecture/livedata"/>
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/LiveData.html"/>
-    public class LiveData<T>
+    public abstract class LiveData<T>
     {
         private T _value;
-        private event EventHandler _propertyChanged;
-
+        
+        // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
         {
-            Value = value;
+            _value = value;
         }
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public LiveData() : this(default)
         {
         }
-        
-        public event EventHandler PropertyChanged
-        {
-            add
-            {
-                value(this, EventArgs.Empty);
-                _propertyChanged += value;
-            }
-            remove => _propertyChanged -= value;
-        }
 
-        public T Value
+        public event EventHandler<EventArgs> PropertyChanged;
+
+        /// <summary>
+        /// Returns the current value. 
+        /// </summary>
+        // ReSharper disable once MemberCanBeProtected.Global
+        public virtual T Value
         {
             get => _value;
-            set => SetValue(value);
+            protected set => SetValue(value);
         }
 
         private void SetValue(T value)
         {
+            if (value.Equals(_value))
+                return;
             _value = value;
             OnPropertyChanged();
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
 
-        protected virtual void OnPropertyChanged() => _propertyChanged?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 }
