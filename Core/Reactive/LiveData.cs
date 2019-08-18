@@ -1,4 +1,6 @@
 using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Core.Reactive
 {
@@ -37,6 +39,15 @@ namespace Core.Reactive
         {
             get => _value;
             protected set => SetValue(value);
+        }
+
+        public void BindProperty<Target>(Target target, Expression<Func<Target, T>> outExpr)
+        {
+            var expr = (MemberExpression)outExpr.Body;
+            var prop = (PropertyInfo)expr.Member;
+            prop.SetValue(target, Value, null);
+
+            PropertyChanged += (sender, args) => prop.SetValue(target, Value, null); ;
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
