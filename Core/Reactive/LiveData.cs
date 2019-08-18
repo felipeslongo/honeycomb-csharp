@@ -16,6 +16,7 @@ namespace Core.Reactive
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/LiveData.html"/>
     public abstract class LiveData<T>
     {
+        public const string MessageExpressionLambdaDoesNotReturnAProperty = "The expression lambda does not represent a MemberExpression that returns whose member is a PropertyInfo";
         public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
 
         private T _value;
@@ -45,8 +46,14 @@ namespace Core.Reactive
 
         public void BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
-            var expr = (MemberExpression)propertyLambda.Body;
-            var prop = (PropertyInfo)expr.Member;
+            var expr = propertyLambda.Body as MemberExpression;
+            if(expr == null)
+                throw new ArgumentException(MessageExpressionLambdaDoesNotReturnAProperty, nameof(propertyLambda));
+
+            var prop = expr.Member as PropertyInfo;
+            if (prop == null)
+                throw new ArgumentException(MessageExpressionLambdaDoesNotReturnAProperty, nameof(propertyLambda));
+
             if (prop.CanWrite == false)
                 throw new ArgumentException(MessagePropertyHasNoSetter, nameof(propertyLambda));
 

@@ -11,8 +11,11 @@ namespace CoreTests.Reactive
 
         public class BindPropertyTests : LiveDataTests
         {
+            private int _field;
             private int Property { get; set; }
             private int PropertyWithNoSetter => Property;
+
+            private int Method() => 0;
 
             [Fact]
             public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenBindIsCalled()
@@ -44,6 +47,26 @@ namespace CoreTests.Reactive
                 var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.PropertyWithNoSetter));
 
                 Assert.Contains(LiveData<int>.MessagePropertyHasNoSetter, exception.Message);
+            }
+
+            [Fact]
+            public void GivenANonPropertyMember_ShouldRaiseException_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+
+                var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target._field));
+
+                Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
+            }
+
+            [Fact]
+            public void GivenAMemberMethod_ShouldRaiseException_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+
+                var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.Method()));
+
+                Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
             }
         }
 
