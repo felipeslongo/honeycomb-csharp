@@ -15,7 +15,7 @@ namespace Core.Reactive
     public abstract class LiveData<T>
     {
         private T _value;
-        
+
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
         {
@@ -30,7 +30,7 @@ namespace Core.Reactive
         public event EventHandler<EventArgs> PropertyChanged;
 
         /// <summary>
-        /// Returns the current value. 
+        /// Returns the current value.
         /// </summary>
         // ReSharper disable once MemberCanBeProtected.Global
         public virtual T Value
@@ -39,6 +39,10 @@ namespace Core.Reactive
             protected set => SetValue(value);
         }
 
+        public static implicit operator T(LiveData<T> liveData) => liveData.Value;
+
+        protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
+
         private void SetValue(T value)
         {
             if (value.Equals(_value))
@@ -46,9 +50,5 @@ namespace Core.Reactive
             _value = value;
             OnPropertyChanged();
         }
-
-        public static implicit operator T(LiveData<T> liveData) => liveData.Value;
-
-        protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 }
