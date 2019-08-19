@@ -1,5 +1,7 @@
 using Core.Reactive;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Xunit;
 
 namespace CoreTests.Reactive
@@ -67,6 +69,32 @@ namespace CoreTests.Reactive
                 var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.Method()));
 
                 Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
+            }
+            
+            [Fact]
+            public void GivenOneMillionIterations_ShouldBeBetween40And45TimesSlower_WhenBindIsCalled()
+            {
+                const int iterations = 1000000;
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);
+
+                var propertyTimer = new Stopwatch();
+                propertyTimer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    Property = value;
+                propertyTimer.Stop();
+
+                var bindTimer = new Stopwatch();
+                bindTimer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    liveData.Value = value;
+                bindTimer.Stop();
+                
+                Assert.True(bindTimer.ElapsedMilliseconds > propertyTimer.ElapsedMilliseconds*40,
+                    $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*40");
+
+                Assert.True(bindTimer.ElapsedMilliseconds < propertyTimer.ElapsedMilliseconds*45,
+                    $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*45");
             }
         }
 
