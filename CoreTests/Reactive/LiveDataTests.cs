@@ -20,6 +20,7 @@ namespace CoreTests.Reactive
             private int Method() => 0;
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenBindIsCalled()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -31,6 +32,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenInitialValueIsChanged()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -42,6 +44,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAPropertyWithNoSetter_ShouldRaiseException_WhenBindIsCalled()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -52,6 +55,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenANonPropertyMember_ShouldRaiseException_WhenBindIsCalled()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -62,6 +66,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAMemberMethod_ShouldRaiseException_WhenBindIsCalled()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -72,7 +77,8 @@ namespace CoreTests.Reactive
             }
             
             [Fact]
-            public void GivenOneMillionIterations_ShouldBeBetween40And45TimesSlower_WhenBindIsCalled()
+            [Trait(nameof(Category),Category.Performance)]
+            public void  GivenOneMillionIterations_ShouldBeBetween40And45TimesSlower_WhenBindIsCalled()
             {
                 const int iterations = 1000000;
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -101,6 +107,7 @@ namespace CoreTests.Reactive
         public class PropertyChangedTests : LiveDataTests
         {
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAInitialValue_ShouldNotRaisePropertyChanged_WhenValueSetIsEquals()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -113,6 +120,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category),Category.Unit)]
             public void GivenAInitialValue_ShouldRaisePropertyChanged_WhenValueSetIsNotEquals()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
