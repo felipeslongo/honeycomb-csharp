@@ -1,7 +1,9 @@
 using Core.Reflection;
 using System;
 using System.Linq.Expressions;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace Core.Reactive
 {
@@ -15,17 +17,23 @@ namespace Core.Reactive
     /// <typeparam name="T">Wrapped type</typeparam>
     /// <see cref="https://developer.android.com/topic/libraries/architecture/livedata"/>
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/LiveData.html"/>
-    public abstract class LiveData<T>
+    public abstract class LiveData<T> : IObservable<EventArgs>
     {
         public const string MessageExpressionLambdaDoesNotReturnAProperty = "The expression lambda does not represent a MemberExpression that returns whose member is a PropertyInfo";
         public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
 
         private T _value;
+        private IObservable<EventArgs> _asObservable;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
         {
             _value = value;
+
+            _asObservable = Observable.FromEventPattern<EventArgs>(
+                eventHandler => PropertyChanged += eventHandler,
+                eventHandler => PropertyChanged -= eventHandler
+                ).Select(eventPattern => eventPattern.EventArgs);
         }
 
         // ReSharper disable once MemberCanBeProtected.Global
@@ -78,5 +86,7 @@ namespace Core.Reactive
             _value = value;
             OnPropertyChanged();
         }
+
+        public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
     }
 }

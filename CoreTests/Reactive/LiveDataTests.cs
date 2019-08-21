@@ -1,7 +1,10 @@
 using Core.Reactive;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace CoreTests.Reactive
@@ -183,6 +186,47 @@ namespace CoreTests.Reactive
                     () => liveData.Value = DifferentValue
                 );
             }
+        }
+
+        public class SubscribeTests : LiveDataTests, IObserver<EventArgs>
+        {
+            private List<EventArgs> _onNextInvokedArgs = new List<EventArgs>();
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenASubscribedObserver_ShouldNotifyPropertyChanges_WhenValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Subscribe(this);
+
+                liveData.Value = DifferentValue;
+
+                Assert.Single(_onNextInvokedArgs);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAUnsubscribedObserver_ShouldNotNotifyPropertyChanges_WhenValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Subscribe(this).Dispose();
+
+                liveData.Value = DifferentValue;
+
+                Assert.Empty(_onNextInvokedArgs);
+            }
+
+            public void OnCompleted()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnError(Exception error)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
         }
     }
 }
