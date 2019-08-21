@@ -78,7 +78,7 @@ namespace CoreTests.Reactive
             
             [Fact]
             [Trait(nameof(Category),Category.Performance)]
-            public void  GivenOneMillionIterations_ShouldBeBetween40And45TimesSlower_WhenBindIsCalled()
+            public void  GivenOneMillionIterations_ShouldBeAtMost45TimesSlower_WhenBindIsCalled()
             {
                 const int iterations = 1000000;
                 var liveData = new MutableLiveData<int>(SameValue);
@@ -95,10 +95,7 @@ namespace CoreTests.Reactive
                 foreach (var value in Enumerable.Range(1, iterations))
                     liveData.Value = value;
                 bindTimer.Stop();
-                
-                Assert.True(bindTimer.ElapsedMilliseconds > propertyTimer.ElapsedMilliseconds*40,
-                    $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*40");
-
+               
                 Assert.True(bindTimer.ElapsedMilliseconds < propertyTimer.ElapsedMilliseconds*45,
                     $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*45");
             }
