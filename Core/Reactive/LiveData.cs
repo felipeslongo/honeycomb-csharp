@@ -1,3 +1,4 @@
+using Core.Reflection;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -46,19 +47,9 @@ namespace Core.Reactive
 
         public void BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
-            var expr = propertyLambda.Body as MemberExpression;
-            if(expr == null)
-                throw new ArgumentException(MessageExpressionLambdaDoesNotReturnAProperty, nameof(propertyLambda));
-
-            var prop = expr.Member as PropertyInfo;
-            if (prop == null)
-                throw new ArgumentException(MessageExpressionLambdaDoesNotReturnAProperty, nameof(propertyLambda));
-
-            if (prop.CanWrite == false)
-                throw new ArgumentException(MessagePropertyHasNoSetter, nameof(propertyLambda));
-
-            prop.SetValue(target, Value, null);
-            PropertyChanged += (sender, args) => prop.SetValue(target, Value, null);
+            var propertySetter = Property.GetSetter(target, propertyLambda);
+            propertySetter(Value);
+            PropertyChanged += (sender, args) => propertySetter(Value);
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
