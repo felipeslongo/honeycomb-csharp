@@ -1,7 +1,7 @@
 using Core.Reflection;
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
+using System.Reactive.Disposables;
 
 namespace Core.Reactive
 {
@@ -45,18 +45,26 @@ namespace Core.Reactive
             protected set => SetValue(value);
         }
 
-        public void BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
+        public IDisposable BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
             var propertySetter = Property.GetSetter(target, propertyLambda);
             propertySetter(Value);
-            PropertyChanged += (sender, args) => propertySetter(Value);
+
+            EventHandler<EventArgs> eventHandler = (sender, args) => propertySetter(Value);
+            PropertyChanged += eventHandler;
+
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
-        public void BindField<Target>(Target target, Expression<Func<Target, T>> fieldLambda)
+        public IDisposable BindField<Target>(Target target, Expression<Func<Target, T>> fieldLambda)
         {
             var fieldSetter = Field.GetSetter(target, fieldLambda);
             fieldSetter(Value);
-            PropertyChanged += (sender, args) => fieldSetter(Value);
+
+            EventHandler<EventArgs> eventHandler = (sender, args) => fieldSetter(Value);
+            PropertyChanged += eventHandler;
+
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;

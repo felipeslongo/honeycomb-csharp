@@ -44,6 +44,19 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenADisposedBind_ShouldNotSetAnValueIntoTheProperty_WhenValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                var bindDisposer = liveData.BindProperty(this, target => target.Property);
+                bindDisposer.Dispose();
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(SameValue, Property);
+            }
+
+            [Fact]
             [Trait(nameof(Category),Category.Unit)]
             public void GivenAPropertyWithNoSetter_ShouldRaiseException_WhenBindIsCalled()
             {
@@ -127,7 +140,20 @@ namespace CoreTests.Reactive
                 liveData.Value = DifferentValue;
 
                 Assert.Equal(DifferentValue, _field);
-            }            
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenADisposedBind_ShouldNotSetAnValueIntoTheField_WhenValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                var bindDisposer = liveData.BindField(this, target => target._field);
+                bindDisposer.Dispose();
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(SameValue, _field);
+            }
         }
 
         public class PropertyChangedTests : LiveDataTests
