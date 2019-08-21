@@ -52,6 +52,13 @@ namespace Core.Reactive
             PropertyChanged += (sender, args) => propertySetter(Value);
         }
 
+        public void BindField<Target>(Target target, Expression<Func<Target, T>> fieldLambda)
+        {
+            var fieldSetter = Field.GetSetter(target, fieldLambda);
+            fieldSetter(Value);
+            PropertyChanged += (sender, args) => fieldSetter(Value);
+        }
+
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
 
         protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);

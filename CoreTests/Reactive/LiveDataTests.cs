@@ -101,6 +101,35 @@ namespace CoreTests.Reactive
             }
         }
 
+        public class BindFieldTests : LiveDataTests
+        {
+            private int _field;
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheField_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                _field = DifferentValue;
+
+                liveData.BindField(this, target => target._field);
+
+                Assert.Equal(SameValue, _field);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheField_WhenInitialValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindField(this, target => target._field);
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(DifferentValue, _field);
+            }            
+        }
+
         public class PropertyChangedTests : LiveDataTests
         {
             [Fact]
