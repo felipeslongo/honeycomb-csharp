@@ -115,6 +115,25 @@ namespace CoreTests.Reactive
                 Assert.True(bindTimer.ElapsedMilliseconds < propertyTimer.ElapsedMilliseconds*45,
                     $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*45");
             }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Performance)]
+            public void GivenOneMillionIterations_ShouldBeExecutedInLessThan250Miliseconds_WhenBindIsCalledInEachIteration()
+            {
+                const int iterations = 1000000;
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);
+
+                var timer = new Stopwatch();
+                timer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    liveData.Value = value;
+                timer.Stop();
+
+                var threshold = TimeSpan.FromMilliseconds(250).TotalMilliseconds;
+                var actual = timer.ElapsedMilliseconds;
+                Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
+            }
         }
 
         public class BindFieldTests : LiveDataTests
