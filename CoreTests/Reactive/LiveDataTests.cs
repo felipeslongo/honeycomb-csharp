@@ -134,6 +134,29 @@ namespace CoreTests.Reactive
                 var actual = timer.ElapsedMilliseconds;
                 Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
             }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnUnreferencedLiveData_ShouldBeGarbageCollected_WhenGCIsCalled()
+            {
+                WeakReference reference = null;
+                new Action(() =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    // Do things with service that might cause a memory leak...
+                    liveData.BindProperty(this, target => target.Property);
+                    liveData.Value = DifferentValue;
+
+                    reference = new WeakReference(liveData, true);
+                })();
+                
+                // Service should have gone out of scope about now, 
+                // so the garbage collector can clean it up
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                Assert.Null(reference.Target);
+            }
         }
 
         public class BindFieldTests : LiveDataTests
