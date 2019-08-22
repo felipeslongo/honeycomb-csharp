@@ -160,6 +160,35 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldBeGen0_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);
+
+                liveData.Value = DifferentValue;
+
+                var gen = GC.GetGeneration(liveData);
+                Assert.Equal(0, gen);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan10000Bytes_WhenBindIsCalled()
+            {
+                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);                
+
+                liveData.Value = DifferentValue;
+
+                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
+                var memory = memoryEnd - memoryBegin;
+                var expected = 500;
+                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
             public void XXX()
             {
                 var gen0Begin = GC.CollectionCount(0);
@@ -190,6 +219,7 @@ namespace CoreTests.Reactive
                 Assert.Equal(1, gen1);
                 Assert.Equal(1, gen2);
             }
+
         }
 
         public class BindFieldTests : LiveDataTests
