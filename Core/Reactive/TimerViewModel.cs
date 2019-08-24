@@ -1,6 +1,5 @@
 using System;
-using System.Reactive.Linq;
-using System.Threading;
+using System.Reactive.Disposables;
 
 namespace Core.Reactive
 {
@@ -11,6 +10,7 @@ namespace Core.Reactive
         private MutableLiveData<TimeSpan> _elapsedTime = new MutableLiveData<TimeSpan>(TimeSpan.Zero);
 
         public LiveData<TimeSpan> ElapsedTime => _elapsedTime;
+        public int Ticks { get; private set; } = 0;
 
         public TimerViewModel(TimeSpan interval)
         {
@@ -26,19 +26,33 @@ namespace Core.Reactive
 
         public void Stop() => _timerSubscription?.Dispose();
 
-        private void Reset() => _elapsedTime.Value = TimeSpan.Zero;
+        private void Reset()
+        {
+            _elapsedTime.Value = TimeSpan.Zero;
+            Ticks = 0;
+        }
 
         private void ObserveTimer()
         {
-            var observableTimer = Observable
-                .Interval(_interval)
-                .Select(iteration => iteration * _interval);
+            var timer = new System.Timers.Timer(_interval.TotalMilliseconds)
+            {
+                AutoReset = true
+            };
+            timer.Elapsed += TimerOnElapsed;
+            timer.Start();
 
-            if (SynchronizationContext.Current != null)
-                observableTimer = observableTimer.ObserveOn(SynchronizationContext.Current);
-            
-            _timerSubscription = observableTimer
-                .Subscribe(elapsedTime => _elapsedTime.Value = elapsedTime);
+            _timerSubscription = Disposable.Create(() =>
+            {
+                timer.Elapsed -= TimerOnElapsed;
+                timer.Stop();
+                timer.Dispose();
+            });
+        }
+
+        private void TimerOnElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            _elapsedTime.Value = ElapsedTime.Value.Add(_interval);
+            Ticks++;
         }
 
         public void Dispose() => Stop();

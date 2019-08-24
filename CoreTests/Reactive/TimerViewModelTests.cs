@@ -8,38 +8,40 @@ namespace CoreTests.Reactive
 {
     public class TimerViewModelTests
     {
-        private TimeSpan _interval = TimeSpan.FromMilliseconds(10);
-        private TimeSpan _delay = TimeSpan.FromMilliseconds(100);
-        private TimeSpan ElapsedTime { get; set; }
+        private int _intervalVsDelayRatio = 10;
+        private TimeSpan _interval = TimeSpan.FromMilliseconds(100);
+        private TimeSpan DelayOfTenTimesTheInterval => _interval * _intervalVsDelayRatio;
 
-        [Fact]
-        [Trait(nameof(Category),Category.Unit)]
-        public async Task Given100MillisecondsDelay_ShouldTick9Times_WhenIntervalIs10Milliseconds()
+        public class TicksTests : TimerViewModelTests
         {
-            var timer = new TimerViewModel(_interval);
-            var elapsedTimeStates = new List<TimeSpan>();
-            timer.ElapsedTime.PropertyChanged += (sender, args) => elapsedTimeStates.Add(timer.ElapsedTime);
-            elapsedTimeStates.Clear();
-            
-            timer.Start();
-            await Task.Delay(_delay);
-            timer.Stop();
-            
-            Assert.Equal(_delay / _interval - 1, elapsedTimeStates.Count);
-        }
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public async Task GivenAnDelayOfTenTimesTheInterval_ShouldBeEqualsToTheIntervalVsDelayRatio_WhenTheDelayIsAwaited()
+            {
+                var timer = new TimerViewModel(_interval);
+
+                timer.Start();
+                await Task.Delay(DelayOfTenTimesTheInterval);
+                timer.Stop();
+
+                Assert.Equal(_intervalVsDelayRatio, timer.Ticks);
+            }
+        }      
         
-        [Fact]
-        [Trait(nameof(Category),Category.Unit)]
-        public async Task Given100MillisecondsDelay_ShouldLastTickBe90Milliseconds_WhenIntervalIs10Milliseconds()
+        public class ElapsedTimeTests : TimerViewModelTests
         {
-            var timer = new TimerViewModel(_interval);
-            timer.ElapsedTime.BindProperty(this, @this => @this.ElapsedTime);
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public async Task GivenAnDelayOfTenTimesTheInterval_ShouldBeEqualsToTheDelay_WhenTheDelayIsAwaited()
+            {
+                var timer = new TimerViewModel(_interval);
 
-            timer.Start();
-            await Task.Delay(_delay);
-            timer.Stop();
-            
-            Assert.Equal(TimeSpan.FromMilliseconds(_delay.TotalMilliseconds - _interval.TotalMilliseconds), ElapsedTime);
+                timer.Start();
+                await Task.Delay(DelayOfTenTimesTheInterval);
+                timer.Stop();
+
+                Assert.Equal(DelayOfTenTimesTheInterval, timer.ElapsedTime);
+            }
         }
     }
 }
