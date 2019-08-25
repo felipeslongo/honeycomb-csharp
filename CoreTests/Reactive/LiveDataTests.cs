@@ -335,5 +335,38 @@ namespace CoreTests.Reactive
 
             public void OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
         }
+
+        public class WithSynchronizationContextTests : LiveDataTests
+        {
+            [Fact]
+            public void GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                var context = new SynchronizationContextThreadPool();
+                liveData.WithSynchronizationContext(context);
+                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
+                var synchronizationContextTheadId = currentThreadId;
+                liveData.PropertyChanged += (_,__) => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId;               
+
+                liveData.Value = DifferentValue;
+
+                Assert.NotEqual(currentThreadId, synchronizationContextTheadId);
+            }
+
+            [Fact]
+            public void GivenAEmptySynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                var context = new SynchronizationContextThreadPool();
+                liveData.WithSynchronizationContext(context);
+                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
+                var synchronizationContextTheadId = -1;
+                liveData.PropertyChanged += (_, __) => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId;
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(currentThreadId, synchronizationContextTheadId);
+            }
+        }
     }
 }
