@@ -94,7 +94,8 @@ namespace Core.Reactive
             OnPropertyChanged();
         }
 
-        
+        public void WithCurrentSynchronizationContext() => WithSynchronizationContext(SynchronizationContext.Current ?? new SynchronizationContextCurrentThread());
+
         public void WithSynchronizationContext(SynchronizationContext context) => _context = context;
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
