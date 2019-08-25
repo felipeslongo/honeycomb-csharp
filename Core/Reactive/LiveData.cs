@@ -64,7 +64,7 @@ namespace Core.Reactive
             PropertyChanged += eventHandler;
 
             return Disposable.Create(() => PropertyChanged -= eventHandler);
-        }
+        }    
 
         public IDisposable BindField<Target>(Target target, Expression<Func<Target, T>> fieldLambda)
         {
@@ -72,6 +72,17 @@ namespace Core.Reactive
             fieldSetter(Value);
 
             EventHandler<EventArgs> eventHandler = (sender, args) => fieldSetter(Value);
+            PropertyChanged += eventHandler;
+
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
+        }
+
+        public IDisposable Bind(Expression<Func<T>> propertyLambda)
+        {
+            var accessor = new Accessor<T>(propertyLambda);
+            accessor.Set(Value);
+
+            EventHandler<EventArgs> eventHandler = (sender, args) => accessor.Set(Value);
             PropertyChanged += eventHandler;
 
             return Disposable.Create(() => PropertyChanged -= eventHandler);

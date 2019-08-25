@@ -267,6 +267,98 @@ namespace CoreTests.Reactive
             }
         }
 
+        public class BindTests : LiveDataTests
+        {
+            public int field;
+            public int Property { get; set; }
+            public int PropertyWithNoSetter => Property;
+
+            private int Method() => 0;
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                Property = DifferentValue;
+
+                liveData.Bind(() => Property);
+
+                Assert.Equal(SameValue, Property);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheField_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                Property = DifferentValue;
+
+                liveData.Bind(() => field);
+
+                Assert.Equal(SameValue, field);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheProperty_WhenInitialValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(DifferentValue, Property);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAInitialValue_ShouldSetThisValueIntoTheField_WhenInitialValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => field);
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(DifferentValue, field);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenADisposedBind_ShouldNotSetAnValueIntoTheProperty_WhenValueIsChanged()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                var bindDisposer = liveData.Bind(() => Property);
+                bindDisposer.Dispose();
+
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(SameValue, Property);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAPropertyWithNoSetter_ShouldRaiseException_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+
+                var exception = Assert.Throws<ArgumentException>("memberLambda", () => liveData.Bind(() => PropertyWithNoSetter));
+
+                Assert.Contains(LiveData<int>.MessagePropertyHasNoSetter, exception.Message);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAMemberMethod_ShouldRaiseException_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+
+                var exception = Assert.Throws<ArgumentException>("memberLambda", () => liveData.Bind(() => Method()));
+
+                Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
+            }
+        }
+
         public class PropertyChangedTests : LiveDataTests
         {
             [Fact]

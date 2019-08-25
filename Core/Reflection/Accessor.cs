@@ -14,14 +14,20 @@ namespace Core.Reflection
         private Action<T> Setter;
         private Func<T> Getter;
 
-        public Accessor(Expression<Func<T>> expr)
+        public Accessor(Expression<Func<T>> memberLambda)
         {
-            var memberExpression = (MemberExpression)expr.Body;
+            var memberExpression = memberLambda.Body as MemberExpression;
+            if(memberExpression == null)
+                throw new ArgumentException(Property.MessageExpressionLambdaDoesNotReturnAProperty, nameof(memberLambda));
+
             var instanceExpression = memberExpression.Expression;
             var parameter = Expression.Parameter(typeof(T));
 
             if (memberExpression.Member is PropertyInfo propertyInfo)
             {
+                if (propertyInfo.CanWrite == false)
+                    throw new ArgumentException(Property.MessagePropertyHasNoSetter, nameof(memberLambda));
+
                 Setter = Expression.Lambda<Action<T>>(Expression.Call(instanceExpression, propertyInfo.GetSetMethod(), parameter), parameter).Compile();
                 Getter = Expression.Lambda<Func<T>>(Expression.Call(instanceExpression, propertyInfo.GetGetMethod())).Compile();
             }
