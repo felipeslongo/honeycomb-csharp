@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace CoreTests.Reactive
@@ -339,7 +340,7 @@ namespace CoreTests.Reactive
         public class WithSynchronizationContextTests : LiveDataTests
         {
             [Fact]
-            public void GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
+            public async Task GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
                 var context = new SynchronizationContextThreadPool();
@@ -349,6 +350,7 @@ namespace CoreTests.Reactive
                 liveData.PropertyChanged += (_,__) => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId;               
 
                 liveData.Value = DifferentValue;
+                await context.LastTask;
 
                 Assert.NotEqual(currentThreadId, synchronizationContextTheadId);
             }

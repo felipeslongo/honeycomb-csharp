@@ -1,9 +1,10 @@
 using Core.Reflection;
+using Core.Threading;
 using System;
 using System.Linq.Expressions;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 
 namespace Core.Reactive
 {
@@ -24,6 +25,7 @@ namespace Core.Reactive
 
         private T _value;
         private IObservable<EventArgs> _asObservable;
+        private SynchronizationContext _context = new SynchronizationContextCurrentThread();
 
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
@@ -77,7 +79,12 @@ namespace Core.Reactive
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
 
-        protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnPropertyChanged()
+        {
+            if (PropertyChanged == null)
+                return;
+            _context.Post(_ => PropertyChanged?.Invoke(this, EventArgs.Empty), null);
+        }
 
         private void SetValue(T value)
         {
@@ -86,6 +93,9 @@ namespace Core.Reactive
             _value = value;
             OnPropertyChanged();
         }
+
+        
+        public void WithSynchronizationContext(SynchronizationContext context) => _context = context;
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
     }
