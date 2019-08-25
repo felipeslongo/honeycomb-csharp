@@ -25,7 +25,6 @@ namespace Core.Reactive
 
         private T _value;
         private IObservable<EventArgs> _asObservable;
-        private SynchronizationContext _context = new SynchronizationContextCurrentThread();
 
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
@@ -77,25 +76,45 @@ namespace Core.Reactive
             return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
-        public IDisposable Bind(Expression<Func<T>> propertyLambda)
+        public Bind Bind(Expression<Func<T>> propertyLambda)
         {
             var accessor = new Accessor<T>(propertyLambda);
             accessor.Set(Value);
 
             EventHandler<EventArgs> eventHandler = (sender, args) => accessor.Set(Value);
-            PropertyChanged += eventHandler;
+            var bind = new Bind(eventHandler);
 
-            return Disposable.Create(() => PropertyChanged -= eventHandler);
+            PropertyChanged += bind.OnLiveDataPropertyChanged;
+            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
+
+            return bind;
+        }
+
+        public Bind BindMethod(Action<T> method)
+        {
+            EventHandler<EventArgs> eventHandler = (sender, args) => method(Value);
+            var bind = new Bind(eventHandler);
+
+            PropertyChanged += bind.OnLiveDataPropertyChanged;
+            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
+
+            return bind;
+        }
+
+        public Bind BindMethod(Action method)
+        {
+            EventHandler<EventArgs> eventHandler = (sender, args) => method();
+            var bind = new Bind(eventHandler);
+
+            PropertyChanged += bind.OnLiveDataPropertyChanged;
+            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
+
+            return bind;
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
 
-        protected virtual void OnPropertyChanged()
-        {
-            if (PropertyChanged == null)
-                return;
-            _context.Post(_ => PropertyChanged?.Invoke(this, EventArgs.Empty), null);
-        }
+        protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
 
         private void SetValue(T value)
         {
@@ -104,10 +123,6 @@ namespace Core.Reactive
             _value = value;
             OnPropertyChanged();
         }
-
-        public void WithCurrentSynchronizationContext() => WithSynchronizationContext(SynchronizationContext.Current ?? new SynchronizationContextCurrentThread());
-
-        public void WithSynchronizationContext(SynchronizationContext context) => _context = context;
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
     }

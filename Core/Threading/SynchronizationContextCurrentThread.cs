@@ -8,6 +8,8 @@ namespace Core.Threading
     /// </summary>
     public class SynchronizationContextCurrentThread : SynchronizationContext
     {
+        public static SynchronizationContext Default { get; } = new SynchronizationContextCurrentThread();
+
         public override void Post(SendOrPostCallback d, object state) => Send(d, state);
         public override void Send(SendOrPostCallback d, object state) => d(state);
     }
