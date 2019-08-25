@@ -9,14 +9,17 @@ namespace Core.Threading
     /// </summary>
     public class SynchronizationContextThreadPool : SynchronizationContext
     {
+        public Task LastTask { get; private set; } = Task.FromResult(true);
+
         public override void Post(SendOrPostCallback d, object state)
         {
-            Task.Run(() => d(state));
+            LastTask = Task.Run(() => d(state));
         }
 
         public override void Send(SendOrPostCallback d, object state)
         {
-            Task.Run(() => d(state)).Wait();
+            LastTask = Task.Run(() => d(state));
+            LastTask.Wait();
         }
     }
 }
