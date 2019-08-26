@@ -1,6 +1,7 @@
 using Core.Reflection;
 using Core.Threading;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -114,7 +115,7 @@ namespace Core.Reactive
         /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#setvalue"/>
         private void SetValue(T value)
         {
-            if (value.Equals(_value))
+            if (EqualityComparer<T>.Default.Equals(value, _value))
                 return;
             _value = value;
             OnPropertyChanged();

@@ -480,7 +480,7 @@ namespace CoreTests.Reactive
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
-                var expected = 70000000;
+                var expected = 20000;
                 Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
             }
 
