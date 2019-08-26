@@ -18,6 +18,7 @@ namespace CoreTests.Reactive
         public class WithSynchronizationContextTests : BindTests
         {
             [Fact]
+            [Trait(nameof(Category), Category.Unit)]
             public async Task GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
             {
                 await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
@@ -31,6 +32,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category), Category.Unit)]
             public void GivenAEmptySynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
             {
                 SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
@@ -46,6 +48,7 @@ namespace CoreTests.Reactive
         public class WithCurrentSynchronizationContextTests : LiveDataTests
         {
             [Fact]
+            [Trait(nameof(Category), Category.Unit)]
             public async Task GivenACurrentSynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
             {
                 await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
@@ -59,6 +62,7 @@ namespace CoreTests.Reactive
             }
 
             [Fact]
+            [Trait(nameof(Category), Category.Unit)]
             public void GivenAEmptyCurrentSynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
             {
                 SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
