@@ -19,23 +19,24 @@ namespace CoreTests.Reactive
         {
             [Fact]
             public async Task GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
-            {                
-                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(assertion =>
+            {
+                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
                 {
                     var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindMethod(assertion).WithSynchronizationContext(SynchronizationContext.Current);
+                    liveData.BindMethod(contextVisitor.CaptureContext)
+                        .WithSynchronizationContext(contextVisitor.CurrentContext);
 
-                    liveData.Value = DifferentValue;
+                    liveData.Value = DifferentValue;                    
                 });
             }
 
             [Fact]
             public void GivenAEmptySynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
             {
-                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(assertion =>
+                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
                 {
                     var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindMethod(assertion);
+                    liveData.BindMethod(contextVisitor.CaptureContext);
 
                     liveData.Value = DifferentValue;
                 });

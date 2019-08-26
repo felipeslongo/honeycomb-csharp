@@ -5,38 +5,74 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace CoreTests.Assertions
-{
+{    
     public static class SynchronizationContextAssert
-    {
-        public static async Task ShouldBeExecutedInCurrentContextAsynchronously(Action<Action> testMethod)
+    {        
+        public static async Task ShouldBeExecutedInCurrentContextAsynchronously(Action<ContextVisitor> testMethod)
         {
+            ContextVisitor contextVisitor = null;
             try
             {
-                var context = new SynchronizationContextThreadPool();
-                SynchronizationContext.SetSynchronizationContext(context);
-                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                var synchronizationContextTheadId = currentThreadId;
+                contextVisitor = ContextVisitor.MakeWithCurrentContext();
 
-                testMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId);
-                await context.LastTask;
+                testMethod(contextVisitor);
+                await contextVisitor.SynchronizationContextTask;
 
-                Assert.NotEqual(currentThreadId, synchronizationContextTheadId);
+                Assert.True(contextVisitor.WasExecutedInContext);
             }
             finally
             {
-                SynchronizationContext.SetSynchronizationContext(null);
+                contextVisitor.Dispose();
             }
         }
 
-        public static void ShouldBeExecutedInCurrentThreadSynchronously(Action<Action> testMethod)
+        public static void ShouldBeExecutedInCurrentThreadSynchronously(Action<ContextVisitor> testMethod)
         {
-            SynchronizationContext.SetSynchronizationContext(null);
-            var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-            var synchronizationContextTheadId = -1;
+            ContextVisitor contextVisitor = null;
+            try
+            {
+                contextVisitor = ContextVisitor.MakeWithoutCurrentContext();
 
-            testMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId);
+                testMethod(contextVisitor);
 
-            Assert.Equal(currentThreadId, synchronizationContextTheadId);
+                Assert.True(contextVisitor.WasExecutedInCurrentThread);
+            }
+            finally
+            {
+                contextVisitor.Dispose();
+            }
+        }
+
+        public class ContextVisitor : IDisposable
+        {
+            private readonly int _currentThreadId = Thread.CurrentThread.ManagedThreadId;
+            private readonly SynchronizationContext _oldContext = SynchronizationContext.Current;
+            private SynchronizationContextThreadPool _context;
+
+            private ContextVisitor(SynchronizationContextThreadPool context)
+            {
+                _context = context;
+                SynchronizationContext.SetSynchronizationContext(context);
+            }
+
+            public SynchronizationContext CurrentContext => _context;
+
+            public Task SynchronizationContextTask => _context?.LastTask;
+
+            public bool WasExecutedInContext { get; private set; } = false;
+            public bool WasExecutedInCurrentThread { get; private set; } = false;
+
+            public void CaptureContext()
+            {
+                var synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId;
+                WasExecutedInContext = _currentThreadId != synchronizationContextTheadId;
+                WasExecutedInCurrentThread = _currentThreadId == synchronizationContextTheadId;
+            }
+
+            public void Dispose() => SynchronizationContext.SetSynchronizationContext(_oldContext);
+
+            public static ContextVisitor MakeWithCurrentContext() => new ContextVisitor(new SynchronizationContextThreadPool());
+            public static ContextVisitor MakeWithoutCurrentContext() => new ContextVisitor(null);
         }
     }
 }
