@@ -472,7 +472,6 @@ namespace CoreTests.Reactive
                 var liveData = new MutableLiveData<int>(SameValue);
                 liveData.Bind(() => Property);
 
-                var timer = new Stopwatch();
                 foreach (var value in Enumerable.Range(1, iterations))
                     liveData.Value = value;
 
