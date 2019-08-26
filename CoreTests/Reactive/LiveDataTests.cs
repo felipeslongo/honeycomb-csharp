@@ -465,7 +465,7 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenOneMillionIterations_ShouldAllocateLessThan70000000Bytes_WhenPropertyIsSet()
+            public void GivenOneMillionIterations_ShouldAllocateLessThanThreshold_WhenPropertyIsSet()
             {
                 const int iterations = 1000000;
                 var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
