@@ -85,30 +85,14 @@ namespace Core.Reactive
         public IDisposable Bind(Expression<Func<T>> propertyLambda)
         {
             var accessor = new Accessor<T>(propertyLambda);
-            accessor.Set(Value);
-            EventHandler<EventArgs> eventHandler = (_, __) => accessor.Set(Value);
-            PropertyChanged += eventHandler;
-
-            return Disposable.Create(() => PropertyChanged -= eventHandler);
+            return BindEventHandler((_, __) => accessor.Set(Value));
         }
 
-        public IDisposable BindMethod(Action<T> method)
-        {
-            method(Value);
-            EventHandler<EventArgs> eventHandler = (_, __) => method(Value);
-            PropertyChanged += eventHandler;
+        public IDisposable BindMethod(Action<T> method) => 
+            BindEventHandler((_, __) => method(Value));    
 
-            return Disposable.Create(() => PropertyChanged -= eventHandler);
-        }
-
-        public IDisposable BindMethod(Action method)
-        {
-            method();
-            EventHandler<EventArgs> eventHandler = (_, __) => method();
-            PropertyChanged += eventHandler;
-
-            return Disposable.Create(() => PropertyChanged -= eventHandler);
-        }
+        public IDisposable BindMethod(Action method) =>
+            BindEventHandler((_, __) => method());
 
         public IDisposable BindEventHandler(EventHandler<EventArgs> eventHandler)
         {
