@@ -92,6 +92,7 @@ namespace Core.Reactive
 
         public Bind BindMethod(Action<T> method)
         {
+            method(Value);
             EventHandler<EventArgs> eventHandler = (sender, args) => method(Value);
             var bind = new Bind(eventHandler);
 
@@ -103,6 +104,7 @@ namespace Core.Reactive
 
         public Bind BindMethod(Action method)
         {
+            method();
             EventHandler<EventArgs> eventHandler = (sender, args) => method();
             var bind = new Bind(eventHandler);
 
