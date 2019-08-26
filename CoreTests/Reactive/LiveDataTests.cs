@@ -332,10 +332,7 @@ namespace CoreTests.Reactive
 
         public class PerformanceTests : LiveDataTests
         {
-            public int _field;
             public int Property { get; set; }
-            public int PropertyWithNoSetter => Property;
-            public int Method() => 0;
 
             [Fact]
             [Trait(nameof(Category), Category.Performance)]
@@ -378,7 +375,12 @@ namespace CoreTests.Reactive
                 var threshold = TimeSpan.FromMilliseconds(150).TotalMilliseconds;
                 var actual = timer.ElapsedMilliseconds;
                 Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
-            }
+            }            
+        }
+
+        public class GCTests : LiveDataTests
+        {
+            public int Property { get; set; }
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
@@ -389,7 +391,7 @@ namespace CoreTests.Reactive
                 {
                     var liveData = new MutableLiveData<int>(SameValue);
                     // Do things with service that might cause a memory leak...
-                    liveData.BindProperty(this, target => target.Property);
+                    liveData.Bind(() => Property);
                     liveData.Value = DifferentValue;
 
                     reference = new WeakReference(liveData, true);
@@ -408,7 +410,7 @@ namespace CoreTests.Reactive
             public void GivenAnReferencedLiveData_ShouldBeGen0_WhenBindIsCalled()
             {
                 var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
+                liveData.Bind(() => Property);
 
                 liveData.Value = DifferentValue;
 
