@@ -473,10 +473,8 @@ namespace CoreTests.Reactive
                 liveData.Bind(() => Property);
 
                 var timer = new Stopwatch();
-                timer.Start();
                 foreach (var value in Enumerable.Range(1, iterations))
                     liveData.Value = value;
-                timer.Stop();
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
