@@ -476,11 +476,10 @@ namespace CoreTests.Reactive
                 timer.Start();
                 foreach (var value in Enumerable.Range(1, iterations))
                     liveData.Value = value;
-                timer.Stop();                
+                timer.Stop();
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
-                var expected = 200000000;
                 Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
             }
 
