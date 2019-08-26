@@ -1,5 +1,6 @@
 using Core.Reactive;
 using Core.Threading;
+using CoreTests.Assertions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -385,6 +386,35 @@ namespace CoreTests.Reactive
                     handler => liveData.PropertyChanged -= handler,
                     () => liveData.Value = DifferentValue
                 );
+            }
+        }
+
+        public class PostValueTests: LiveDataTests
+        {
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public async Task GivenASetSynchronizationContext_ShouldBeExecutedInThatContextAsyncronously_WhenPostIsCalled()
+            {
+                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(contextVisitor.CaptureContext);
+
+                    liveData.PostValue(DifferentValue);
+                });
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenANullSynchronizationContext_ShouldBeExecutedInCurrentThreadSyncronously_WhenPostIsCalled()
+            {
+                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(contextVisitor.CaptureContext);
+
+                    liveData.PostValue(DifferentValue);
+                });
             }
         }
 

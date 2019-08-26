@@ -54,6 +54,12 @@ namespace Core.Reactive
             protected set => SetValue(value);
         }
 
+        /// <summary>
+        /// <see cref="SynchronizationContext"/> used in <see cref="PostValue(T)"/>.
+        /// Default value is <see cref="SynchronizationContext.Current"/>
+        /// </summary>
+        public SynchronizationContext SynchronizationContext = SynchronizationContext.Current;
+
         public IDisposable BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
             var propertySetter = Property.GetSetter(target, propertyLambda);
@@ -118,12 +124,41 @@ namespace Core.Reactive
 
         protected virtual void OnPropertyChanged() => PropertyChanged?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>
+        /// Sets the value. If there are active observers, the value will be dispatched to them.
+        /// This method must be called from the main thread. If you need set a value from a background thread, you can use postValue(Object)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#setvalue"/>
         private void SetValue(T value)
         {
             if (value.Equals(_value))
                 return;
             _value = value;
             OnPropertyChanged();
+        }
+
+
+        /// <summary>
+        /// Posts a task asynchronously to the current <see cref="SynchronizationContext"/> to set the given value.
+        /// If there are active observers, the value will be dispatched to them in that context.
+        /// If context is null then <see cref="SetValue(T)"/> is called synchronously instead.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#postvalue"/>
+        protected void PostValue(T value)
+        {
+            if (value.Equals(_value))
+                return;
+            _value = value;
+
+            if(SynchronizationContext == null)
+            {
+                OnPropertyChanged();
+                return;
+            }
+
+            SynchronizationContext.Post(_ => OnPropertyChanged(), null);
         }
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
