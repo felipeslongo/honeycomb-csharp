@@ -418,19 +418,69 @@ namespace CoreTests.Reactive
                 Assert.Equal(0, gen);
             }
 
-            [Fact(Skip = "Unstable")]
+            [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenAnReferencedLiveData_ShouldAllocateLessThan10000Bytes_WhenBindIsCalled()
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan3000Bytes_WhenConstructorIsCalled()
+            {
+                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
+
+                _ = new MutableLiveData<int>(SameValue);
+
+                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
+                var memory = memoryEnd - memoryBegin;
+                var expected = 3000;
+                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan20000Bytes_WhenBindIsCalled()
             {
                 var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
                 var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
+
+                liveData.Bind(() => Property);
+
+                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
+                var memory = memoryEnd - memoryBegin;
+                var expected = 20000;
+                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan20000Bytes_WhenPropertyIsSet()
+            {
+                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
 
                 liveData.Value = DifferentValue;
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
-                var expected = 500;
+                var expected = 20000;
+                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenOneMillionIterations_ShouldAllocateLessThan200000000Bytes_WhenPropertyIsSet()
+            {
+                const int iterations = 1000000;
+                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
+
+                var timer = new Stopwatch();
+                timer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    liveData.Value = value;
+                timer.Stop();                
+
+                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
+                var memory = memoryEnd - memoryBegin;
+                var expected = 200000000;
                 Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
             }
 
