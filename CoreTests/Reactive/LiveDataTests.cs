@@ -94,136 +94,7 @@ namespace CoreTests.Reactive
                 var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.Method()));
 
                 Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
-            }
-
-            [Fact]
-            [Trait(nameof(Category), Category.Performance)]
-            public void GivenOneMillionIterations_ShouldBeAtMost45TimesSlower_WhenBindIsCalled()
-            {
-                const int iterations = 1000000;
-                var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
-
-                var propertyTimer = new Stopwatch();
-                propertyTimer.Start();
-                foreach (var value in Enumerable.Range(1, iterations))
-                    Property = value;
-                propertyTimer.Stop();
-
-                var bindTimer = new Stopwatch();
-                bindTimer.Start();
-                foreach (var value in Enumerable.Range(1, iterations))
-                    liveData.Value = value;
-                bindTimer.Stop();
-
-                Assert.True(bindTimer.ElapsedMilliseconds < propertyTimer.ElapsedMilliseconds * 45,
-                    $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*45");
-            }
-
-            [Fact]
-            [Trait(nameof(Category), Category.Performance)]
-            public void GivenOneMillionIterations_ShouldBeExecutedInLessThan250Miliseconds_WhenBindIsCalledInEachIteration()
-            {
-                const int iterations = 1000000;
-                var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
-
-                var timer = new Stopwatch();
-                timer.Start();
-                foreach (var value in Enumerable.Range(1, iterations))
-                    liveData.Value = value;
-                timer.Stop();
-
-                var threshold = TimeSpan.FromMilliseconds(250).TotalMilliseconds;
-                var actual = timer.ElapsedMilliseconds;
-                Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
-            }
-
-            [Fact]
-            [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenAnUnreferencedLiveData_ShouldBeGarbageCollected_WhenGCIsCalled()
-            {
-                WeakReference reference = null;
-                new Action(() =>
-                {
-                    var liveData = new MutableLiveData<int>(SameValue);
-                    // Do things with service that might cause a memory leak...
-                    liveData.BindProperty(this, target => target.Property);
-                    liveData.Value = DifferentValue;
-
-                    reference = new WeakReference(liveData, true);
-                })();
-
-                // Service should have gone out of scope about now, 
-                // so the garbage collector can clean it up
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                Assert.Null(reference.Target);
-            }
-
-            [Fact]
-            [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenAnReferencedLiveData_ShouldBeGen0_WhenBindIsCalled()
-            {
-                var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
-
-                liveData.Value = DifferentValue;
-
-                var gen = GC.GetGeneration(liveData);
-                Assert.Equal(0, gen);
-            }
-
-            [Fact(Skip = "Unstable")]
-            [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenAnReferencedLiveData_ShouldAllocateLessThan10000Bytes_WhenBindIsCalled()
-            {
-                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
-                var liveData = new MutableLiveData<int>(SameValue);
-                liveData.BindProperty(this, target => target.Property);
-
-                liveData.Value = DifferentValue;
-
-                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
-                var memory = memoryEnd - memoryBegin;
-                var expected = 500;
-                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
-            }
-
-            [Fact]
-            [Trait(nameof(Category), Category.GarbageCollector)]
-            public void XXX()
-            {
-                var gen0Begin = GC.CollectionCount(0);
-                var gen1Begin = GC.CollectionCount(1);
-                var gen2Begin = GC.CollectionCount(2);
-
-                new Action(() =>
-                {
-                    var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindProperty(this, target => target.Property);
-                    liveData.Value = DifferentValue;
-                })();
-
-                // Service should have gone out of scope about now, 
-                // so the garbage collector can clean it up
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                var gen0End = GC.CollectionCount(0);
-                var gen1End = GC.CollectionCount(1);
-                var gen2End = GC.CollectionCount(2);
-
-                var gen0 = gen0End - gen0Begin;
-                var gen1 = gen1End - gen1Begin;
-                var gen2 = gen2End - gen2Begin;
-
-                Assert.Equal(1, gen0);
-                Assert.Equal(1, gen1);
-                Assert.Equal(1, gen2);
-            }
-
+            }            
         }
 
         public class BindFieldTests : LiveDataTests
@@ -457,6 +328,142 @@ namespace CoreTests.Reactive
             }
 
             public void OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
+        }
+
+        public class PerformanceTests : LiveDataTests
+        {
+            public int _field;
+            public int Property { get; set; }
+            public int PropertyWithNoSetter => Property;
+            public int Method() => 0;
+
+            [Fact]
+            [Trait(nameof(Category), Category.Performance)]
+            public void GivenOneMillionIterations_ShouldBeAtMost20TimesSlowerThanANormalPropertySet_WhenBindIsUsed()
+            {
+                const int iterations = 1000000;
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
+
+                var propertyTimer = new Stopwatch();
+                propertyTimer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    Property = value;
+                propertyTimer.Stop();
+
+                var bindTimer = new Stopwatch();
+                bindTimer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    liveData.Value = value;
+                bindTimer.Stop();
+
+                Assert.True(bindTimer.ElapsedMilliseconds < propertyTimer.ElapsedMilliseconds * 20,
+                    $"{bindTimer.ElapsedMilliseconds} vs {propertyTimer.ElapsedMilliseconds}*20");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Performance)]
+            public void GivenOneMillionIterations_ShouldBeExecutedInLessThan100Miliseconds_WhenBindIsUsed()
+            {
+                const int iterations = 1000000;
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
+
+                var timer = new Stopwatch();
+                timer.Start();
+                foreach (var value in Enumerable.Range(1, iterations))
+                    liveData.Value = value;
+                timer.Stop();
+
+                var threshold = TimeSpan.FromMilliseconds(150).TotalMilliseconds;
+                var actual = timer.ElapsedMilliseconds;
+                Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnUnreferencedLiveData_ShouldBeGarbageCollected_WhenGCIsCalled()
+            {
+                WeakReference reference = null;
+                new Action(() =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    // Do things with service that might cause a memory leak...
+                    liveData.BindProperty(this, target => target.Property);
+                    liveData.Value = DifferentValue;
+
+                    reference = new WeakReference(liveData, true);
+                })();
+
+                // Service should have gone out of scope about now, 
+                // so the garbage collector can clean it up
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                Assert.Null(reference.Target);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldBeGen0_WhenBindIsCalled()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);
+
+                liveData.Value = DifferentValue;
+
+                var gen = GC.GetGeneration(liveData);
+                Assert.Equal(0, gen);
+            }
+
+            [Fact(Skip = "Unstable")]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan10000Bytes_WhenBindIsCalled()
+            {
+                var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindProperty(this, target => target.Property);
+
+                liveData.Value = DifferentValue;
+
+                var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
+                var memory = memoryEnd - memoryBegin;
+                var expected = 500;
+                Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void XXX()
+            {
+                var gen0Begin = GC.CollectionCount(0);
+                var gen1Begin = GC.CollectionCount(1);
+                var gen2Begin = GC.CollectionCount(2);
+
+                new Action(() =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindProperty(this, target => target.Property);
+                    liveData.Value = DifferentValue;
+                })();
+
+                // Service should have gone out of scope about now, 
+                // so the garbage collector can clean it up
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                var gen0End = GC.CollectionCount(0);
+                var gen1End = GC.CollectionCount(1);
+                var gen2End = GC.CollectionCount(2);
+
+                var gen0 = gen0End - gen0Begin;
+                var gen1 = gen1End - gen1Begin;
+                var gen2 = gen2End - gen2Begin;
+
+                Assert.Equal(1, gen0);
+                Assert.Equal(1, gen1);
+                Assert.Equal(1, gen2);
+            }
         }
     }
 }
