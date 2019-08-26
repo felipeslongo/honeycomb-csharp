@@ -6,16 +6,16 @@ namespace Core.Reactive
 {
     public class Bind : IDisposable
     {
-        private readonly EventHandler<EventArgs> _handler;        
+        private readonly EventHandler<EventArgs> _handler;
         private Action _unbind;
-        private SynchronizationContext _context = SynchronizationContextCurrentThread.Default;
+        private SynchronizationContext _context;
 
         internal Bind(EventHandler<EventArgs> handler)
         {
             _handler = handler;
         }
 
-        public void WithCurrentSynchronizationContext() => WithSynchronizationContext(SynchronizationContext.Current ?? SynchronizationContextCurrentThread.Default);
+        public void WithCurrentSynchronizationContext() => WithSynchronizationContext(SynchronizationContext.Current);
 
         public void WithSynchronizationContext(SynchronizationContext context) => _context = context;
 
@@ -23,6 +23,15 @@ namespace Core.Reactive
 
         public void Dispose() => _unbind();
 
-        internal void OnLiveDataPropertyChanged(object sender, EventArgs e) => _context.Post(_ => _handler(sender, e), null);
+        internal void OnLiveDataPropertyChanged(object sender, EventArgs e)
+        {
+            if (_context == null)
+            {
+                _handler(sender, e);
+                return;
+            }
+
+            _context.Post(_ => _handler(sender, e), null);
+        }
     }
 }

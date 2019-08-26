@@ -465,7 +465,7 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenOneMillionIterations_ShouldAllocateLessThan200000000Bytes_WhenPropertyIsSet()
+            public void GivenOneMillionIterations_ShouldAllocateLessThan70000000Bytes_WhenPropertyIsSet()
             {
                 const int iterations = 1000000;
                 var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
@@ -480,6 +480,7 @@ namespace CoreTests.Reactive
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
+                var expected = 70000000;
                 Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
             }
 
