@@ -1,4 +1,5 @@
-﻿using Core.Reactive;
+﻿/* Obsoleted
+using Core.Reactive;
 using Core.Threading;
 using CoreTests.Assertions;
 using System;
@@ -76,3 +77,4 @@ namespace CoreTests.Reactive
         }
     }
 }
+*/

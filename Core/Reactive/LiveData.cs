@@ -82,42 +82,40 @@ namespace Core.Reactive
             return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
-        public Bind Bind(Expression<Func<T>> propertyLambda)
+        public IDisposable Bind(Expression<Func<T>> propertyLambda)
         {
             var accessor = new Accessor<T>(propertyLambda);
             accessor.Set(Value);
+            EventHandler<EventArgs> eventHandler = (_, __) => accessor.Set(Value);
+            PropertyChanged += eventHandler;
 
-            EventHandler<EventArgs> eventHandler = (sender, args) => accessor.Set(Value);
-            var bind = new Bind(eventHandler);
-
-            PropertyChanged += bind.OnLiveDataPropertyChanged;
-            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
-
-            return bind;
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
-        public Bind BindMethod(Action<T> method)
+        public IDisposable BindMethod(Action<T> method)
         {
             method(Value);
-            EventHandler<EventArgs> eventHandler = (sender, args) => method(Value);
-            var bind = new Bind(eventHandler);
+            EventHandler<EventArgs> eventHandler = (_, __) => method(Value);
+            PropertyChanged += eventHandler;
 
-            PropertyChanged += bind.OnLiveDataPropertyChanged;
-            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
-
-            return bind;
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
-        public Bind BindMethod(Action method)
+        public IDisposable BindMethod(Action method)
         {
             method();
-            EventHandler<EventArgs> eventHandler = (sender, args) => method();
-            var bind = new Bind(eventHandler);
+            EventHandler<EventArgs> eventHandler = (_, __) => method();
+            PropertyChanged += eventHandler;
 
-            PropertyChanged += bind.OnLiveDataPropertyChanged;
-            bind.ConfigureUnbind(() => PropertyChanged -= bind.OnLiveDataPropertyChanged);
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
+        }
 
-            return bind;
+        public IDisposable BindEventHandler(EventHandler<EventArgs> eventHandler)
+        {
+            eventHandler(this, EventArgs.Empty);
+            PropertyChanged += eventHandler;
+
+            return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
