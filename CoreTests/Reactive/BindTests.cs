@@ -43,40 +43,32 @@ namespace CoreTests.Reactive
             }
         }
 
-        public class WithCurrentSynchronizationContextTests : LiveDataTests, IDisposable
+        public class WithCurrentSynchronizationContextTests : LiveDataTests
         {
             [Fact]
             public async Task GivenACurrentSynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
             {
-                var liveData = new MutableLiveData<int>(SameValue);
-                var context = new SynchronizationContextThreadPool();
-                SynchronizationContext.SetSynchronizationContext(context);
-                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                var synchronizationContextTheadId = currentThreadId;
-                liveData.BindMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId)
-                    .WithCurrentSynchronizationContext();
+                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(contextVisitor.CaptureContext)
+                        .WithCurrentSynchronizationContext();
 
-                liveData.Value = DifferentValue;
-                await context.LastTask;
-
-                Assert.NotEqual(currentThreadId, synchronizationContextTheadId);
+                    liveData.Value = DifferentValue;
+                });
             }
 
             [Fact]
             public void GivenAEmptyCurrentSynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
             {
-                var liveData = new MutableLiveData<int>(SameValue);
-                SynchronizationContext.SetSynchronizationContext(null);
-                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                var synchronizationContextTheadId = -1;
-                liveData.BindMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId);
+                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(contextVisitor.CaptureContext);
 
-                liveData.Value = DifferentValue;
-
-                Assert.Equal(currentThreadId, synchronizationContextTheadId);
+                    liveData.Value = DifferentValue;
+                });
             }
-
-            public void Dispose() => SynchronizationContext.SetSynchronizationContext(null);
         }
     }
 }
