@@ -1,5 +1,6 @@
 ﻿using Core.Reactive;
 using Core.Threading;
+using CoreTests.Assertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,31 +19,26 @@ namespace CoreTests.Reactive
         {
             [Fact]
             public async Task GivenASynchronizationContext_ShouldBeExecutedInThatContext_WhenPropertyIsChanged()
-            {
-                var liveData = new MutableLiveData<int>(SameValue);
-                var context = new SynchronizationContextThreadPool();
-                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                var synchronizationContextTheadId = currentThreadId;
-                liveData.BindMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId)
-                    .WithSynchronizationContext(context);
+            {                
+                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(assertion =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(assertion).WithSynchronizationContext(SynchronizationContext.Current);
 
-                liveData.Value = DifferentValue;
-                await context.LastTask;
-
-                Assert.NotEqual(currentThreadId, synchronizationContextTheadId);
+                    liveData.Value = DifferentValue;
+                });
             }
 
             [Fact]
             public void GivenAEmptySynchronizationContext_ShouldBeExecutedInTheCurrentThread_WhenPropertyIsChanged()
             {
-                var liveData = new MutableLiveData<int>(SameValue);
-                var currentThreadId = Thread.CurrentThread.ManagedThreadId;
-                var synchronizationContextTheadId = -1;
-                liveData.BindMethod(() => synchronizationContextTheadId = Thread.CurrentThread.ManagedThreadId);
+                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(assertion =>
+                {
+                    var liveData = new MutableLiveData<int>(SameValue);
+                    liveData.BindMethod(assertion);
 
-                liveData.Value = DifferentValue;
-
-                Assert.Equal(currentThreadId, synchronizationContextTheadId);
+                    liveData.Value = DifferentValue;
+                });
             }
         }
 
