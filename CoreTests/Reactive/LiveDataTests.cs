@@ -483,18 +483,48 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
-            public void XXX()
+            public void GivenOneMillionIterations_ShouldGarbageCollectLessThanThreshold_WhenGCCollect()
             {
+                const int iterations = 1000000;
                 var gen0Begin = GC.CollectionCount(0);
                 var gen1Begin = GC.CollectionCount(1);
                 var gen2Begin = GC.CollectionCount(2);
 
+
                 new Action(() =>
                 {
                     var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindProperty(this, target => target.Property);
-                    liveData.Value = DifferentValue;
-                })();
+                    liveData.Bind(() => Property);
+
+                    foreach (var value in Enumerable.Range(1, iterations))
+                        liveData.Value = value;
+                })();                
+
+                // Service should have gone out of scope about now, 
+                // so the garbage collector can clean it up
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                var gen0End = GC.CollectionCount(0);
+                var gen1End = GC.CollectionCount(1);
+                var gen2End = GC.CollectionCount(2);
+
+                var gen0 = gen0End - gen0Begin;
+                var gen1 = gen1End - gen1Begin;
+                var gen2 = gen2End - gen2Begin;
+
+                Assert.Equal(1, gen0);
+                Assert.Equal(1, gen1);
+                Assert.Equal(1, gen2);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.GarbageCollector)]
+            public void XXX()
+            {
+                var gen0Begin = GC.CollectionCount(0);
+                var gen1Begin = GC.CollectionCount(1);
+                var gen2Begin = GC.CollectionCount(2);             
 
                 // Service should have gone out of scope about now, 
                 // so the garbage collector can clean it up
