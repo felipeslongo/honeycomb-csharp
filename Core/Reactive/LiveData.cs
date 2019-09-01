@@ -145,5 +145,7 @@ namespace Core.Reactive
         }
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
+
+        protected void Dispose() => PropertyChanged = null;
     }
 }

@@ -330,6 +330,24 @@ namespace CoreTests.Reactive
             public void OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
         }
 
+        public class DisposeTests : LiveDataTests
+        {
+            public int Property { get; set; }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnBind_ShouldBeUnbinded_WhenDispose()
+            {
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.Bind(() => Property);
+
+                liveData.Dispose();
+                liveData.Value = DifferentValue;
+
+                Assert.Equal(SameValue, Property);
+            }
+        }
+
         public class PerformanceTests : LiveDataTests
         {
             public int Property { get; set; }

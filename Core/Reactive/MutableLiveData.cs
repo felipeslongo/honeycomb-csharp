@@ -1,10 +1,12 @@
+using System;
+
 namespace Core.Reactive
 {
     /// <summary>
     /// <see cref="LiveData{T}"/> which publicly exposes mutability
     /// </summary>
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/MutableLiveData.html"/>
-    public class MutableLiveData<T> : LiveData<T>
+    public class MutableLiveData<T> : LiveData<T>, IDisposable
     {
         public MutableLiveData(T value) : base(value)
         {
@@ -21,5 +23,7 @@ namespace Core.Reactive
         }
 
         public new void PostValue(T value) => base.PostValue(value);
+
+        public new void Dispose() => base.Dispose();
     }
 }
