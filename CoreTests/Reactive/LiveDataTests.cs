@@ -420,7 +420,7 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.GarbageCollector)]
-            public void GivenAnReferencedLiveData_ShouldAllocateLessThan3000Bytes_WhenConstructorIsCalled()
+            public void GivenAnReferencedLiveData_ShouldAllocateLessThan200Bytes_WhenConstructorIsCalled()
             {
                 var memoryBegin = GC.GetAllocatedBytesForCurrentThread();
 
@@ -428,7 +428,7 @@ namespace CoreTests.Reactive
 
                 var memoryEnd = GC.GetAllocatedBytesForCurrentThread();
                 var memory = memoryEnd - memoryBegin;
-                var expected = 3000;
+                var expected = 200;
                 Assert.True(memory < expected, $"Should allocate less than {expected} bytes, but was allocated {memory} bytes.");
             }
 

@@ -25,17 +25,17 @@ namespace Core.Reactive
         public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
 
         private T _value;
-        private IObservable<EventArgs> _asObservable;
+        private readonly Lazy<IObservable<EventArgs>> _asObservable;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
         {
             _value = value;
 
-            _asObservable = Observable.FromEventPattern<EventArgs>(
+            _asObservable = new Lazy<IObservable<EventArgs>>(() => Observable.FromEventPattern<EventArgs>(
                 eventHandler => PropertyChanged += eventHandler,
                 eventHandler => PropertyChanged -= eventHandler
-                ).Select(eventPattern => eventPattern.EventArgs);
+                ).Select(eventPattern => eventPattern.EventArgs));
         }
 
         // ReSharper disable once MemberCanBeProtected.Global
@@ -144,6 +144,6 @@ namespace Core.Reactive
             SynchronizationContext.Post(_ => OnPropertyChanged(), null);
         }
 
-        public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Subscribe(observer);
+        public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
     }
 }
