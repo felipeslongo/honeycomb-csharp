@@ -83,11 +83,14 @@ namespace Core.Reactive
             return Disposable.Create(() => PropertyChanged -= eventHandler);
         }
 
+        public IDisposable Bind(MutableLiveData<T> otherLiveData) =>
+            BindEventHandler((_, __) => otherLiveData.Value = Value);
+
         public IDisposable Bind(Expression<Func<T>> propertyLambda)
         {
             var accessor = new Accessor<T>(propertyLambda);
             return BindEventHandler((_, __) => accessor.Set(Value));
-        }
+        }        
 
         public IDisposable BindMethod(Action<T> method) => 
             BindEventHandler((_, __) => method(Value));    

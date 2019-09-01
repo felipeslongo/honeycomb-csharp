@@ -231,6 +231,36 @@ namespace CoreTests.Reactive
             }
         }
 
+        public class BindMutableLiveData : LiveDataTests
+        {
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenFooBindedToBar_ShouldFooHaveTheSameValueAsBar_WhenBarValueChanges()
+            {
+                var foo = new MutableLiveData<int>(SameValue);
+                var bar = new MutableLiveData<int>(SameValue);
+                bar.Bind(foo);
+
+                bar.Value = DifferentValue;
+
+                Assert.Equal(bar.Value, foo.Value);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenFooAndBarBindBeDisposed_ShouldFooValueBeUnchanged_WhenBarValueChanges()
+            {
+                var foo = new MutableLiveData<int>(SameValue);
+                var bar = new MutableLiveData<int>(SameValue);
+                var bind = bar.Bind(foo);
+                bind.Dispose();
+
+                bar.Value = DifferentValue;
+
+                Assert.Equal(SameValue, foo.Value);
+            }
+        }
+
         public class PropertyChangedTests : LiveDataTests
         {
             [Fact]
