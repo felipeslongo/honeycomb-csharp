@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Disposables;
 
 namespace Core.Reactive
 {
@@ -25,5 +26,13 @@ namespace Core.Reactive
         public new void PostValue(T value) => base.PostValue(value);
 
         public new void Dispose() => base.Dispose();
+
+        public IDisposable TwoWayBind(MutableLiveData<T> other)
+        {
+            var otherToThisBind = other.Bind(this);
+            var thisToOtherBind = Bind(other);
+
+            return new CompositeDisposable(otherToThisBind, thisToOtherBind);
+        }
     }
 }
