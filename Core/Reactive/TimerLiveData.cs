@@ -34,7 +34,13 @@ namespace Core.Reactive
 
         public void Start() => _timer.Start();
         public void Stop() => _timer.Stop();
-        public void Reset() => Value = zero;
+
+        public void Reset()
+        {
+            Stop();
+            Value = zero;
+            Start();
+        }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e) => Value = Value.Add(Interval);
 

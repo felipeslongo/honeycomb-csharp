@@ -89,14 +89,18 @@ namespace CoreTests.Reactive
             [Trait(nameof(Category), Category.Unit)]
             public async Task GivenAnStartedInstance_ShouldSetValueToZero_WhenResetIsCalled()
             {
+                var expectedTicks = 0;
                 Timer.Start();
                 await Task.Delay(interval * 2);
-
+                expectedTicks += 2;
+                
                 Timer.Reset();
+                expectedTicks++;
                 await Task.Delay(interval);
+                expectedTicks++;
 
                 Assert.Equal(TimerLiveDataValue, interval);
-                Assert.Equal(2, Ticks);
+                Assert.Equal(expectedTicks, Ticks);
             }
         }
 
