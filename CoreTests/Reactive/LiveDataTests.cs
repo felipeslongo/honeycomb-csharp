@@ -296,13 +296,14 @@ namespace CoreTests.Reactive
             [Trait(nameof(Category), Category.Unit)]
             public async Task GivenASetSynchronizationContext_ShouldBeExecutedInThatContextAsyncronously_WhenPostIsCalled()
             {
-                await SynchronizationContextAssert.ShouldBeExecutedInCurrentContextAsynchronously(contextVisitor =>
-                {
-                    var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindMethod(contextVisitor.CaptureContext);
+                var contextMock = new SynchronizationContextMock();
+                SynchronizationContext.SetSynchronizationContext(contextMock);
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindMethod(() => {});
 
-                    liveData.PostValue(DifferentValue);
-                });
+                liveData.PostValue(DifferentValue);
+                
+                Assert.True(contextMock.Posts.Any());
             }
 
             [Fact]
@@ -534,6 +535,8 @@ namespace CoreTests.Reactive
             public void GivenOneMillionIterations_ShouldTheCollectionCountForeachGenBeBeZero_WhenGCCollect()
             {
                 const int iterations = 1000000;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 var gen0Begin = GC.CollectionCount(0);
                 var gen1Begin = GC.CollectionCount(1);
                 var gen2Begin = GC.CollectionCount(2);
@@ -552,15 +555,12 @@ namespace CoreTests.Reactive
                 // so the garbage collector can clean it up
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-
                 var gen0End = GC.CollectionCount(0);
                 var gen1End = GC.CollectionCount(1);
                 var gen2End = GC.CollectionCount(2);
-
                 var gen0 = gen0End - gen0Begin;
                 var gen1 = gen1End - gen1Begin;
                 var gen2 = gen2End - gen2Begin;
-
                 Assert.Equal(1, gen0);
                 Assert.Equal(1, gen1);
                 Assert.Equal(1, gen2);
