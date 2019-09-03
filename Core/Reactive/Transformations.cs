@@ -37,7 +37,7 @@ namespace Core.Reactive
         /// <param name="source"> a LiveData to listen to</param>
         /// <param name="func">a function to apply</param>
         /// <returns>a LiveData which emits resulting values</returns>
-        /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/Transformations.html#map(android.arch.lifecycle.LiveData<X>,%20android.arch.core.util.Function<X,%20Y>)"/>
+        /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/Transformations.html#map"/>
         public static LiveData<TOut> Map<TIn, TOut>(LiveData<TIn> source, Func<TIn, TOut> func)
         {
             var liveData = new MutableLiveData<TOut>();
