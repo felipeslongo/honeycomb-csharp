@@ -294,7 +294,7 @@ namespace CoreTests.Reactive
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public async Task GivenASetSynchronizationContext_ShouldBeExecutedInThatContextAsyncronously_WhenPostIsCalled()
+            public void GivenASetSynchronizationContext_ShouldBeExecutedInThatContextAsyncronously_WhenPostIsCalled()
             {
                 var contextMock = new SynchronizationContextMock();
                 SynchronizationContext.SetSynchronizationContext(contextMock);
@@ -303,7 +303,7 @@ namespace CoreTests.Reactive
 
                 liveData.PostValue(DifferentValue);
                 
-                Assert.True(contextMock.Posts.Any());
+                Assert.True(contextMock.PostWasCalled);
             }
 
             [Fact]

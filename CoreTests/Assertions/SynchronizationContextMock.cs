@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace CoreTests.Assertions
@@ -13,6 +15,7 @@ namespace CoreTests.Assertions
 
         public IReadOnlyList<SendOrPostEventArgs> Posts => _posts;
         public IReadOnlyList<SendOrPostEventArgs> Sends => _sends;
+        public bool PostWasCalled => Posts.Any();
 
         public override void Post(SendOrPostCallback sendOrPostCallback, object state) =>
             _posts.Add(new SendOrPostEventArgs(sendOrPostCallback, state));
