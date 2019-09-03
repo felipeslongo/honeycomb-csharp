@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Core.Reactive;
 using Xunit;
@@ -8,39 +9,30 @@ namespace CoreTests.Reactive
 {
     public class TimerViewModelTests
     {
-        private int _intervalVsDelayRatio = 10;
-        private TimeSpan _interval = TimeSpan.FromMilliseconds(100);
-        private TimeSpan DelayOfTenTimesTheInterval => _interval * _intervalVsDelayRatio;
-
-        public class TicksTests : TimerViewModelTests
+        public class TimerUiTests : TimerViewModelTests
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public async Task GivenAnDelayOfTenTimesTheInterval_ShouldBeEqualsToTheIntervalVsDelayRatio_WhenTheDelayIsAwaited()
+            public async Task GivenAInstanceWithoutCustomFormatter_ShouldBeTimerToStringValue_WhenTimerIsUpdated()
             {
-                var timer = new TimerViewModel(_interval);
-
-                timer.Start();
-                await Task.Delay(DelayOfTenTimesTheInterval);
-                timer.Stop();
-
-                Assert.Equal(_intervalVsDelayRatio, timer.Ticks);
+                var viewModel = new TimerViewModel(TimeSpan.FromMilliseconds(100));
+                viewModel.Start();
+                
+                await Task.Delay(viewModel.Interval);
+                
+                Assert.Equal(viewModel.TimerUi.Value, viewModel.Timer.Value.ToString());
             }
-        }      
-        
-        public class ElapsedTimeTests : TimerViewModelTests
-        {
+            
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public async Task GivenAnDelayOfTenTimesTheInterval_ShouldBeEqualsToTheDelay_WhenTheDelayIsAwaited()
+            public async Task GivenAInstanceWithCustomFormatter_ShouldBeCustomFormated_WhenTimerIsUpdated()
             {
-                var timer = new TimerViewModel(_interval);
-
-                timer.Start();
-                await Task.Delay(DelayOfTenTimesTheInterval);
-                timer.Stop();
-
-                Assert.Equal(DelayOfTenTimesTheInterval, timer.ElapsedTime);
+                var viewModel = new TimerViewModel(TimeSpan.FromMilliseconds(100));
+                viewModel.Start();
+                
+                await Task.Delay(viewModel.Interval);
+                
+                Assert.Equal(viewModel.TimerUi.Value, viewModel.Timer.Value.ToString());
             }
         }
     }
