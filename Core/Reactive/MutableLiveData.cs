@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Disposables;
+using System.Threading;
 
 namespace Core.Reactive
 {
@@ -21,6 +22,12 @@ namespace Core.Reactive
         { 
             get => base.Value;
             set => base.Value = value;
+        }
+
+        public new SynchronizationContext SynchronizationContext
+        {
+            get => base.SynchronizationContext;
+            set => base.SynchronizationContext = value;
         }
         
         /// <summary><inheritdoc cref="LiveData.PostValue"/></summary>

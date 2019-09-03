@@ -57,9 +57,9 @@ namespace Core.Reactive
 
         /// <summary>
         /// <see cref="SynchronizationContext"/> used in <see cref="PostValue(T)"/>.
-        /// Default value is <see cref="SynchronizationContext.Current"/>
+        /// Default value is null/>
         /// </summary>
-        public SynchronizationContext SynchronizationContext = SynchronizationContext.Current;
+        public SynchronizationContext SynchronizationContext { get; protected set; }
 
         public IDisposable BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {

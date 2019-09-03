@@ -297,8 +297,8 @@ namespace CoreTests.Reactive
             public void GivenASetSynchronizationContext_ShouldBeExecutedInThatContextAsyncronously_WhenPostIsCalled()
             {
                 var contextMock = new SynchronizationContextMock();
-                SynchronizationContext.SetSynchronizationContext(contextMock);
                 var liveData = new MutableLiveData<int>(SameValue);
+                liveData.SynchronizationContext = contextMock;
                 liveData.BindMethod(() => {});
 
                 liveData.PostValue(DifferentValue);
