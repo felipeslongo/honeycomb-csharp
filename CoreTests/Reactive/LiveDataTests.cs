@@ -310,13 +310,14 @@ namespace CoreTests.Reactive
             [Trait(nameof(Category), Category.Unit)]
             public void GivenANullSynchronizationContext_ShouldBeExecutedInCurrentThreadSyncronously_WhenPostIsCalled()
             {
-                SynchronizationContextAssert.ShouldBeExecutedInCurrentThreadSynchronously(contextVisitor =>
-                {
-                    var liveData = new MutableLiveData<int>(SameValue);
-                    liveData.BindMethod(contextVisitor.CaptureContext);
+                var expectedThread = Thread.CurrentThread.ManagedThreadId;
+                var actualThread = -1;
+                var liveData = new MutableLiveData<int>(SameValue);
+                liveData.BindMethod(() => actualThread = Thread.CurrentThread.ManagedThreadId);
 
-                    liveData.PostValue(DifferentValue);
-                });
+                liveData.PostValue(DifferentValue);
+                
+                Assert.Equal(expectedThread, actualThread);
             }
         }
 
