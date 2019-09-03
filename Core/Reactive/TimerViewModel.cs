@@ -8,10 +8,14 @@ namespace Core.Reactive
     {
         private readonly TimerLiveData _timer;
 
-        public TimerViewModel(TimeSpan interval)
+        public TimerViewModel(TimeSpan interval) : this(interval, timeSpan => timeSpan.ToString())
+        {
+        }
+        
+        public TimerViewModel(TimeSpan interval, Func<TimeSpan, string> formatter)
         {
             _timer = new TimerLiveData(interval);
-            TimerUi = Transformations.Map(_timer, timeSpan => timeSpan.ToString());
+            TimerUi = Transformations.Map(_timer, formatter);
         }
         
         public TimeSpan Interval {get => _timer.Interval; set => _timer.Interval = value;}
