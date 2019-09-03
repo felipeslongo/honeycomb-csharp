@@ -22,7 +22,8 @@ namespace Core.Reactive
             get => base.Value;
             set => base.Value = value;
         }
-
+        
+        /// <summary><inheritdoc cref="LiveData.PostValue"/></summary>
         public new void PostValue(T value) => base.PostValue(value);
 
         public new void Dispose() => base.Dispose();

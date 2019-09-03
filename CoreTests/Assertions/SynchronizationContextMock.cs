@@ -8,8 +8,8 @@ namespace CoreTests.Assertions
     /// </summary>
     public class SynchronizationContextMock : SynchronizationContext
     {
-        private List<SendOrPostEventArgs> _posts = new List<SendOrPostEventArgs>();
-        private List<SendOrPostEventArgs> _sends = new List<SendOrPostEventArgs>();
+        private readonly List<SendOrPostEventArgs> _posts = new List<SendOrPostEventArgs>();
+        private readonly List<SendOrPostEventArgs> _sends = new List<SendOrPostEventArgs>();
 
         public IReadOnlyList<SendOrPostEventArgs> Posts => _posts;
         public IReadOnlyList<SendOrPostEventArgs> Sends => _sends;
