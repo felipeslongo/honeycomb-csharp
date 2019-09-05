@@ -19,7 +19,7 @@ namespace Core.Reactive
     /// <typeparam name="T">Wrapped type</typeparam>
     /// <see cref="https://developer.android.com/topic/libraries/architecture/livedata"/>
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/LiveData.html"/>
-    public abstract class LiveData<T> : IObservable<EventArgs>
+    public abstract class LiveData<T> : IObservable<EventArgs>, IDisposable
     {
         public const string MessageExpressionLambdaDoesNotReturnAProperty = "The expression lambda does not represent a MemberExpression that returns whose member is a PropertyInfo";
         public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
@@ -149,6 +149,6 @@ namespace Core.Reactive
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
 
-        protected void Dispose() => PropertyChanged = null;
+        public virtual void Dispose() => PropertyChanged = null;
     }
 }

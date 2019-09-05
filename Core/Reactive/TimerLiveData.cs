@@ -6,7 +6,7 @@ namespace Core.Reactive
     /// <summary>
     /// Generates recurring events after each interval tick.
     /// </summary>
-    public class TimerLiveData : LiveData<TimeSpan>, IDisposable
+    public class TimerLiveData : LiveData<TimeSpan>
     {
         private static readonly TimeSpan zero = TimeSpan.Zero;
         private Timer _timer;        
@@ -44,7 +44,7 @@ namespace Core.Reactive
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e) => Value = Value.Add(Interval);
 
-        public new void Dispose()
+        public override void Dispose()
         {
             Stop();
             base.Dispose();

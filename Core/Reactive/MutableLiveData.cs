@@ -8,7 +8,7 @@ namespace Core.Reactive
     /// <see cref="LiveData{T}"/> which publicly exposes mutability
     /// </summary>
     /// <see cref="https://developer.android.com/reference/androidx/lifecycle/MutableLiveData.html"/>
-    public class MutableLiveData<T> : LiveData<T>, IDisposable
+    public class MutableLiveData<T> : LiveData<T>
     {
         public MutableLiveData(T value) : base(value)
         {
@@ -33,7 +33,7 @@ namespace Core.Reactive
         /// <summary><inheritdoc cref="LiveData.PostValue"/></summary>
         public new void PostValue(T value) => base.PostValue(value);
 
-        public new void Dispose() => base.Dispose();
+        public override void Dispose() => base.Dispose();
 
         public IDisposable TwoWayBind(MutableLiveData<T> other)
         {
