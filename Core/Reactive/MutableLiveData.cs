@@ -33,8 +33,6 @@ namespace Core.Reactive
         /// <summary><inheritdoc cref="LiveData.PostValue"/></summary>
         public new void PostValue(T value) => base.PostValue(value);
 
-        public override void Dispose() => base.Dispose();
-
         public IDisposable TwoWayBind(MutableLiveData<T> other)
         {
             var otherToThisBind = other.Bind(this);

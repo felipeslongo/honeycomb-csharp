@@ -49,7 +49,7 @@ namespace Core.Reactive
         /// Returns the current value.
         /// </summary>
         // ReSharper disable once MemberCanBeProtected.Global
-        public virtual T Value
+        public T Value
         {
             get => _value;
             protected set => SetValue(value);
