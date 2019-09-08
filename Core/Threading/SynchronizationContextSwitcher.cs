@@ -14,13 +14,15 @@ namespace Core.Threading
     {
         public static void RunWithoutContext(Action action) => RunWithContext(null, action);
 
-        public static void RunWithContext(SynchronizationContext context, Action action)
+        public static void RunWithContext(SynchronizationContext context, Action action) => RunWithContext(context, _ => action());
+
+        public static void RunWithContext<TContext>(TContext context, Action<TContext> action) where TContext : SynchronizationContext
         {
             var capturedContext = SynchronizationContext.Current;
             try
             {
                 SynchronizationContext.SetSynchronizationContext(context);
-                action();
+                action(context);
             }
             finally
             {
