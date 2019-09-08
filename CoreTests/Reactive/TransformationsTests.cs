@@ -111,18 +111,15 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeIntoTheCapturedSynchronizationContext_WhenDisposed()
-            {
-                var context = new SynchronizationContextMock();
-                SynchronizationContextSwitcher.RunWithContext(context, () =>
+            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeIntoTheCapturedSynchronizationContext_WhenDisposed() =>
+                SynchronizationContextSwitcher.RunWithContext(new SynchronizationContextMock(), context =>
                 {
                     var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, handler => EventHandler -= handler);
 
                     returned.Dispose();
 
                     Assert.True(context.PostWasCalled);
-                });  
-            }
+                });
         }
     }
 }
