@@ -68,11 +68,8 @@ namespace Core.Reactive
         /// the Subscribe or Dispose call, respectively.
         /// </remarks>
         public static LiveData<TEventArgs> FromEventPattern<TEventArgs>(
-            Action<EventHandler<TEventArgs>> addHandler, 
+            Action<EventHandler<TEventArgs>> addHandler,
             Action<EventHandler<TEventArgs>> removeHandler
-            )
-        {
-            throw new NotImplementedException();
-        }
+            ) => new EventHandlerLiveData<TEventArgs>(addHandler, removeHandler);
     }
 }
