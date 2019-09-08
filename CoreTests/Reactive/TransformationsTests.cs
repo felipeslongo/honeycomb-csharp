@@ -15,16 +15,42 @@ namespace CoreTests.Reactive
 
         public class MapTests : TransformationsTests
         {
+            private readonly Func<int, string> MapFunction = input => input.ToString();
+
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAnReturnedLiveData_ShouldEmitResultingValue_WhenSourceIsChanged()
+            public void GivenAnMapLiveData_ShouldHaveTheMappedValue_WhenCreated()
             {
                 var source = new MutableLiveData<int>(SameValue);
-                var returned = Transformations.Map(source, input => input.ToString());
+
+                var returned = Transformations.Map(source, MapFunction);
+
+                Assert.Equal(MapFunction(SameValue), returned.Value);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnMapLiveData_ShouldEmitResultingValue_WhenSourceIsChanged()
+            {
+                var source = new MutableLiveData<int>(SameValue);
+                var returned = Transformations.Map(source, MapFunction);
 
                 source.Value = DifferentValue;
 
-                Assert.Equal(DifferentValue.ToString(), returned.Value);
+                Assert.Equal(MapFunction(DifferentValue), returned.Value);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnMapLiveData_ShouldUnsubscribeFromSourceLiveData_WhenDisposed()
+            {
+                var source = new MutableLiveData<int>(SameValue);
+                var returned = Transformations.Map(source, MapFunction);
+                returned.Dispose();
+
+                source.Value = DifferentValue;
+
+                Assert.Equal(SameValue.ToString(), returned.Value);
             }
         }
 
