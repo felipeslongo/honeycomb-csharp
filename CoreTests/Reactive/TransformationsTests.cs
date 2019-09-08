@@ -99,6 +99,7 @@ namespace CoreTests.Reactive
             [Trait(nameof(Category), Category.Unit)]
             public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheEventHandler_WhenDisposed()
             {
+                SynchronizationContext.SetSynchronizationContext(null);
                 var eventHandlerMock = new ActionMock();
                 var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, _ => eventHandlerMock.MockedAction());
 
