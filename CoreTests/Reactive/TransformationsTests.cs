@@ -1,4 +1,5 @@
 ﻿using Core.Reactive;
+using Core.Threading;
 using CoreTests.Assertions;
 using System;
 using System.Collections.Generic;
@@ -97,28 +98,30 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheEventHandler_WhenDisposed()
-            {
-                SynchronizationContext.SetSynchronizationContext(null);
-                var eventHandlerMock = new ActionMock();
-                var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, _ => eventHandlerMock.MockedAction());
+            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheEventHandler_WhenDisposed() =>
+                SynchronizationContextSwitcher.RunWithoutContext(() =>
+                {
+                    var eventHandlerMock = new ActionMock();
+                    var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, _ => eventHandlerMock.MockedAction());
 
-                returned.Dispose();
+                    returned.Dispose();
 
-                Assert.True(eventHandlerMock.IsInvoked);
-            }
+                    Assert.True(eventHandlerMock.IsInvoked);
+                });
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
             public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeIntoTheCapturedSynchronizationContext_WhenDisposed()
             {
                 var context = new SynchronizationContextMock();
-                SynchronizationContext.SetSynchronizationContext(context);
-                var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, handler => EventHandler -= handler);
+                SynchronizationContextSwitcher.RunWithContext(context, () =>
+                {
+                    var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, handler => EventHandler -= handler);
 
-                returned.Dispose();
+                    returned.Dispose();
 
-                Assert.True(context.PostWasCalled);
+                    Assert.True(context.PostWasCalled);
+                });  
             }
         }
     }
