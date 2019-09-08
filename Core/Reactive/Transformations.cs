@@ -35,15 +35,13 @@ namespace Core.Reactive
         /// <typeparam name="TIn">source LiveData type</typeparam>
         /// <typeparam name="TOut">returned LiveData type</typeparam>
         /// <param name="source"> a LiveData to listen to</param>
-        /// <param name="func">a function to apply</param>
+        /// <param name="map">a function to apply</param>
         /// <returns>a LiveData which emits resulting values</returns>
         /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/Transformations.html#map"/>
-        public static LiveData<TOut> Map<TIn, TOut>(LiveData<TIn> source, Func<TIn, TOut> func)
-        {
-            var liveData = new MutableLiveData<TOut>();
-            _ = source.BindMethod(sourceValue => liveData.Value = func(sourceValue));
-            return liveData;
-        }
+        public static LiveData<TOut> Map<TIn, TOut>(
+            LiveData<TIn> source,
+            Func<TIn, TOut> map
+            ) => new MapLiveData<TIn, TOut>(source, map);
 
         /// <summary>
         /// Converts a .NET event, conforming to the standard .NET event pattern based on
