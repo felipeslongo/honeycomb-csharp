@@ -82,6 +82,6 @@ namespace Core.Reactive
         /// <param name="observable">source observable to subscribe to.</param>
         /// <returns>The Livedata that contains data representations of invocations of the observable stream.</returns>
         public static LiveData<TData> FromObservable<TData>(IObservable<TData> observable) => 
-            throw new NotImplementedException();
+            new ObserverLiveData<TData>(observable);
     }
 }
