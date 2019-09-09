@@ -164,12 +164,24 @@ namespace CoreTests.Reactive
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheEventHandler_WhenDisposed()
+            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheObservable_WhenDisposed()
             {
                 var subject = new ReplaySubject<int>();
                 var liveData = Transformations.FromObservable(subject as IObservable<int>);
 
                 liveData.Dispose();
+
+                Assert.False(subject.HasObservers);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheObservable_WhenOnCompletedInvoked()
+            {
+                var subject = new ReplaySubject<int>();
+                _ = Transformations.FromObservable(subject as IObservable<int>);
+
+                subject.OnCompleted();
 
                 Assert.False(subject.HasObservers);
             }
