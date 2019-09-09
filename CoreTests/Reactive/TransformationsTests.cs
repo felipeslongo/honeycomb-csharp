@@ -3,6 +3,7 @@ using Core.Threading;
 using CoreTests.Assertions;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 using Xunit;
@@ -55,7 +56,7 @@ namespace CoreTests.Reactive
             }
         }
 
-        public class FromEventPatternTests: TransformationsTests
+        public class FromEventPatternTests : TransformationsTests
         {
             public event EventHandler<EventArgs> EventHandler;
 
@@ -120,6 +121,58 @@ namespace CoreTests.Reactive
 
                     Assert.True(context.PostWasCalled);
                 });
+        }
+
+        public class FromObservableTests : TransformationsTests
+        {
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnFromObservableLiveData_ShouldSetValueWithNewData_WhenObservableEmitsNewData()
+            {
+                var subject = new ReplaySubject<int>();
+                var liveData = Transformations.FromObservable(subject as IObservable<int>);
+
+                subject.OnNext(SameValue);
+
+                Assert.Equal(SameValue, liveData.Value);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnFromObservableLiveData_ShouldCaptureTheLastEmittedData_WhenObservableEmitsNewDataMultipleTimes()
+            {
+                var subject = new ReplaySubject<int>();
+                var liveData = Transformations.FromObservable(subject as IObservable<int>);
+                subject.OnNext(SameValue);
+
+                subject.OnNext(DifferentValue);
+
+                Assert.Equal(DifferentValue, liveData.Value);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnFromObservableLiveData_ShouldSubscribeIntoTheObservable_WhenCreated()
+            {
+                var subject = new ReplaySubject<int>();
+
+                _ = Transformations.FromObservable(subject as IObservable<int>);
+
+                Assert.True(subject.HasObservers);
+            }
+
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnFromEventPatternLiveData_ShouldUnsubscribeFromTheEventHandler_WhenDisposed()
+            {
+                var subject = new ReplaySubject<int>();
+                var liveData = Transformations.FromObservable(subject as IObservable<int>);
+
+                liveData.Dispose();
+
+                Assert.False(subject.HasObservers);
+            }
         }
     }
 }
