@@ -2,9 +2,9 @@
 using System;
 using System.Threading;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
-    [Obsolete("Unstable due to high memory pressure",true)]
+    [Obsolete("Unstable due to high memory pressure", true)]
     public class Bind : IDisposable
     {
         private readonly EventHandler<EventArgs> _handler;

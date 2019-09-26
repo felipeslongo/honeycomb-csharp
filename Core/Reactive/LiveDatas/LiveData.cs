@@ -7,7 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
     /// <summary>
     /// LiveData is a data holder class that can be observed.
@@ -70,7 +70,7 @@ namespace Core.Reactive
             PropertyChanged += eventHandler;
 
             return Disposable.Create(() => PropertyChanged -= eventHandler);
-        }    
+        }
 
         public IDisposable BindField<Target>(Target target, Expression<Func<Target, T>> fieldLambda)
         {
@@ -90,10 +90,10 @@ namespace Core.Reactive
         {
             var accessor = new Accessor<T>(propertyLambda);
             return BindEventHandler((_, __) => accessor.Set(Value));
-        }        
+        }
 
-        public IDisposable BindMethod(Action<T> method) => 
-            BindEventHandler((_, __) => method(Value));    
+        public IDisposable BindMethod(Action<T> method) =>
+            BindEventHandler((_, __) => method(Value));
 
         public IDisposable BindMethod(Action method) =>
             BindEventHandler((_, __) => method());
@@ -138,7 +138,7 @@ namespace Core.Reactive
                 return;
             _value = value;
 
-            if(SynchronizationContext == null)
+            if (SynchronizationContext == null)
             {
                 OnPropertyChanged();
                 return;

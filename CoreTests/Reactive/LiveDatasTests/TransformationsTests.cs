@@ -1,4 +1,4 @@
-﻿using Core.Reactive;
+﻿using Core.Reactive.LiveDatas;
 using Core.Threading;
 using CoreTests.Assertions;
 using System;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using Xunit;
 
-namespace CoreTests.Reactive
+namespace CoreTests.Reactive.LiveDatasTests
 {
     public class TransformationsTests
     {

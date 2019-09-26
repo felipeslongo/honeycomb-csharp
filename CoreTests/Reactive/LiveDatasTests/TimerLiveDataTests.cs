@@ -1,11 +1,11 @@
-﻿using Core.Reactive;
+﻿using Core.Reactive.LiveDatas;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CoreTests.Reactive
+namespace CoreTests.Reactive.LiveDatasTests
 {
     public class TimerLiveDataTests
     {
@@ -93,7 +93,7 @@ namespace CoreTests.Reactive
                 Timer.Start();
                 await Task.Delay(interval * 2);
                 expectedTicks += 2;
-                
+
                 Timer.Reset();
                 expectedTicks++;
                 await Task.Delay(interval);

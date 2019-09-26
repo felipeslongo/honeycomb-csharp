@@ -1,10 +1,10 @@
-﻿using Core.Reactive;
+﻿using Core.Reactive.LiveDatas;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace CoreTests.Reactive
+namespace CoreTests.Reactive.LiveDatasTests
 {
     public class MutableLiveDataTests
     {

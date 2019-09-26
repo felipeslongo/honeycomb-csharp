@@ -2,7 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using System.Threading;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
     /// <summary>
     /// <see cref="LiveData{T}"/> which publicly exposes mutability
@@ -18,8 +18,8 @@ namespace Core.Reactive
         {
         }
 
-        public new T Value 
-        { 
+        public new T Value
+        {
             get => base.Value;
             set => base.Value = value;
         }
@@ -29,7 +29,7 @@ namespace Core.Reactive
             get => base.SynchronizationContext;
             set => base.SynchronizationContext = value;
         }
-        
+
         /// <summary><inheritdoc cref="LiveData.PostValue"/></summary>
         public new void PostValue(T value) => base.PostValue(value);
 

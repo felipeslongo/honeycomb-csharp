@@ -1,4 +1,4 @@
-using Core.Reactive;
+using Core.Reactive.LiveDatas;
 using Core.Threading;
 using CoreTests.Assertions;
 using System;
@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CoreTests.Reactive
+namespace CoreTests.Reactive.LiveDatasTests
 {
     public class LiveDataTests
     {
@@ -94,7 +94,7 @@ namespace CoreTests.Reactive
                 var exception = Assert.Throws<ArgumentException>("propertyLambda", () => liveData.BindProperty(this, target => target.Method()));
 
                 Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
-            }            
+            }
         }
 
         public class BindFieldTests : LiveDataTests
@@ -290,7 +290,7 @@ namespace CoreTests.Reactive
             }
         }
 
-        public class PostValueTests: LiveDataTests
+        public class PostValueTests : LiveDataTests
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
@@ -299,10 +299,10 @@ namespace CoreTests.Reactive
                 var contextMock = new SynchronizationContextMock();
                 var liveData = new MutableLiveData<int>(SameValue);
                 liveData.SynchronizationContext = contextMock;
-                liveData.BindMethod(() => {});
+                liveData.BindMethod(() => { });
 
                 liveData.PostValue(DifferentValue);
-                
+
                 Assert.True(contextMock.PostWasCalled);
             }
 
@@ -316,7 +316,7 @@ namespace CoreTests.Reactive
                 liveData.BindMethod(() => actualThread = Thread.CurrentThread.ManagedThreadId);
 
                 liveData.PostValue(DifferentValue);
-                
+
                 Assert.Equal(expectedThread, actualThread);
             }
         }
@@ -425,7 +425,7 @@ namespace CoreTests.Reactive
                 var threshold = TimeSpan.FromMilliseconds(150).TotalMilliseconds;
                 var actual = timer.ElapsedMilliseconds;
                 Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
-            }            
+            }
         }
 
         public class GCTests : LiveDataTests
@@ -550,7 +550,7 @@ namespace CoreTests.Reactive
 
                     foreach (var value in Enumerable.Range(1, iterations))
                         liveData.Value = value;
-                })();                
+                })();
 
                 // Service should have gone out of scope about now, 
                 // so the garbage collector can clean it up
@@ -573,7 +573,7 @@ namespace CoreTests.Reactive
             {
                 var gen0Begin = GC.CollectionCount(0);
                 var gen1Begin = GC.CollectionCount(1);
-                var gen2Begin = GC.CollectionCount(2);             
+                var gen2Begin = GC.CollectionCount(2);
 
                 // Service should have gone out of scope about now, 
                 // so the garbage collector can clean it up

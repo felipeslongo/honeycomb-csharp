@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
     /// <summary>
     /// Generates recurring events after each interval tick.
@@ -9,7 +9,7 @@ namespace Core.Reactive
     public class TimerLiveData : LiveData<TimeSpan>
     {
         private static readonly TimeSpan zero = TimeSpan.Zero;
-        private Timer _timer;        
+        private Timer _timer;
 
         public TimerLiveData(TimeSpan interval) : base(zero)
         {
@@ -24,7 +24,7 @@ namespace Core.Reactive
                 AutoReset = true,
             };
             _timer.Elapsed += TimerOnElapsed;
-        }        
+        }
 
         public TimeSpan Interval
         {

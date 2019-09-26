@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
     /// <summary>
     /// Internal <see cref="LiveData{TEventArgs}"/> implementation

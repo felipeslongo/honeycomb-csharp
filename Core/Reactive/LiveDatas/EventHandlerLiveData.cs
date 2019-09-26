@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Core.Reactive
+namespace Core.Reactive.LiveDatas
 {
     /// <summary>
     /// Internal <see cref="LiveData{TEventArgs}"/> implementations
