@@ -16,5 +16,24 @@ namespace Selvagem
         public TimeSpan Idade => (Falescimento ?? DateTimeOffset.Now) - Nascimento;
         public bool TaVivo => !Falescimento.HasValue;
         public Peso Peso { get; } = Peso.FromKilos(5);
+
+        public string Alimentar(string alimento)
+        {
+            var restoDoAlimento = String.Empty;
+            switch (alimento.ToLower())
+            {
+                case "fruta":
+                    restoDoAlimento = "sementes";
+                    break;
+                case "inseto":
+                    restoDoAlimento = string.Empty;
+                    break;
+                default:
+                    restoDoAlimento = alimento;
+                    break;
+            }
+
+            return restoDoAlimento;
+        }
     }
 }

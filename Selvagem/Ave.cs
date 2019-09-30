@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Selvagem
 {
-    public class Ave
+    public abstract class Ave : Animal
     {
     }
 }

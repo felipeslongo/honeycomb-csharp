@@ -6,6 +6,5 @@ namespace Selvagem
 {
     public abstract class Animal
     {
-        public Guid Id { get; } = Guid.NewGuid();
     }
 }
