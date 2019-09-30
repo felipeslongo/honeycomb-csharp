@@ -16,7 +16,5 @@ namespace Selvagem.Utils
         public static Peso FromKilos(decimal kilos) => new Peso(kilos);
         public static Peso FromGramas(decimal gramas) => new Peso(gramas / 1000);
         public static Peso FromToneladas(decimal toneladas) => new Peso(toneladas * 1000);
-
-
     }
 }

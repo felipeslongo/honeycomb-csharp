@@ -13,6 +13,8 @@ namespace Selvagem
         public TimeSpan VidaUtil { get; } = TimeSpanFactory.FromYears(VidaUtilEmAnos);
         public DateTimeOffset Nascimento { get; } = DateTimeOffset.UtcNow;
         public DateTimeOffset? Falescimento { get; }
+        public TimeSpan Idade => (Falescimento ?? DateTimeOffset.Now) - Nascimento;
+        public bool TaVivo => !Falescimento.HasValue;
         public Peso Peso { get; } = Peso.FromKilos(5);
     }
 }
