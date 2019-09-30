@@ -1,13 +1,13 @@
 ﻿using Selvagem.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Selvagem
 {
     public class Kiwi : Ave
     {
         public const int VidaUtilEmAnos = 25;
+        
+        public event EventHandler<SeAlimentouEventArgs> SeAlimentou;
 
         public Guid Id { get; } = Guid.NewGuid();
         public TimeSpan VidaUtil { get; } = TimeSpanFactory.FromYears(VidaUtilEmAnos);
@@ -24,9 +24,11 @@ namespace Selvagem
             {
                 case "fruta":
                     restoDoAlimento = "sementes";
+                    SeAlimentou?.Invoke(this, new SeAlimentouEventArgs(alimento, restoDoAlimento));
                     break;
                 case "inseto":
                     restoDoAlimento = string.Empty;
+                    SeAlimentou?.Invoke(this, new SeAlimentouEventArgs(alimento, restoDoAlimento));
                     break;
                 default:
                     restoDoAlimento = alimento;
