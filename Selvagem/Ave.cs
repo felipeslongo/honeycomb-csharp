@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Selvagem
 {
-    publicclass Ave
+    public class Ave
     {
     }
 }
