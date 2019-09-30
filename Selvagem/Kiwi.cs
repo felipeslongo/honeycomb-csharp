@@ -11,6 +11,8 @@ namespace Selvagem
 
         public Guid Id { get; } = Guid.NewGuid();
         public TimeSpan VidaUtil { get; } = TimeSpanFactory.FromYears(VidaUtilEmAnos);
-        public decimal Peso { get; } = 5;
+        public DateTimeOffset Nascimento { get; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset? Falescimento { get; }
+        public Peso Peso { get; } = Peso.FromKilos(5);
     }
 }
