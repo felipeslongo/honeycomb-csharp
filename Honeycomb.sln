@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{D255DA69-A56D-4367-8DFB-578517486178}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{D255DA69-A56D-4367-8DFB-578517486178}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTests", "CoreTests\CoreTests.csproj", "{DD80E934-E9E9-4869-867D-6D5A285CA2A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "CoreTests\CoreTests.csproj", "{DD80E934-E9E9-4869-867D-6D5A285CA2A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Reflection", "HoneyComb.Reflection\HoneyComb.Reflection.csproj", "{0033096E-287E-4A0D-BEAE-4E7681696549}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{DD80E934-E9E9-4869-867D-6D5A285CA2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD80E934-E9E9-4869-867D-6D5A285CA2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD80E934-E9E9-4869-867D-6D5A285CA2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0033096E-287E-4A0D-BEAE-4E7681696549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0033096E-287E-4A0D-BEAE-4E7681696549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0033096E-287E-4A0D-BEAE-4E7681696549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0033096E-287E-4A0D-BEAE-4E7681696549}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F453EBC-56AE-4EDB-B655-9C0272B2B605}
 	EndGlobalSection
 EndGlobal
