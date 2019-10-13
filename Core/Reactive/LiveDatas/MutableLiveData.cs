@@ -24,7 +24,7 @@ namespace Core.Reactive.LiveDatas
             set => base.Value = value;
         }
 
-        public new SynchronizationContext SynchronizationContext
+        public new SynchronizationContext? SynchronizationContext
         {
             get => base.SynchronizationContext;
             set => base.SynchronizationContext = value;
