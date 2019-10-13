@@ -20,7 +20,7 @@ namespace CoreTests.Reactive.LiveDatasTests
 
         public class BindPropertyTests : LiveDataTests
         {
-            private int _field;
+            private int _field = 0;
             private int Property { get; set; }
             private int PropertyWithNoSetter => Property;
 
@@ -349,17 +349,17 @@ namespace CoreTests.Reactive.LiveDatasTests
                 Assert.Empty(_onNextInvokedArgs);
             }
 
-            public void OnCompleted()
+            void IObserver<EventArgs>.OnCompleted()
             {
                 throw new NotImplementedException();
             }
 
-            public void OnError(Exception error)
+            void IObserver<EventArgs>.OnError(Exception error)
             {
                 throw new NotImplementedException();
             }
 
-            public void OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
+            void IObserver<EventArgs>.OnNext(EventArgs value) => _onNextInvokedArgs.Add(value);
         }
 
         public class DisposeTests : LiveDataTests
@@ -436,7 +436,7 @@ namespace CoreTests.Reactive.LiveDatasTests
             [Trait(nameof(Category), Category.GarbageCollector)]
             public void GivenAnUnreferencedLiveData_ShouldBeGarbageCollected_WhenGCIsCalled()
             {
-                WeakReference reference = null;
+                WeakReference reference = null!;
                 new Action(() =>
                 {
                     var liveData = new MutableLiveData<int>(SameValue);
