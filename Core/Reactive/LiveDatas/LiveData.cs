@@ -39,7 +39,7 @@ namespace Core.Reactive.LiveDatas
         }
 
         // ReSharper disable once MemberCanBeProtected.Global
-        public LiveData() : this(default)
+        public LiveData() : this(default!)
         {
         }
 
@@ -150,6 +150,6 @@ namespace Core.Reactive.LiveDatas
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
 
-        public virtual void Dispose() => PropertyChanged = null;
+        public virtual void Dispose() => PropertyChanged = null!;
     }
 }
