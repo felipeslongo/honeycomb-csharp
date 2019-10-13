@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
-namespace Core.Reflection
+namespace HoneyComb.Reflection
 {
     public static class Field
     {
@@ -21,7 +19,7 @@ namespace Core.Reflection
             if (prop == null)
                 throw new ArgumentException(MessageExpressionLambdaDoesNotReturnAField, nameof(fieldLambda));
 
-            if(prop.IsInitOnly)
+            if (prop.IsInitOnly)
                 throw new ArgumentException(MessageFieldIsReadonly, nameof(fieldLambda));
 
             return valueToBeSet => prop.SetValue(target, valueToBeSet);
