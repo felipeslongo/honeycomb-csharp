@@ -8,7 +8,7 @@ namespace CoreTests.Reflection
 {
     public class FieldTests
     {
-        private int _privateField;
+        private int _privateField = 0;
         private readonly int _privateReadonlyField = 0;
 
         public class GetSetterTests: FieldTests

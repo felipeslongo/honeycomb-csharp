@@ -10,7 +10,7 @@ namespace CoreTests.Assertions
     {        
         public static async Task ShouldBeExecutedInCurrentContextAsynchronously(Action<ContextVisitor> testMethod)
         {
-            ContextVisitor contextVisitor = null;
+            ContextVisitor contextVisitor = null!;
             try
             {
                 contextVisitor = ContextVisitor.MakeWithCurrentContext();
@@ -28,7 +28,7 @@ namespace CoreTests.Assertions
 
         public static void ShouldBeExecutedInCurrentThreadSynchronously(Action<ContextVisitor> testMethod)
         {
-            ContextVisitor contextVisitor = null;
+            ContextVisitor contextVisitor = null!;
             try
             {
                 contextVisitor = ContextVisitor.MakeWithoutCurrentContext();
@@ -57,7 +57,7 @@ namespace CoreTests.Assertions
 
             public SynchronizationContext CurrentContext => _context;
 
-            public Task SynchronizationContextTask => _context?.LastTask;
+            public Task SynchronizationContextTask => _context?.LastTask ?? Task.CompletedTask;
 
             public bool WasExecutedInContext { get; private set; } = false;
             public bool WasExecutedInCurrentThread { get; private set; } = false;
@@ -72,7 +72,7 @@ namespace CoreTests.Assertions
             public void Dispose() => SynchronizationContext.SetSynchronizationContext(_oldContext);
 
             public static ContextVisitor MakeWithCurrentContext() => new ContextVisitor(new SynchronizationContextThreadPool());
-            public static ContextVisitor MakeWithoutCurrentContext() => new ContextVisitor(null);
+            public static ContextVisitor MakeWithoutCurrentContext() => new ContextVisitor(null!);
         }
     }
 }

@@ -39,11 +39,11 @@ namespace Core.Reactive.LiveDatas
         }
 
         // ReSharper disable once MemberCanBeProtected.Global
-        public LiveData() : this(default)
+        public LiveData() : this(default!)
         {
         }
 
-        public event EventHandler<EventArgs> PropertyChanged;
+        public event EventHandler<EventArgs>? PropertyChanged;
 
         /// <summary>
         /// Returns the current value.
@@ -59,7 +59,7 @@ namespace Core.Reactive.LiveDatas
         /// <see cref="SynchronizationContext"/> used in <see cref="PostValue(T)"/>.
         /// Default value is null/>
         /// </summary>
-        public SynchronizationContext SynchronizationContext { get; protected set; }
+        public SynchronizationContext? SynchronizationContext { get; protected set; }
 
         public IDisposable BindProperty<Target>(Target target, Expression<Func<Target, T>> propertyLambda)
         {
@@ -118,12 +118,11 @@ namespace Core.Reactive.LiveDatas
         /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#setvalue"/>
         private void SetValue(T value)
         {
-            if (EqualityComparer<T>.Default.Equals(value, _value))
+            if (IsValueUnchanged(value))
                 return;
             _value = value;
             OnPropertyChanged();
-        }
-
+        }        
 
         /// <summary>
         /// Posts a task asynchronously to the current <see cref="SynchronizationContext"/> to set the given value.
@@ -134,7 +133,7 @@ namespace Core.Reactive.LiveDatas
         /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#postvalue"/>
         protected void PostValue(T value)
         {
-            if (value.Equals(_value))
+            if (IsValueUnchanged(value))
                 return;
             _value = value;
 
@@ -146,6 +145,8 @@ namespace Core.Reactive.LiveDatas
 
             SynchronizationContext.Post(_ => OnPropertyChanged(), null);
         }
+
+        private bool IsValueUnchanged(T value) => EqualityComparer<T>.Default.Equals(value, _value);
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
 

@@ -11,8 +11,9 @@ namespace Core.Reflection
     /// <seealso cref="https://stackoverflow.com/a/43498938/8099185"/>
     public class Accessor<T>
     {
-        private Action<T> Setter;
-        private Func<T> Getter;
+        private Action<T> Setter = SetterDefault;
+
+        private Func<T> Getter = GetterDefault;
 
         public Accessor(Expression<Func<T>> memberLambda)
         {
@@ -38,6 +39,10 @@ namespace Core.Reflection
             }
 
         }
+
+        private static void SetterDefault(T obj) => throw new NotSupportedException();
+
+        private static T GetterDefault() => throw new NotSupportedException();
 
         public void Set(T value) => Setter(value);
 

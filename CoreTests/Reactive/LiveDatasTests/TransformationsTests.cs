@@ -58,7 +58,7 @@ namespace CoreTests.Reactive.LiveDatasTests
 
         public class FromEventPatternTests : TransformationsTests
         {
-            public event EventHandler<EventArgs> EventHandler;
+            public event EventHandler<EventArgs>? EventHandler;
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
@@ -67,7 +67,7 @@ namespace CoreTests.Reactive.LiveDatasTests
                 var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, handler => EventHandler -= handler);
                 var expected = EventArgs.Empty;
 
-                EventHandler(this, expected);
+                EventHandler?.Invoke(this, expected);
 
                 Assert.Equal(expected, returned.Value);
             }
@@ -79,9 +79,9 @@ namespace CoreTests.Reactive.LiveDatasTests
                 var returned = Transformations.FromEventPattern<EventArgs>(handler => EventHandler += handler, handler => EventHandler -= handler);
                 var firstEventArgs = EventArgs.Empty;
                 var lastEventArgs = new EventArgs();
-                EventHandler(this, firstEventArgs);
+                EventHandler?.Invoke(this, firstEventArgs);
 
-                EventHandler(this, lastEventArgs);
+                EventHandler?.Invoke(this, lastEventArgs);
 
                 Assert.Equal(lastEventArgs, returned.Value);
             }

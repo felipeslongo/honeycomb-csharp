@@ -9,21 +9,22 @@ namespace Core.Reactive.LiveDatas
     public class TimerLiveData : LiveData<TimeSpan>
     {
         private static readonly TimeSpan zero = TimeSpan.Zero;
-        private Timer _timer;
+        private readonly Timer _timer;
 
         public TimerLiveData(TimeSpan interval) : base(zero)
         {
-            Init();
+            _timer = InitTimer();
             Interval = interval;
         }
 
-        private void Init()
+        private Timer InitTimer()
         {
-            _timer = new Timer()
+            var timer = new Timer()
             {
                 AutoReset = true,
             };
-            _timer.Elapsed += TimerOnElapsed;
+            timer.Elapsed += TimerOnElapsed;
+            return timer;
         }
 
         public TimeSpan Interval
@@ -49,7 +50,6 @@ namespace Core.Reactive.LiveDatas
             Stop();
             base.Dispose();
             _timer.Dispose();
-            _timer = null;
         }
     }
 }
