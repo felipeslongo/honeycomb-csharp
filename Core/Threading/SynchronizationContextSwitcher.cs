@@ -12,7 +12,7 @@ namespace Core.Threading
     /// </summary>
     public static class SynchronizationContextSwitcher
     {
-        public static void RunWithoutContext(Action action) => RunWithContext(null, action);
+        public static void RunWithoutContext(Action action) => RunWithContext(null!, action);
 
         public static void RunWithContext(SynchronizationContext context, Action action) => RunWithContext(context, _ => action());
 
