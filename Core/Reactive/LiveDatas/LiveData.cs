@@ -43,7 +43,7 @@ namespace Core.Reactive.LiveDatas
         {
         }
 
-        public event EventHandler<EventArgs> PropertyChanged;
+        public event EventHandler<EventArgs>? PropertyChanged;
 
         /// <summary>
         /// Returns the current value.
@@ -150,6 +150,6 @@ namespace Core.Reactive.LiveDatas
 
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
 
-        public virtual void Dispose() => PropertyChanged = null!;
+        public virtual void Dispose() => PropertyChanged = null;
     }
 }
