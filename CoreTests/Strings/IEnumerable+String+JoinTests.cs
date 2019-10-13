@@ -47,10 +47,10 @@ namespace CoreTests
         [Fact]
         public void ShouldThrowArgumentNullExceptionGivenNullIEnumerable()
         {
-            IEnumerable<string> strings = null;
+            IEnumerable<string>? strings = null;
 
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(() => strings.StringJoin(Separator));
+            Assert.Throws<ArgumentNullException>(() => strings!.StringJoin(Separator));
         }
     }
 }
