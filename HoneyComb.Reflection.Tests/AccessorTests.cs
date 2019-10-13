@@ -1,16 +1,17 @@
-﻿using HoneyComb.Reflection;
+﻿using CoreTests;
+using HoneyComb.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace CoreTests.Reflection
+namespace HoneyComb.Reflection.Tests
 {
     public class AccessorTests
     {
         public const int AValue = 1;
         public int PublicProperty { get; set; }
-        
+
         public class GetTests : AccessorTests
         {
             [Fact]

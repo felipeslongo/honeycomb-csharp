@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "CoreTests\Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Reflection", "HoneyComb.Reflection\HoneyComb.Reflection.csproj", "{0033096E-287E-4A0D-BEAE-4E7681696549}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Reflection.Tests", "HoneyComb.Reflection.Tests\HoneyComb.Reflection.Tests.csproj", "{689A62B5-B2A2-4622-9A52-C29714B5302B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0033096E-287E-4A0D-BEAE-4E7681696549}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0033096E-287E-4A0D-BEAE-4E7681696549}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0033096E-287E-4A0D-BEAE-4E7681696549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{689A62B5-B2A2-4622-9A52-C29714B5302B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{689A62B5-B2A2-4622-9A52-C29714B5302B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{689A62B5-B2A2-4622-9A52-C29714B5302B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{689A62B5-B2A2-4622-9A52-C29714B5302B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

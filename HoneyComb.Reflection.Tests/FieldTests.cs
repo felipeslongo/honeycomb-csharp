@@ -1,17 +1,18 @@
-﻿using HoneyComb.Reflection;
+﻿using CoreTests;
+using HoneyComb.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace CoreTests.Reflection
+namespace HoneyComb.Reflection.Tests
 {
     public class FieldTests
     {
         private int _privateField = 0;
         private readonly int _privateReadonlyField = 0;
 
-        public class GetSetterTests: FieldTests
+        public class GetSetterTests : FieldTests
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
