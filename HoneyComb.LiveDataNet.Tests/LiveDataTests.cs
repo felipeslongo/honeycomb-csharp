@@ -1,6 +1,3 @@
-using Core.Reactive.LiveDatas;
-using Core.Threading;
-using CoreTests.Assertions;
 using HoneyComb.TestChamber;
 using System;
 using System.Collections.Generic;
@@ -12,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CoreTests.Reactive.LiveDatasTests
+namespace HoneyComb.LiveDataNet.Tests
 {
     public class LiveDataTests
     {
