@@ -1,4 +1,4 @@
-namespace CoreTests
+namespace HoneyComb.TestChamber
 {
     public static class Category
     {

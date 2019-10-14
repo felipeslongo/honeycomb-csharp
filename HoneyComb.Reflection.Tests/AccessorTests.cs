@@ -1,5 +1,5 @@
-﻿using CoreTests;
-using HoneyComb.Reflection;
+﻿using HoneyComb.Reflection;
+using HoneyComb.TestChamber;
 using System;
 using System.Collections.Generic;
 using System.Text;

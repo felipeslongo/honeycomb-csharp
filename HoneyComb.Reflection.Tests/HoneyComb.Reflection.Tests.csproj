@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreTests\CoreTests.csproj" />
     <ProjectReference Include="..\HoneyComb.Reflection\HoneyComb.Reflection.csproj" />
+    <ProjectReference Include="..\HoneyComb.TestChamber\HoneyComb.TestChamber.csproj" />
   </ItemGroup>
 
 </Project>

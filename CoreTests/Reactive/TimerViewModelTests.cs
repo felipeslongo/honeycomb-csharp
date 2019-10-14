@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Reactive;
+using HoneyComb.TestChamber;
 using Xunit;
 
 namespace CoreTests.Reactive
