@@ -8,11 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="HoneyComb.Reflection" Version="0.0.1" />
       <PackageReference Include="System.Reactive" Version="4.1.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\HoneyComb.Reflection\HoneyComb.Reflection.csproj" />
     </ItemGroup>
 
 </Project>
