@@ -5,6 +5,16 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>HoneyComb.Reflection</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Felipe de Souza Longo</Authors>
+    <Company>Felipe de Souza Longo</Company>
+    <Product>HoneyComb.Reflection</Product>
+    <Description>Private (currently) utilities and helpers related to Reflection in C#.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
+    <PackageTags>reflection</PackageTags>
   </PropertyGroup>
 
 </Project>
