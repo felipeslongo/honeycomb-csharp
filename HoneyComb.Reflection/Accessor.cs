@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Core.Reflection
+namespace HoneyComb.Reflection
 {
     /// <summary>
     /// I wrote a wrapper using the ExpressionTree variant and c#7 (if somebody is interested):
@@ -18,7 +18,7 @@ namespace Core.Reflection
         public Accessor(Expression<Func<T>> memberLambda)
         {
             var memberExpression = memberLambda.Body as MemberExpression;
-            if(memberExpression == null)
+            if (memberExpression == null)
                 throw new ArgumentException(Property.MessageExpressionLambdaDoesNotReturnAProperty, nameof(memberLambda));
 
             var instanceExpression = memberExpression.Expression;

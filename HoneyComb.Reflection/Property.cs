@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
-namespace Core.Reflection
+namespace HoneyComb.Reflection
 {
     public static class Property
     {

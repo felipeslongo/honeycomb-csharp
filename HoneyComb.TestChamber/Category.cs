@@ -1,6 +1,6 @@
-namespace CoreTests
+namespace HoneyComb.TestChamber
 {
-    internal static class Category
+    public static class Category
     {
         public const string Performance = nameof(Performance);
         public const string GarbageCollector = nameof(GarbageCollector);

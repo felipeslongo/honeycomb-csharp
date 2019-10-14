@@ -1,16 +1,17 @@
-﻿using Core.Reflection;
+﻿using HoneyComb.Reflection;
+using HoneyComb.TestChamber;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace CoreTests.Reflection
+namespace HoneyComb.Reflection.Tests
 {
     public class PropertyTests
     {
         private int PrivateProperty { get; set; }
 
-        public class GetSetterTests: PropertyTests
+        public class GetSetterTests : PropertyTests
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
