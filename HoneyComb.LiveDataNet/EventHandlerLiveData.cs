@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// Internal <see cref="LiveData{TEventArgs}"/> implementations

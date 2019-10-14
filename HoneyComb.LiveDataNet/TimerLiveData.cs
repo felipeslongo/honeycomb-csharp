@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// Generates recurring events after each interval tick.

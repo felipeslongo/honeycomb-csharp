@@ -2,7 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using System.Threading;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// <see cref="LiveData{T}"/> which publicly exposes mutability
