@@ -1,7 +1,5 @@
 ﻿using HoneyComb.TestChamber;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -35,7 +33,7 @@ namespace HoneyComb.LiveDataNet.Tests
                 Timer.Interval = newInterval;
                 await Task.Delay(awaitInterval);
 
-                Assert.Equal(TimerLiveDataValue, awaitInterval);
+                Assert.Equal(awaitInterval, TimerLiveDataValue);
                 Assert.Equal(20, Ticks);
             }
 
@@ -48,7 +46,7 @@ namespace HoneyComb.LiveDataNet.Tests
 
                 await Task.Delay(awaitInterval);
 
-                Assert.Equal(TimerLiveDataValue, awaitInterval);
+                Assert.Equal(awaitInterval, TimerLiveDataValue);
                 Assert.Equal(10, Ticks);
             }
         }
@@ -62,7 +60,7 @@ namespace HoneyComb.LiveDataNet.Tests
                 Timer.Start();
                 await Task.Delay(interval);
 
-                Assert.Equal(TimerLiveDataValue, interval);
+                Assert.Equal(interval, TimerLiveDataValue);
                 Assert.Equal(1, Ticks);
             }
         }
@@ -78,7 +76,7 @@ namespace HoneyComb.LiveDataNet.Tests
                 Timer.Stop();
                 await Task.Delay(interval);
 
-                Assert.Equal(TimerLiveDataValue, TimeSpan.Zero);
+                Assert.Equal(TimeSpan.Zero, TimerLiveDataValue);
                 Assert.Equal(0, Ticks);
             }
         }
@@ -99,7 +97,7 @@ namespace HoneyComb.LiveDataNet.Tests
                 await Task.Delay(interval);
                 expectedTicks++;
 
-                Assert.Equal(TimerLiveDataValue, interval);
+                Assert.Equal(interval, TimerLiveDataValue);
                 Assert.Equal(expectedTicks, Ticks);
             }
         }
@@ -115,7 +113,7 @@ namespace HoneyComb.LiveDataNet.Tests
                 Timer.Dispose();
                 await Task.Delay(interval);
 
-                Assert.Equal(TimerLiveDataValue, TimeSpan.Zero);
+                Assert.Equal(TimeSpan.Zero, TimerLiveDataValue);
                 Assert.Equal(0, Ticks);
             }
         }
