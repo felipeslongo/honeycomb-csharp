@@ -10,7 +10,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
-    <PackageTags>livedata;reactive</PackageTags>
+    <PackageTags>livedata;reactive;observable;events</PackageTags>
     <Description>LiveData is a data holder class that can be observed. 
 Used to create observable properties in C#.
 
