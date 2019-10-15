@@ -5,6 +5,17 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Version>0.0.1</Version>
+    <Authors>Felipe de Souza Longo</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
+    <PackageTags>livedata;reactive</PackageTags>
+    <Description>LiveData is a data holder class that can be observed. 
+Used to create observable properties in C#.
+
+It's strongly based on Android's LiveData component: https://developer.android.com/reference/android/arch/lifecycle/LiveData. 
+But is not lifecycle-aware (since it is not Android).</Description>
   </PropertyGroup>
 
   <ItemGroup>
