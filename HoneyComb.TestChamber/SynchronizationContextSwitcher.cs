@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Core.Threading
+namespace HoneyComb.TestChamber
 {
     /// <summary>
     /// Helper that capture and replaces the <see cref="SynchronizationContext.Current"/>,

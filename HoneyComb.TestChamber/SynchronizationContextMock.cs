@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace CoreTests.Assertions
+namespace HoneyComb.TestChamber
 {
     /// <summary>
-    /// Simple Mock for <see cref="System.Threading.SynchronizationContext"/> that captures Post and Send calls.
+    /// Simple Mock for <see cref="SynchronizationContext"/> that captures Post and Send calls.
     /// </summary>
     public class SynchronizationContextMock : SynchronizationContext
     {
@@ -20,7 +20,7 @@ namespace CoreTests.Assertions
         public override void Post(SendOrPostCallback sendOrPostCallback, object state) =>
             _posts.Add(new SendOrPostEventArgs(sendOrPostCallback, state));
 
-        public override void Send(SendOrPostCallback sendOrPostCallback, object state) => 
+        public override void Send(SendOrPostCallback sendOrPostCallback, object state) =>
             _sends.Add(new SendOrPostEventArgs(sendOrPostCallback, state));
 
         public class SendOrPostEventArgs
@@ -30,7 +30,7 @@ namespace CoreTests.Assertions
                 SendOrPostCallback = sendOrPostCallback;
                 State = state;
             }
-            
+
             public SendOrPostCallback SendOrPostCallback { get; }
             public object State { get; }
         }
