@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreTests.Assertions
+namespace HoneyComb.TestChamber
 {
     /// <summary>
     /// Simple object that Mocks a empty <see cref="Action"/> to help Assert invocations.

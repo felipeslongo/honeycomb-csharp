@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// Internal <see cref="LiveData{TOut}"/> that observes changes to another <see cref="LiveData{TIn}"/>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// Internal <see cref="LiveData{TEventArgs}"/> implementation

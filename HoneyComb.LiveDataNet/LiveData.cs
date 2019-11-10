@@ -1,4 +1,3 @@
-using Core.Threading;
 using HoneyComb.Reflection;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 
-namespace Core.Reactive.LiveDatas
+namespace HoneyComb.LiveDataNet
 {
     /// <summary>
     /// LiveData is a data holder class that can be observed.
@@ -122,7 +121,7 @@ namespace Core.Reactive.LiveDatas
                 return;
             _value = value;
             OnPropertyChanged();
-        }        
+        }
 
         /// <summary>
         /// Posts a task asynchronously to the current <see cref="SynchronizationContext"/> to set the given value.

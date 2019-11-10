@@ -1,11 +1,10 @@
-﻿using Core.Reactive.LiveDatas;
-using HoneyComb.TestChamber;
+﻿using HoneyComb.TestChamber;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace CoreTests.Reactive.LiveDatasTests
+namespace HoneyComb.LiveDataNet.Tests
 {
     public class MutableLiveDataTests
     {
