@@ -2,7 +2,7 @@
 using Android.Content.Res;
 using Android.Support.V4.Content;
 
-namespace HoneyComb.Platform.Android.UI.Colors
+namespace HoneyComb.Platform.Android.Content.Res
 {
     /// <summary>
     /// Provide Color helpers and utils.
