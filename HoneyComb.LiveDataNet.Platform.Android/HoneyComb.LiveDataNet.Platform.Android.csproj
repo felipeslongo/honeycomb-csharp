@@ -50,6 +50,7 @@
     <Compile Include="BindingAdapters\LiveData+BindTextViewDrawableTop.cs" />
     <Compile Include="BindingAdapters\LiveData+BindTextViewText.cs" />
     <Compile Include="BindingAdapters\LiveData+BindTextViewTextColor.cs" />
+    <Compile Include="BindingAdapters\LiveData+BindViewActivated.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
