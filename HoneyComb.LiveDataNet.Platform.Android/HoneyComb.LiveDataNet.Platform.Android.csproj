@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LiveData+BindTextViewDrawableTint.cs" />
+    <Compile Include="BindingAdapters\LiveData+BindTextViewDrawableTint.cs" />
+    <Compile Include="BindingAdapters\LiveData+BindTextViewDrawableTop.cs" />
+    <Compile Include="BindingAdapters\LiveData+BindTextViewText.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
