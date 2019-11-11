@@ -5,6 +5,17 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet">
+    <Version>0.0.1</Version>
+    <Authors>Felipe de Souza Longo</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
+    <PackageTags>android;xamarin;xamarin.android</PackageTags>
+    <Description>
+      Helpers and Utils to be used in a Xamarin.Android project.
+    </Description>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
