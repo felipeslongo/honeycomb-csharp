@@ -63,6 +63,7 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj" />
     <ProjectReference Include="..\HoneyComb.Platform.Android\HoneyComb.Platform.Android.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
