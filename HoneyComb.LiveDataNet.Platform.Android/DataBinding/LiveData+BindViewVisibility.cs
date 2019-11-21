@@ -6,6 +6,16 @@ namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
     public static class LiveDataBindViewVisibility
     {
         /// <summary>
+        /// Bind an <see cref="ViewStates"/> to an <see cref="View.Visibility"/> property.
+        /// </summary>
+        /// <param name="liveData">An <see cref="LiveData{ViewStates}"/> representing the Visibility state.</param>
+        /// <param name="view">Target</param>
+        /// <returns>Binding <see cref="IDisposable"/></returns>
+        /// <exception cref="Exception">To be added</exception>
+        public static IDisposable BindViewVisibility(this LiveData<ViewStates> liveData, View view) =>
+            liveData.BindMethod(viewState => view.Visibility = viewState);
+
+        /// <summary>
         /// Bind an <see cref="bool"/> to an <see cref="View.Visibility"/> property.
         /// </summary>
         /// <param name="liveData">An <see cref="LiveData{bool}"/> representing the Visibility state.</param>
