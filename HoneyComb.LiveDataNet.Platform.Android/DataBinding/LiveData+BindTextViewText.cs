@@ -1,7 +1,7 @@
 ﻿using Android.Widget;
 using System;
 
-namespace HoneyComb.LiveDataNet.Platform.Android.BindingAdapters
+namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
 {
     public static class LiveDataBindTextViewText
     {

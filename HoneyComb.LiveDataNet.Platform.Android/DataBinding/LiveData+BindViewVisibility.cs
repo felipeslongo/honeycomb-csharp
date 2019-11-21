@@ -1,7 +1,7 @@
 ﻿using Android.Views;
 using System;
 
-namespace HoneyComb.LiveDataNet.Platform.Android.BindingAdapters
+namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
 {
     public static class LiveDataBindViewVisibility
     {
@@ -16,7 +16,7 @@ namespace HoneyComb.LiveDataNet.Platform.Android.BindingAdapters
         public static IDisposable BindViewVisibility(this LiveData<bool> liveData, View view, ViewStates falseViewState = ViewStates.Gone) =>
             liveData.BindMethod(visibility => view.Visibility = ConvertBooleanToViewState(visibility, falseViewState));
 
-        private static ViewStates ConvertBooleanToViewState(bool visibility, ViewStates falseViewState) => 
+        private static ViewStates ConvertBooleanToViewState(bool visibility, ViewStates falseViewState) =>
             visibility ? ViewStates.Visible : falseViewState;
     }
 }
