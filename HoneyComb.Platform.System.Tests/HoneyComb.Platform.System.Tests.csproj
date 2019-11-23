@@ -19,4 +19,9 @@
         <PackageReference Include="coverlet.collector" Version="1.0.1"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Platform.System.csproj"/>
+        <ProjectReference Include="..\HoneyComb.TestChamber\HoneyComb.TestChamber.csproj"/>
+    </ItemGroup>
+
 </Project>
