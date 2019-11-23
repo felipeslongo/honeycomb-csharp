@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup Label="Best Practices Configuration">
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet">
+        <Version>0.0.1</Version>
+        <Authors>Felipe de Souza Longo</Authors>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
+        <PackageTags>android;xamarin;xamarin.android</PackageTags>
+        <Description>
+            Utilities build upon the .NET Core 3.0 to be used to help in development.
+            It follows the same namespace from Microsoft but with HoneyComb.Platform.* prefix
+        </Description>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+</Project>
