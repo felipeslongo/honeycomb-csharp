@@ -22,7 +22,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         public EventHandler? OnStop;
         private ILifecycleOwner? _lifecycleOwner;
 
-        public void ObserveLifecycleOwner(ILifecycleOwner lifecycleOwner)
+        internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
             _lifecycleOwner = lifecycleOwner;
             _lifecycleOwner.Lifecycle.AddObserver(this);
