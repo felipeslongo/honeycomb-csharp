@@ -7,7 +7,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
+    <PackageVersion>0.1.0-alpha01</PackageVersion>
     <Authors>Felipe de Souza Longo</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
@@ -15,6 +16,7 @@
     <PackageTags>android;xamarin;xamarin.android</PackageTags>
     <Description>
       Helpers and Utils to be used in a Xamarin.Android project.
+      - LifecycleService
     </Description>
   </PropertyGroup>
   <PropertyGroup>
