@@ -8,10 +8,13 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </summary>
     public static class LifecycleService
     {
-        public static LifecycleObservable GetObservable(ILifecycleOwner lifecycleOwner)
-        {
-            var observable = new LifecycleObservable();
-            return observable;
-        }
+        public static LifecycleObservable GetObservable(ILifecycleOwner lifecycleOwner) =>
+            new LifecycleObservable(lifecycleOwner);
+
+        public static LifecycleDisposable GetDisposable(ILifecycleOwner lifecycleOwner) =>
+            new LifecycleDisposable(GetObservable(lifecycleOwner));
+
+        public static LifecycleDisposable GetDisposable(LifecycleObservable lifecycleObservable) =>
+            new LifecycleDisposable(lifecycleObservable);
     }
 }
