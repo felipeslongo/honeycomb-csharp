@@ -8,7 +8,8 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// It will dispose all itens when an Lifecycle component
     /// is destroyed.
     ///
-    /// Use it to avoid memory leaks in your application.
+    /// Use it to dispose non Lifecycle-aware components,
+    /// therefore avoid memory leaks in your application.
     /// </summary>
     public class LifecycleDisposable : IDisposable
     {
