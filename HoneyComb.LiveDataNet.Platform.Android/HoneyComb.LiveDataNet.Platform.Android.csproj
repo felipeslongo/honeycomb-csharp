@@ -7,14 +7,15 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Felipe de Souza Longo</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
     <PackageTags>android;xamarin;xamarin.android</PackageTags>
     <Description>
-      Helpers and Utils to be used in a Xamarin.Android project.
+      LiveDataNet support for the Android Platform.
+      Includes Binding Adapters.
     </Description>
   </PropertyGroup>
   <PropertyGroup>
@@ -22,13 +23,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FC6ED07F-0275-4E62-9CEC-90F969AB95E1}</ProjectGuid>
+    <ProjectGuid>{C626086E-1361-4EFB-A49B-3A72ADDBBA2E}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{9ef11e43-1701-4396-8835-8392d57abb70}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HoneyComb.Platform.Android</RootNamespace>
-    <AssemblyName>HoneyComb.Platform.Android</AssemblyName>
+    <RootNamespace>HoneyComb.LiveDataNet.Platform.Android</RootNamespace>
+    <AssemblyName>HoneyComb.LiveDataNet.Platform.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -67,13 +68,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\values\strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Resources\drawable\" />
-    <Folder Include="Resources\values\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj" />
+    <ProjectReference Include="..\HoneyComb.Platform.Android\HoneyComb.Platform.Android.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
