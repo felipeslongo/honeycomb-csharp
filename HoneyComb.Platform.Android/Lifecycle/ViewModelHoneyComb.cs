@@ -18,14 +18,12 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </remarks>
     public abstract class ViewModelHoneyComb : ViewModel
     {
-        private readonly CancellationTokenSource _viewModelScopeToken = new CancellationTokenSource();
-
-        public CancellationToken ViewModelScope => _viewModelScopeToken.Token;
+        public ViewModelScope ViewModelScope => new ViewModelScope();
 
         protected override void OnCleared()
         {
             base.OnCleared();
-            _viewModelScopeToken.Cancel();
+            ViewModelScope.NotifyOnCleared();
         }
     }
 }

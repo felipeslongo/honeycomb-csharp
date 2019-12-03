@@ -8,6 +8,8 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// This scope will be canceled when ViewModel will be cleared, i.e <see cref="ViewModel.OnCleared"/> is called.
     /// 
     /// This scope is bound to the main UI Thread.
+    /// 
+    /// Its important to call <see cref="NotifyOnCleared"/> on your <see cref="ViewModel.OnCleared"/>.
     /// </summary>
     /// Credits, Authors and Inspirations:
     ///     https://medium.com/androiddevelopers/easy-coroutines-in-android-viewmodelscope-25bffb605471
