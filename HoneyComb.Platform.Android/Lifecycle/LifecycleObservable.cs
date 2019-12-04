@@ -1,7 +1,9 @@
 ﻿using Android.Arch.Lifecycle;
 using Java.Interop;
 using System;
+using static Android.Arch.Lifecycle.Lifecycle;
 using JavaObject = Java.Lang.Object;
+
 using LifecycleAndroid = Android.Arch.Lifecycle.Lifecycle;
 
 namespace HoneyComb.Platform.Android.Lifecycle
@@ -27,6 +29,8 @@ namespace HoneyComb.Platform.Android.Lifecycle
             _lifecycleOwner = lifecycleOwner;
             _lifecycleOwner.Lifecycle.AddObserver(this);
         }
+
+        public State CurrentState => _lifecycleOwner?.Lifecycle.CurrentState ?? State.Destroyed;
 
         [LifecycleAndroid.Event.OnAny, Export]
         public void OnLifecycleEventOnAny()
