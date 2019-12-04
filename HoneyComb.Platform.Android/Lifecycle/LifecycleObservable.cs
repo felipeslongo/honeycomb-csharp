@@ -13,6 +13,10 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// Use it as a Observable object to execute
     /// code that is lifecycle dependent.
     /// </summary>
+    /// <remarks>
+    ///     Inspiration
+    ///     - LifecycleBoundObserver: https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/lifecycle/lifecycle-livedata-core/src/main/java/androidx/lifecycle/LiveData.java
+    /// </remarks>
     public class LifecycleObservable : JavaObject, ILifecycleObserver
     {
         public EventHandler? OnAny;
