@@ -31,14 +31,24 @@ namespace HoneyComb.Platform.Android.Lifecycle
         internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
             _lifecycleOwner = lifecycleOwner;
+            StateLastKnown = StateCurrent!;
             _lifecycleOwner.Lifecycle.AddObserver(this);
         }
 
-        public State CurrentState => _lifecycleOwner?.Lifecycle.CurrentState ?? State.Destroyed;
+        /// <summary>
+        /// Gets the Lifecycle <see cref="LifecycleAndroid.CurrentState"/> current state.
+        /// Return null when this observer is removed from the <see cref="LifecycleAndroid"/> or disposed.
+        /// </summary>
+        public State? StateCurrent => _lifecycleOwner?.Lifecycle.CurrentState;
+        /// <summary>
+        /// Gets the last <see cref="StateCurrent"/> captured.
+        /// </summary>
+        public State StateLastKnown { get; private set; }
 
         [LifecycleAndroid.Event.OnAny, Export]
         public void OnLifecycleEventOnAny()
         {
+            StateLastKnown = StateCurrent!;
             OnAny?.Invoke(this, EventArgs.Empty);
         }
 
