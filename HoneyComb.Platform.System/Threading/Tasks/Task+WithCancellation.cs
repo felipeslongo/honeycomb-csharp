@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 namespace HoneyComb.Platform.System.Threading.Tasks
 {
     /// <summary>
-    ///     So, can you cancel non-cancelable operations? No.
-    ///     Can you cancel waits on non-cancelable operations?  Sure… just be very careful when you do.
+    ///     Static class for WithCancellation extension methods
     /// </summary>
     /// <remarks>
     ///     True authors of this feature:
@@ -16,7 +15,29 @@ namespace HoneyComb.Platform.System.Threading.Tasks
     /// </remarks>
     public static class TaskWithCancellation
     {
+        /// <summary>
+        ///     So, can you cancel non-cancelable operations? No.
+        ///     Can you cancel waits on non-cancelable operations?  Sure… just be very careful when you do.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="cancellationToken"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
+        {
+            await WithCancellation(task as Task, cancellationToken);
+            return await task; // Very important in order to propagate exceptions
+        }
+
+        /// <summary>
+        ///     So, can you cancel non-cancelable operations? No.
+        ///     Can you cancel waits on non-cancelable operations?  Sure… just be very careful when you do.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="OperationCanceledException"></exception>
+        public static async Task WithCancellation(this Task task, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();
             await using (cancellationToken.Register(SetResultOfTaskSourceObjectInCancellationTokenCallback, tcs))
@@ -25,12 +46,12 @@ namespace HoneyComb.Platform.System.Threading.Tasks
                     throw new OperationCanceledException(cancellationToken);
             }
 
-            return await task;
+            await task; // Very important in order to propagate exceptions
         }
 
         private static void SetResultOfTaskSourceObjectInCancellationTokenCallback(object? obj)
         {
-            var tcs = (TaskCompletionSource<bool>) obj;
+            var tcs = (TaskCompletionSource<bool>) obj!;
             tcs.TrySetResult(true);
         }
     }
