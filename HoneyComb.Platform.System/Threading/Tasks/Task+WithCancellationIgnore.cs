@@ -23,41 +23,15 @@ namespace HoneyComb.Platform.System.Threading.Tasks
             }
         }
 
-        public static async Task<T> WithCancellationIgnore<T>(this Task<T> task, Func<T> onCancellationValueFactory)
-        {
-            try
-            {
-                return await task;
-            }
-            catch (OperationCanceledException)
-            {
-                /*Explicitly Ignoring Cancellation...#*/
-                return onCancellationValueFactory();
-            }
-        }
-
-        public static async Task<T> WithCancellationIgnore<T>(this Task<T> task,
-            Func<Task<T>> onCancellationValueFactoryAsync)
-        {
-            try
-            {
-                return await task;
-            }
-            catch (OperationCanceledException)
-            {
-                /*Explicitly Ignoring Cancellation...#*/
-                return await onCancellationValueFactoryAsync();
-            }
-        }
-
         /// <summary>
         ///     Explicitly ignores <see cref="OperationCanceledException" />
         ///     thrown by <see cref="CancellationToken" />.
         /// </summary>
         /// <param name="task"></param>
+        /// <param name="defaultValue"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static async Task<T?> WithCancellationIgnoreNullClass<T>(this Task<T> task) where T : class
+        public static async Task<T> WithCancellationIgnore<T>(this Task<T> task, T defaultValue = default)
         {
             try
             {
@@ -66,27 +40,7 @@ namespace HoneyComb.Platform.System.Threading.Tasks
             catch (OperationCanceledException)
             {
                 /*Explicitly Ignoring Cancellation...#*/
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///     Explicitly ignores <see cref="OperationCanceledException" />
-        ///     thrown by <see cref="CancellationToken" />.
-        /// </summary>
-        /// <param name="task"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static async Task<T?> WithCancellationIgnoreNullStruct<T>(this Task<T> task) where T : struct
-        {
-            try
-            {
-                return await task;
-            }
-            catch (OperationCanceledException)
-            {
-                /*Explicitly Ignoring Cancellation...#*/
-                return null;
+                return defaultValue;
             }
         }
     }

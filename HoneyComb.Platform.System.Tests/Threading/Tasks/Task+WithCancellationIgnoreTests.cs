@@ -45,7 +45,7 @@ namespace HoneyComb.Platform.System.Tests.Threading.Tasks
 
         [Fact]
         [Trait(nameof(Category), Category.Unit)]
-        public async Task GivenAnUnfinishedTaskThatReturnAnValue_WhenTaskIsCancelled_ShouldReturnFactoryAsyncValue()
+        public async Task GivenAnUnfinishedTaskThatReturnAnValue_WhenTaskIsCancelled_ShouldReturnDefaultValue()
         {
             async Task<int> UnfinishedValueTask()
             {
@@ -54,55 +54,9 @@ namespace HoneyComb.Platform.System.Tests.Threading.Tasks
             }
 
 
-            var actual = await UnfinishedValueTask().WithCancellationIgnore(() => Task.FromResult(int.MaxValue));
+            var actual = await UnfinishedValueTask().WithCancellationIgnore(int.MaxValue);
 
             Assert.Equal(int.MaxValue, actual);
-        }
-
-        [Fact]
-        [Trait(nameof(Category), Category.Unit)]
-        public async Task GivenAnUnfinishedTaskThatReturnAnValue_WhenTaskIsCancelled_ShouldReturnFactoryValue()
-        {
-            async Task<int> UnfinishedValueTask()
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(10));
-                throw new TaskCanceledException();
-            }
-
-
-            var actual = await UnfinishedValueTask().WithCancellationIgnore(() => int.MaxValue);
-
-            Assert.Equal(int.MaxValue, actual);
-        }
-
-        [Fact]
-        [Trait(nameof(Category), Category.Unit)]
-        public async Task GivenAnUnfinishedTaskThatReturnAnValueObject_WhenTaskIsCancelled_ShouldReturnNull()
-        {
-            async Task<object> UnfinishedValueTask()
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(10));
-                throw new TaskCanceledException();
-            }
-
-            var actual = await UnfinishedValueTask().WithCancellationIgnoreNullClass();
-
-            Assert.Null(actual);
-        }
-
-        [Fact]
-        [Trait(nameof(Category), Category.Unit)]
-        public async Task GivenAnUnfinishedTaskThatReturnAnValueStruct_WhenTaskIsCancelled_ShouldReturnNull()
-        {
-            async Task<int> UnfinishedValueTask()
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(10));
-                throw new TaskCanceledException();
-            }
-
-            var actual = await UnfinishedValueTask().WithCancellationIgnoreNullStruct();
-
-            Assert.Null(actual);
         }
     }
 }
