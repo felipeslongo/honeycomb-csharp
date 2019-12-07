@@ -3,29 +3,60 @@ using System.Collections.Generic;
 
 namespace HoneyComb.Platform.Android.Lifecycle
 {
-    public sealed class LifecycleEventHandler<T>
+    /// <summary>
+    ///     Android Lifecycle-Aware implementation of an C# EventHandler wrapper.
+    ///     Notify its subscribers only on <see cref="IsActive" /> state.
+    ///     When inactive it captures and holds the last received pending event
+    ///     and notify the subscribers when the Lifecycle get back to active state.
+    /// </summary>
+    /// <typeparam name="TEventArgs"></typeparam>
+    public sealed class LifecycleEventHandler<TEventArgs> : IDisposable
     {
-        private readonly List<EventHandler<T>> _handlers = new List<EventHandler<T>>();
-        private readonly LifecycleObservable _lifecycleObservable;
-        private (object sender, T value)? _pendingEvent;
+        private readonly List<EventHandler<TEventArgs>> _handlers = new List<EventHandler<TEventArgs>>();
+        private LifecycleObservable _lifecycleObservable;
+        private (object sender, TEventArgs eventArgs)? _pendingEvent;
 
         public LifecycleEventHandler(LifecycleObservable lifecycleObservable)
         {
             _lifecycleObservable = lifecycleObservable;
-            _lifecycleObservable.OnResume += (sender, args) => InvokeHandlersIfHasPendingEvent();
-            _lifecycleObservable.OnStart += (sender, args) => InvokeHandlersIfHasPendingEvent();
+            SubscribeToLifecycleEvents();
         }
 
         public bool IsActive =>
             _lifecycleObservable.StateLastKnown.IsAtLeast(global::Android.Arch.Lifecycle.Lifecycle.State.Started);
 
-        public event EventHandler<T> Event
+        public void Dispose()
+        {
+            UnsubscribeToLifecycleEvents();
+            _pendingEvent = null;
+            ClearSubscribers();
+            _lifecycleObservable = null;
+        }
+
+        private void SubscribeToLifecycleEvents()
+        {
+            _lifecycleObservable.OnResume += LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable.OnStart += LifecycleObservableOnOnResumeOrOnStart;
+        }
+
+        private void UnsubscribeToLifecycleEvents()
+        {
+            _lifecycleObservable.OnResume -= LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable.OnStart -= LifecycleObservableOnOnResumeOrOnStart;
+        }
+
+        private void LifecycleObservableOnOnResumeOrOnStart(object sender, EventArgs e)
+        {
+            InvokeHandlersIfHasPendingEvent();
+        }
+
+        public event EventHandler<TEventArgs> Event
         {
             add => _handlers.Add(value);
             remove => _handlers.Remove(value);
         }
 
-        public void Invoke(object sender, T value)
+        public void Invoke(object sender, TEventArgs value)
         {
             if (IsActive == false)
             {
@@ -33,10 +64,10 @@ namespace HoneyComb.Platform.Android.Lifecycle
                 return;
             }
 
-            Invokehandlers(sender, value);
+            InvokeHandlers(sender, value);
         }
 
-        private void Invokehandlers(object sender, T value)
+        private void InvokeHandlers(object sender, TEventArgs value)
         {
             _handlers.ForEach(handler => handler.Invoke(sender, value));
         }
@@ -46,7 +77,13 @@ namespace HoneyComb.Platform.Android.Lifecycle
             if (_pendingEvent is null)
                 return;
 
-            Invokehandlers(_pendingEvent.Value.sender, _pendingEvent.Value.value);
+            InvokeHandlers(_pendingEvent.Value.sender, _pendingEvent.Value.eventArgs);
+            _pendingEvent = null;
+        }
+
+        public void ClearSubscribers()
+        {
+            _handlers.Clear();
         }
     }
 }
