@@ -23,9 +23,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
-            _lifecycleOwner = lifecycleOwner;
-            StateLastKnown = StateCurrent!;
-            _lifecycleOwner.Lifecycle.AddObserver(this);
+            SetLifecycleOwner(lifecycleOwner);
         }
 
         /// <summary>
@@ -47,11 +45,19 @@ namespace HoneyComb.Platform.Android.Lifecycle
         public event EventHandler? OnStart;
         public event EventHandler? OnStop;
 
+        public void SetLifecycleOwner(ILifecycleOwner lifecycleOwner)
+        {
+            UnsubscribeFromLifecycleOwner();
+            _lifecycleOwner = lifecycleOwner;
+            RefreshStateLastKnown();
+            _lifecycleOwner.Lifecycle.AddObserver(this);
+        }
+
         [Event.OnAnyAttribute]
         [Export]
         public void OnLifecycleEventOnAny()
         {
-            StateLastKnown = StateCurrent!;
+            RefreshStateLastKnown();
             OnAny?.Invoke(this, EventArgs.Empty);
         }
 
@@ -96,6 +102,11 @@ namespace HoneyComb.Platform.Android.Lifecycle
         public void OnLifecycleEventOnStop()
         {
             OnStop?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RefreshStateLastKnown()
+        {
+            StateLastKnown = StateCurrent!;
         }
 
         private void UnsubscribeFromLifecycleOwner()
