@@ -19,7 +19,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </remarks>
     public class LifecycleObservable : JavaObject, ILifecycleObserver
     {
-        private readonly ILifecycleOwner? _lifecycleOwner;
+        private ILifecycleOwner? _lifecycleOwner;
 
         internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
@@ -67,6 +67,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         public void OnLifecycleEventOnDestroy()
         {
             OnDestroy?.Invoke(this, EventArgs.Empty);
+            UnsubscribeFromLifecycleOwner();
         }
 
         [Event.OnPauseAttribute]
@@ -95,6 +96,18 @@ namespace HoneyComb.Platform.Android.Lifecycle
         public void OnLifecycleEventOnStop()
         {
             OnStop?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void UnsubscribeFromLifecycleOwner()
+        {
+            _lifecycleOwner?.Lifecycle.RemoveObserver(this);
+            _lifecycleOwner = null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) UnsubscribeFromLifecycleOwner();
+            base.Dispose(disposing);
         }
     }
 }
