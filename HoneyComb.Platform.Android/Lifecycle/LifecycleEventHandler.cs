@@ -13,6 +13,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     public sealed class LifecycleEventHandler<TEventArgs> : IDisposable
     {
         private readonly List<EventHandler<TEventArgs>> _handlers = new List<EventHandler<TEventArgs>>();
+        private bool _disposed;
         private LifecycleObservable _lifecycleObservable;
         private (object sender, TEventArgs eventArgs)? _pendingEvent;
 
@@ -27,10 +28,14 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         public void Dispose()
         {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().FullName);
+
+            ClearSubscribers();
             UnsubscribeToLifecycleEvents();
             _pendingEvent = null;
-            ClearSubscribers();
             _lifecycleObservable = null;
+            _disposed = true;
         }
 
         private void SubscribeToLifecycleEvents()
