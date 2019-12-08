@@ -1,4 +1,4 @@
-namespace HoneyComb.LiveDataNet
+namespace HoneyComb.Platform.System.Lifecycle
 {
     /// <summary>
     /// Callback interface for listening to <see cref="ILifecycleOwner"/> state changes.

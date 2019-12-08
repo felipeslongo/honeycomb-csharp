@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace HoneyComb.LiveDataNet
+namespace HoneyComb.Platform.System.Lifecycle
 {
     internal static class LifecycleState_ChangeState
     {

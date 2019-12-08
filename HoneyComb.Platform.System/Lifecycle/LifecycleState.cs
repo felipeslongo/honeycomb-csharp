@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HoneyComb.LiveDataNet
+namespace HoneyComb.Platform.System.Lifecycle
 {
     /// <summary>
     /// Lifecycle states. You can consider the states as 

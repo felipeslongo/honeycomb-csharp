@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 
-namespace HoneyComb.LiveDataNet
+namespace HoneyComb.Platform.System.Lifecycle
 {
     /// <summary>
     /// Defines an object that has an generic Lifecycle.

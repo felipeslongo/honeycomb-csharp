@@ -1,3 +1,4 @@
+using HoneyComb.Platform.System.Lifecycle;
 using System;
 
 namespace HoneyComb.LiveDataNet
