@@ -4,9 +4,9 @@ using System;
 namespace HoneyComb.Platform.Android.Lifecycle
 {
     /// <summary>
-    /// Android Lifecycle bound implementation of <see cref="LiveDataNet.Lifecycle"/>.
+    /// Android Lifecycle bound implementation of <see cref="HoneyComb.Platform.System.Lifecycle.Lifecycle"/>
     /// </summary>
-    public sealed class LifecycleAndroidHoneyComb : Platform.System.Lifecycle.Lifecycle
+    internal sealed class LifecycleAndroidHoneyComb : Platform.System.Lifecycle.Lifecycle
     {
         private LifecycleDisposable _lifecycleDisposable;
 

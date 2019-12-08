@@ -1,4 +1,5 @@
 ﻿using Android.Arch.Lifecycle;
+using HoneyCombLifecycleOwner = HoneyComb.Platform.System.Lifecycle.ILifecycleOwner;
 
 namespace HoneyComb.Platform.Android.Lifecycle
 {
@@ -16,5 +17,8 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         public static LifecycleDisposable GetDisposable(LifecycleObservable lifecycleObservable) =>
             new LifecycleDisposable(lifecycleObservable);
+
+        public static HoneyCombLifecycleOwner GetHoneyCombLifecycleOwner(LifecycleObservable lifecycleObservable) =>
+            new LifecycleOwnerHoneyComb(lifecycleObservable);
     }
 }
