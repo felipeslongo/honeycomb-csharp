@@ -13,7 +13,6 @@ namespace HoneyComb.Platform.System.Lifecycle
     /// </remarks>
     public abstract class Lifecycle : IDisposable
     {
-        private LifecycleState state = LifecycleState.Initialized;
         private readonly List<ILifecycleObserver> observers = new List<ILifecycleObserver>();
         private ILifecycleOwner? owner;
 
