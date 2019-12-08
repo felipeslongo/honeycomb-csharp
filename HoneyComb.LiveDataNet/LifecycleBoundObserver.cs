@@ -39,7 +39,7 @@ namespace HoneyComb.LiveDataNet
             _eventHandler!.Invoke(sender, value);
         }
 
-        public void OnActive()
+        public void OnActive(ILifecycleOwner _)
         {
             if (IsActive == false)
                 InvokeHandlerIfHasPendingEvent();
@@ -47,9 +47,9 @@ namespace HoneyComb.LiveDataNet
             IsActive = true;
         }
 
-        public void OnDisposed() => Dispose();
+        public void OnDisposed(ILifecycleOwner _) => Dispose();
 
-        public void OnInactive() => IsActive = false;
+        public void OnInactive(ILifecycleOwner _) => IsActive = false;
 
         private void InvokeHandlerIfHasPendingEvent()
         {

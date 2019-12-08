@@ -120,7 +120,9 @@ namespace HoneyComb.LiveDataNet
         public IDisposable BindEventHandler(ILifecycleOwner lifecycleOwner, EventHandler<EventArgs> eventHandler)
         {
             var wrapper = new LifecycleBoundObserver(eventHandler);
-            var lifecycleSubscription = lifecycleOwner.Subscribe(wrapper);
+#pragma warning disable IDE0067 // Dispose objects before losing scope
+            var lifecycleSubscription = lifecycleOwner.Lifecycle.Subscribe(wrapper);
+#pragma warning restore IDE0067 // Dispose objects before losing scope
             PropertyChanged += wrapper.Invoke;
             wrapper.Subscription = Disposable.Create(() =>
             {
