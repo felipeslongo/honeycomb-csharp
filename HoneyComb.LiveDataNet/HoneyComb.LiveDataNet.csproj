@@ -23,4 +23,8 @@ But is not lifecycle-aware (since it is not Android).</Description>
     <PackageReference Include="System.Reactive" Version="4.1.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Platform.System.csproj" />
+  </ItemGroup>
+
 </Project>
