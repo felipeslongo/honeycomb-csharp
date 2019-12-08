@@ -22,6 +22,8 @@ namespace HoneyComb.Platform.System.Lifecycle
             this.owner = owner;
         }
 
+        public LifecycleState CurrentState { get; private set; } = LifecycleState.Initialized;
+
         public virtual void Dispose()
         {
             owner = null;
@@ -32,35 +34,43 @@ namespace HoneyComb.Platform.System.Lifecycle
         {
             observers.Add(lifecycleObserver);
             return Disposable.Create(() => observers.Remove(lifecycleObserver));
-        }
+        }       
 
-        protected void ClearObservers() => observers.Clear();
-
-        protected void NotifyObserversOfActive()
+        protected void NotifyStateChange(LifecycleState state)
         {
-            if (state == LifecycleState.Active)
+            if (CurrentState == state)
                 return;
 
-            state = state.ChangeState(LifecycleState.Active);
-            observers.ForEach(observer => observer.OnActive(owner!));
+            CurrentState = CurrentState.ChangeState(state);
+            NotifyObserversOfCurrentState();
         }
 
-        protected void NotifyObserversOfDisposed()
+        private void ClearObservers() => observers.Clear();
+
+        private void NotifyObserversOfCurrentState()
         {
-            if (state == LifecycleState.Disposed)
-                return;
-
-            state = state.ChangeState(LifecycleState.Disposed);
-            observers.ForEach(observer => observer.OnDisposed(owner!));
+            switch (CurrentState)
+            {
+                case LifecycleState.Initialized:
+                    break;
+                case LifecycleState.Active:
+                    NotifyObserversOfActive();
+                    break;
+                case LifecycleState.Inactive:
+                    NotifyObserversOfInactive();
+                    break;
+                case LifecycleState.Disposed:
+                    NotifyObserversOfDisposed();
+                    break;
+                default:
+                    break;
+            }
         }
 
-        protected void NotifyObserversOfInactive()
-        {
-            if (state == LifecycleState.Inactive)
-                return;
+        private void NotifyObserversOfActive() => observers.ForEach(observer => observer.OnActive(owner!));
 
-            state = state.ChangeState(LifecycleState.Inactive);
-            observers.ForEach(observer => observer.OnInactive(owner!));
-        }
+        private void NotifyObserversOfDisposed() => observers.ForEach(observer => observer.OnDisposed(owner!));
+
+        private void NotifyObserversOfInactive() => observers.ForEach(observer => observer.OnInactive(owner!));
     }
 }

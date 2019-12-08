@@ -30,20 +30,14 @@ namespace HoneyComb.Platform.Android.Lifecycle
                 lifecycleObservable!.OnPause -= LifecycleObservable_OnPauseOrOnStop;
                 lifecycleObservable!.OnStop -= LifecycleObservable_OnPauseOrOnStop;
 
-                NotifyObserversOfDisposed();
+                NotifyStateChange(LifecycleState.Disposed);
                 Dispose();
             });
         }
 
-        private void LifecycleObservable_OnStartOrOnResume(object sender, EventArgs e)
-        {
-            NotifyObserversOfActive();
-        }
+        private void LifecycleObservable_OnStartOrOnResume(object sender, EventArgs e) => NotifyStateChange(LifecycleState.Active);
 
-        private void LifecycleObservable_OnPauseOrOnStop(object sender, EventArgs e)
-        {
-            NotifyObserversOfInactive();
-        }
+        private void LifecycleObservable_OnPauseOrOnStop(object sender, EventArgs e) => NotifyStateChange(LifecycleState.Inactive);
 
         public override void Dispose()
         {
