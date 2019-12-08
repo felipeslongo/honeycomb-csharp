@@ -6,11 +6,11 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// <summary>
     /// Android Lifecycle bound implementation of <see cref="LiveDataNet.Lifecycle"/>.
     /// </summary>
-    public sealed class LifecycleAndroid : Platform.System.Lifecycle.Lifecycle
+    public sealed class LifecycleAndroidHoneyComb : Platform.System.Lifecycle.Lifecycle
     {
         private LifecycleDisposable _lifecycleDisposable;
 
-        public LifecycleAndroid(ILifecycleOwner owner, LifecycleObservable lifecycleObservable) : base(owner)
+        public LifecycleAndroidHoneyComb(ILifecycleOwner owner, LifecycleObservable lifecycleObservable) : base(owner)
         {
             lifecycleObservable.OnStart += LifecycleObservable_OnStartOrOnResume;
             lifecycleObservable.OnResume += LifecycleObservable_OnStartOrOnResume;

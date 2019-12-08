@@ -27,8 +27,8 @@ namespace HoneyComb.Platform.Android.Lifecycle
         }
 
         /// <summary>
-        ///     Gets the Lifecycle <see cref="LifecycleAndroid.CurrentState" /> current state.
-        ///     Return null when this observer is removed from the <see cref="LifecycleAndroid" /> or disposed.
+        ///     Gets the Lifecycle <see cref="global::Android.Arch.Lifecycle.Lifecycle.CurrentState" /> current state.
+        ///     Return null when this observer is removed from the <see cref="global::Android.Arch.Lifecycle.Lifecycle" /> or disposed.
         /// </summary>
         public State? StateCurrent => _lifecycleOwner?.Lifecycle.CurrentState;
 
