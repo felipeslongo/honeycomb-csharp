@@ -12,7 +12,7 @@ namespace HoneyComb.Platform.System.Lifecycle
     /// Credits:
     ///     https://developer.android.com/reference/android/arch/lifecycle/Lifecycle.State
     /// </remarks>
-    internal enum LifecycleState
+    public enum LifecycleState
     {
         /// <summary>
         /// Initialized state for a LifecycleOwner.

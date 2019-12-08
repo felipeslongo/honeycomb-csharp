@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HoneyComb.Platform.System.Lifecycle
 {
-    internal static class LifecycleState_ChangeState
+    public static class LifecycleState_ChangeState
     {
         private static LifecycleState[] activeFromStates = new LifecycleState[] { LifecycleState.Initialized, LifecycleState.Inactive };
 
@@ -19,6 +19,9 @@ namespace HoneyComb.Platform.System.Lifecycle
         /// <exception cref="InvalidOperationException">If the transition is not valid.</exception>
         public static LifecycleState ChangeState(this LifecycleState @this, LifecycleState toState)
         {
+            if (@this == toState)
+                return toState;
+
             if (toState == LifecycleState.Initialized)
                 throw CreateCannotChangeStateException(@this, toState);
 
