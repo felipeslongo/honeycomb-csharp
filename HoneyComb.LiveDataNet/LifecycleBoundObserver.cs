@@ -2,42 +2,33 @@ using System;
 
 namespace HoneyComb.LiveDataNet
 {
-    internal sealed class LifecycleBoundObserver<TEventArgs> : ILifecycleObserver
+    /// <summary>
+    /// Wrapper to wich the LiveData delegates the
+    /// responsability of notify its observer
+    /// respecting the lifecycle provided.
+    /// </summary>
+    internal sealed class LifecycleBoundObserver : ILifecycleObserver, IDisposable
     {
-        private EventHandler<TEventArgs>? _eventHandler;
-        private (object sender, TEventArgs eventArgs)? _pendingEvent;
-        private IDisposable? _subscription;
+        private EventHandler<EventArgs>? _eventHandler;
+        private (object sender, EventArgs eventArgs)? _pendingEvent;
 
-        public LifecycleBoundObserver(IDisposable subscription, EventHandler<TEventArgs> eventHandler)
+        public LifecycleBoundObserver(EventHandler<EventArgs> eventHandler)
         {
-            _subscription = subscription;
             _eventHandler = eventHandler;
         }
 
         public bool IsActive { get; private set; }
+        public IDisposable? Subscription { get; set; }
 
-        public void OnActive()
+        public void Dispose()
         {
-            if (IsActive == false)
-                InvokeHandlerIfHasPendingEvent();
-
-            IsActive = true;
-        }
-
-        public void OnInactive()
-        {
-            IsActive = false;
-        }
-
-        public void OnDisposed()
-        {
-            _subscription.Dispose();
-            _subscription = null;
+            Subscription!.Dispose();
+            Subscription = null;
             _pendingEvent = null;
             _eventHandler = null;
         }
 
-        public void Invoke(object sender, TEventArgs value)
+        public void Invoke(object sender, EventArgs value)
         {
             if (IsActive == false)
             {
@@ -47,6 +38,18 @@ namespace HoneyComb.LiveDataNet
 
             _eventHandler!.Invoke(sender, value);
         }
+
+        public void OnActive()
+        {
+            if (IsActive == false)
+                InvokeHandlerIfHasPendingEvent();
+
+            IsActive = true;
+        }
+
+        public void OnDisposed() => Dispose();
+
+        public void OnInactive() => IsActive = false;
 
         private void InvokeHandlerIfHasPendingEvent()
         {

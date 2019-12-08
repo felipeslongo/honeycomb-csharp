@@ -91,11 +91,23 @@ namespace HoneyComb.LiveDataNet
             return BindEventHandler((_, __) => accessor.Set(Value));
         }
 
+        public IDisposable Bind(ILifecycleOwner lifecycleOwner, Expression<Func<T>> propertyLambda)
+        {
+            var accessor = new Accessor<T>(propertyLambda);
+            return BindEventHandler(lifecycleOwner, (_, __) => accessor.Set(Value));
+        }
+
         public IDisposable BindMethod(Action<T> method) =>
             BindEventHandler((_, __) => method(Value));
 
+        public IDisposable BindMethod(ILifecycleOwner lifecycleOwner, Action<T> method) =>
+            BindEventHandler(lifecycleOwner, (_, __) => method(Value));
+
         public IDisposable BindMethod(Action method) =>
             BindEventHandler((_, __) => method());
+
+        public IDisposable BindMethod(ILifecycleOwner lifecycleOwner, Action method) =>
+            BindEventHandler(lifecycleOwner, (_, __) => method());
 
         public IDisposable BindEventHandler(EventHandler<EventArgs> eventHandler)
         {
@@ -103,6 +115,20 @@ namespace HoneyComb.LiveDataNet
             PropertyChanged += eventHandler;
 
             return Disposable.Create(() => PropertyChanged -= eventHandler);
+        }
+
+        public IDisposable BindEventHandler(ILifecycleOwner lifecycleOwner, EventHandler<EventArgs> eventHandler)
+        {
+            var wrapper = new LifecycleBoundObserver(eventHandler);
+            var lifecycleSubscription = lifecycleOwner.Subscribe(wrapper);
+            PropertyChanged += wrapper.Invoke;
+            wrapper.Subscription = Disposable.Create(() =>
+            {
+                PropertyChanged -= wrapper.Invoke;
+                lifecycleSubscription.Dispose();
+            });
+
+            return wrapper;
         }
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
