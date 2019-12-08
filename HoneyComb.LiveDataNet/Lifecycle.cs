@@ -13,6 +13,7 @@ namespace HoneyComb.LiveDataNet
     /// </remarks>
     public abstract class Lifecycle : IDisposable
     {
+        private LifecycleState state = LifecycleState.Initialized;
         private readonly List<ILifecycleObserver> observers = new List<ILifecycleObserver>();
         private ILifecycleOwner? owner;
 
@@ -37,16 +38,28 @@ namespace HoneyComb.LiveDataNet
 
         protected void NotifyObserversOfActive()
         {
+            if (state == LifecycleState.Active)
+                return;
+
+            state = state.ChangeState(LifecycleState.Active);
             observers.ForEach(observer => observer.OnActive(owner!));
         }
 
         protected void NotifyObserversOfDisposed()
         {
+            if (state == LifecycleState.Disposed)
+                return;
+
+            state = state.ChangeState(LifecycleState.Disposed);
             observers.ForEach(observer => observer.OnDisposed(owner!));
         }
 
         protected void NotifyObserversOfInactive()
         {
+            if (state == LifecycleState.Inactive)
+                return;
+
+            state = state.ChangeState(LifecycleState.Inactive);
             observers.ForEach(observer => observer.OnInactive(owner!));
         }
     }
