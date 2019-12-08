@@ -19,7 +19,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </remarks>
     public class LifecycleObservable : JavaObject, ILifecycleObserver
     {
-        private ILifecycleOwner? _lifecycleOwner;
+        private ILifecycleOwner? _lifecycleOwner = null;
 
         internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
@@ -35,7 +35,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         /// <summary>
         ///     Gets the last <see cref="StateCurrent" /> captured.
         /// </summary>
-        public State StateLastKnown { get; private set; }
+        public State StateLastKnown { get; private set; } = State.Initialized;
 
         public event EventHandler? OnAny;
         public event EventHandler? OnCreate;
