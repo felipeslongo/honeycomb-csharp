@@ -22,6 +22,10 @@ namespace HoneyComb.Platform.System.Lifecycle
             this.owner = owner;
         }
 
+        public event EventHandler? OnActive;
+        public event EventHandler? OnInactive;
+        public event EventHandler? OnDisposed;
+
         public LifecycleState CurrentState { get; private set; } = LifecycleState.Initialized;
 
         public virtual void Dispose()
@@ -67,10 +71,22 @@ namespace HoneyComb.Platform.System.Lifecycle
             }
         }
 
-        private void NotifyObserversOfActive() => observers.ForEach(observer => observer.OnActive(owner!));
+        private void NotifyObserversOfActive()
+        {
+            observers.ForEach(observer => observer.OnActive(owner!));
+            OnActive?.Invoke(owner!, EventArgs.Empty);
+        }
 
-        private void NotifyObserversOfDisposed() => observers.ForEach(observer => observer.OnDisposed(owner!));
+        private void NotifyObserversOfDisposed()
+        {
+            observers.ForEach(observer => observer.OnDisposed(owner!));
+            OnDisposed?.Invoke(owner!, EventArgs.Empty);
+        }
 
-        private void NotifyObserversOfInactive() => observers.ForEach(observer => observer.OnInactive(owner!));
+        private void NotifyObserversOfInactive()
+        {
+            observers.ForEach(observer => observer.OnInactive(owner!));
+            OnInactive?.Invoke(owner!, EventArgs.Empty);
+        }
     }
 }
