@@ -49,7 +49,13 @@ namespace HoneyComb.Platform.System.Lifecycle
             NotifyObserversOfCurrentState();
         }
 
-        private void ClearObservers() => observers.Clear();
+        private void ClearObservers()
+        {
+            observers.Clear();
+            OnActive = null;
+            OnInactive = null;
+            OnDisposed = null;
+        }
 
         private void NotifyObserversOfCurrentState()
         {
