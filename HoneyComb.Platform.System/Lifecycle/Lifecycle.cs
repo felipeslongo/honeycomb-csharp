@@ -21,9 +21,9 @@ namespace HoneyComb.Platform.System.Lifecycle
             this.owner = owner;
         }
 
-        public event EventHandler? OnActive;
-        public event EventHandler? OnInactive;
-        public event EventHandler? OnDisposed;
+        public event EventHandler<EventArgs>? OnActive;
+        public event EventHandler<EventArgs>? OnInactive;
+        public event EventHandler<EventArgs>? OnDisposed;
 
         public LifecycleState CurrentState { get; private set; } = LifecycleState.Initialized;
 
