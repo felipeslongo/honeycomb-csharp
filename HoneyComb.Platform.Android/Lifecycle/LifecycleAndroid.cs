@@ -1,12 +1,12 @@
-﻿using HoneyComb.Platform.Android.Lifecycle;
+﻿using HoneyComb.Platform.System.Lifecycle;
 using System;
 
-namespace HoneyComb.LiveDataNet.Platform.Android.Lifecycle
+namespace HoneyComb.Platform.Android.Lifecycle
 {
     /// <summary>
     /// Android Lifecycle bound implementation of <see cref="LiveDataNet.Lifecycle"/>.
     /// </summary>
-    public sealed class LifecycleAndroid : LiveDataNet.Lifecycle
+    public sealed class LifecycleAndroid : Platform.System.Lifecycle.Lifecycle
     {
         private LifecycleDisposable _lifecycleDisposable;
 
@@ -35,19 +35,19 @@ namespace HoneyComb.LiveDataNet.Platform.Android.Lifecycle
             });
         }
 
-        private void LifecycleObservable_OnStartOrOnResume(object sender, System.EventArgs e)
+        private void LifecycleObservable_OnStartOrOnResume(object sender, EventArgs e)
         {
             NotifyObserversOfActive();
         }
 
-        private void LifecycleObservable_OnPauseOrOnStop(object sender, System.EventArgs e)
+        private void LifecycleObservable_OnPauseOrOnStop(object sender, EventArgs e)
         {
             NotifyObserversOfInactive();
         }
 
         public override void Dispose()
         {
-            base.Dispose();            
+            base.Dispose();
         }
     }
 }
