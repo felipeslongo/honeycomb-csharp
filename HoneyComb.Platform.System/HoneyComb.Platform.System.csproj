@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup Label="Best Practices Configuration">
         <LangVersion>8.0</LangVersion>
@@ -20,7 +20,7 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
     </PropertyGroup>
     
     <ItemGroup>
