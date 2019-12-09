@@ -24,7 +24,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         }
 
         public bool IsActive =>
-            _lifecycleObservable.StateLastKnown.IsAtLeast(global::Android.Arch.Lifecycle.Lifecycle.State.Started);
+            _lifecycleObservable?.StateLastKnown.IsAtLeast(global::Android.Arch.Lifecycle.Lifecycle.State.Started) ?? false;
 
         public void Dispose()
         {
