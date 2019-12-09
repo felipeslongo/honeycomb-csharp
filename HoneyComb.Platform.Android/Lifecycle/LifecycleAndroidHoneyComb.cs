@@ -1,5 +1,6 @@
 ﻿using HoneyComb.Platform.System.Lifecycle;
 using System;
+using AndroidState = global::Android.Arch.Lifecycle.Lifecycle.State;
 
 namespace HoneyComb.Platform.Android.Lifecycle
 {
@@ -12,6 +13,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         public LifecycleAndroidHoneyComb(ILifecycleOwner owner, LifecycleObservable lifecycleObservable) : base(owner)
         {
+            SynchronizeUpToCurrentState(lifecycleObservable.StateCurrent ?? lifecycleObservable.StateLastKnown);
             lifecycleObservable.OnStart += LifecycleObservable_OnStartOrOnResume;
             lifecycleObservable.OnResume += LifecycleObservable_OnStartOrOnResume;
 
@@ -38,5 +40,33 @@ namespace HoneyComb.Platform.Android.Lifecycle
         private void LifecycleObservable_OnStartOrOnResume(object sender, EventArgs e) => NotifyStateChange(LifecycleState.Active);
 
         private void LifecycleObservable_OnPauseOrOnStop(object sender, EventArgs e) => NotifyStateChange(LifecycleState.Inactive);
+
+        private void SynchronizeUpToCurrentState(AndroidState state)
+        {
+            if (state == AndroidState.Initialized)
+                return;
+
+            if (state == AndroidState.Created)
+                return;
+
+            if (state == AndroidState.Started)
+            {
+                NotifyStateChange(LifecycleState.Active);
+                return;
+            }
+
+            if (state == AndroidState.Resumed)
+            {
+                NotifyStateChange(LifecycleState.Active);
+                return;
+            }
+
+            if (state == AndroidState.Destroyed)
+            {
+                NotifyStateChange(LifecycleState.Inactive);
+                NotifyStateChange(LifecycleState.Disposed);
+                return;
+            }
+        }
     }
 }
