@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using HoneyComb.Platform.SystemH.Lifecycle;
+using HoneyComb.Core.Lifecycle;
 
 namespace HoneyComb.Platform.System.Tests.Lifecycle
 {

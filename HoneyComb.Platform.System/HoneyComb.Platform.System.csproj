@@ -21,7 +21,7 @@
     
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <RootNamespace>HoneyComb.Platform.SystemH</RootNamespace>
+        <RootNamespace>HoneyComb.Core</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>

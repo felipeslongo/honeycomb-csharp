@@ -1,13 +1,13 @@
-﻿using HoneyComb.Platform.SystemH.Lifecycle;
+﻿using HoneyComb.Core.Lifecycle;
 using System;
 using AndroidState = global::Android.Arch.Lifecycle.Lifecycle.State;
 
 namespace HoneyComb.Platform.Android.Lifecycle
 {
     /// <summary>
-    /// Android Lifecycle bound implementation of <see cref="SystemH.Lifecycle.Lifecycle"/>
+    /// Android Lifecycle bound implementation of <see cref="Core.Lifecycle.Lifecycle"/>
     /// </summary>
-    internal sealed class LifecycleAndroidHoneyComb : SystemH.Lifecycle.Lifecycle
+    internal sealed class LifecycleAndroidHoneyComb : Core.Lifecycle.Lifecycle
     {
         private LifecycleDisposable _lifecycleDisposable;
 

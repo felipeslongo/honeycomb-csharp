@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HoneyComb.Platform.SystemH.Threading.Tasks
+namespace HoneyComb.Core.Threading.Tasks
 {
     /// <summary>
     ///     Static class for the extension method TimeoutAfter in Task.
