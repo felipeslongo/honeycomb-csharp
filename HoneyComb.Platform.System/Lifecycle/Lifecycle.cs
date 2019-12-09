@@ -25,6 +25,9 @@ namespace HoneyComb.Platform.System.Lifecycle
         public event EventHandler<EventArgs>? OnInactive;
         public event EventHandler<EventArgs>? OnDisposed;
 
+        /// <summary>
+        /// Returns the current state of the Lifecycle.
+        /// </summary>
         public LifecycleState CurrentState { get; private set; } = LifecycleState.Initialized;
 
         public virtual void Dispose()
@@ -33,11 +36,23 @@ namespace HoneyComb.Platform.System.Lifecycle
             ClearObservers();
         }
 
+        /// <summary>
+        /// Adds a LifecycleObserver that will be notified when the LifecycleOwner changes state.
+        /// The given observer will be brought to the current state of the LifecycleOwner. 
+        /// For example, if the LifecycleOwner is in Disposed state, the given observer will receive OnInactive, OnDisposed events.
+        /// </summary>
+        /// <param name="lifecycleObserver"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Credits:
+        ///     https://developer.android.com/reference/android/arch/lifecycle/Lifecycle.html#addObserver(android.arch.lifecycle.LifecycleObserver)
+        /// </remarks>
         public IDisposable Subscribe(ILifecycleObserver lifecycleObserver)
         {
-            observers.Add(lifecycleObserver);
+            SynchronizeUpToCurrentState(lifecycleObserver);
+            observers.Add(lifecycleObserver);           
             return Disposable.Create(() => observers.Remove(lifecycleObserver));
-        }       
+        }
 
         protected void NotifyStateChange(LifecycleState state)
         {
@@ -92,6 +107,27 @@ namespace HoneyComb.Platform.System.Lifecycle
         {
             observers.ForEach(observer => observer.OnInactive(owner!));
             OnInactive?.Invoke(owner!, EventArgs.Empty);
+        }
+
+        private void SynchronizeUpToCurrentState(ILifecycleObserver lifecycleObserver)
+        {
+            switch (CurrentState)
+            {
+                case LifecycleState.Initialized:
+                    break;
+                case LifecycleState.Active:
+                    lifecycleObserver.OnActive(owner!);
+                    break;
+                case LifecycleState.Inactive:
+                    lifecycleObserver.OnInactive(owner!);
+                    break;
+                case LifecycleState.Disposed:
+                    lifecycleObserver.OnInactive(owner!);
+                    lifecycleObserver.OnDisposed(owner!);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
