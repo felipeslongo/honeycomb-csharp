@@ -23,7 +23,7 @@ namespace HoneyComb.LiveDataNet
 
         public void Dispose()
         {
-            Subscription!.Dispose();
+            Subscription?.Dispose();
             Subscription = null;
             _pendingEvent = null;
             _eventHandler = null;
