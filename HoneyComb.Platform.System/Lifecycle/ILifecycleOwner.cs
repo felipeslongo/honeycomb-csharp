@@ -1,4 +1,4 @@
-namespace HoneyComb.Platform.System.Lifecycle
+namespace HoneyComb.Platform.SystemH.Lifecycle
 {
     /// <summary>
     /// A class that has an generic lifecycle.

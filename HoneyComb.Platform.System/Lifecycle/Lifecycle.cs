@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 
-namespace HoneyComb.Platform.System.Lifecycle
+namespace HoneyComb.Platform.SystemH.Lifecycle
 {
     /// <summary>
     /// Defines an object that has an generic Lifecycle.
@@ -50,7 +50,7 @@ namespace HoneyComb.Platform.System.Lifecycle
         public IDisposable Subscribe(ILifecycleObserver lifecycleObserver)
         {
             SynchronizeUpToCurrentState(lifecycleObserver);
-            observers.Add(lifecycleObserver);           
+            observers.Add(lifecycleObserver);
             return Disposable.Create(() => observers.Remove(lifecycleObserver));
         }
 

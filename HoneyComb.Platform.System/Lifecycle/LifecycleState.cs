@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HoneyComb.Platform.System.Lifecycle
+namespace HoneyComb.Platform.SystemH.Lifecycle
 {
     /// <summary>
     /// Lifecycle states. You can consider the states as 

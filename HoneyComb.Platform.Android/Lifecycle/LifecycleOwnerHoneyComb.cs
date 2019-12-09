@@ -1,13 +1,13 @@
-﻿using HoneyComb.Platform.System.Lifecycle;
+﻿using HoneyComb.Platform.SystemH.Lifecycle;
 
 namespace HoneyComb.Platform.Android.Lifecycle
 {
     /// <summary>
-    /// Android Lifecycle bound implementation of <see cref="HoneyComb.Platform.System.Lifecycle.ILifecycleOwner"/>
+    /// Android Lifecycle bound implementation of <see cref="SystemH.Lifecycle.ILifecycleOwner"/>
     /// </summary>
     internal sealed class LifecycleOwnerHoneyComb : ILifecycleOwner
     {
-        public System.Lifecycle.Lifecycle Lifecycle { get; private set; }
+        public SystemH.Lifecycle.Lifecycle Lifecycle { get; private set; }
 
         public LifecycleOwnerHoneyComb(LifecycleObservable lifecycleObservable)
         {

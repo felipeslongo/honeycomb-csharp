@@ -1,4 +1,4 @@
-namespace HoneyComb.Platform.System.Lifecycle
+namespace HoneyComb.Platform.SystemH.Lifecycle
 {
     /// <summary>
     /// Callback interface for listening to <see cref="ILifecycleOwner"/> state changes.

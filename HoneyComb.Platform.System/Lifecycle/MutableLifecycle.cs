@@ -1,4 +1,4 @@
-﻿namespace HoneyComb.Platform.System.Lifecycle
+﻿namespace HoneyComb.Platform.SystemH.Lifecycle
 {
     /// <summary>
     /// Lifecycle that exposes its State as mutable.
