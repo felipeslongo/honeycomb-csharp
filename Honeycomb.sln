@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Platform.Android"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Core", "HoneyComb.Platform.System\HoneyComb.Core.csproj", "{5EF1B911-2E41-4015-8DFC-2416E8BC290A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Platform.System.Tests", "HoneyComb.Platform.System.Tests\HoneyComb.Platform.System.Tests.csproj", "{C8B7594D-11DC-418C-8B2B-81344B02A68D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Core.Tests", "HoneyComb.Platform.System.Tests\HoneyComb.Core.Tests.csproj", "{C8B7594D-11DC-418C-8B2B-81344B02A68D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
