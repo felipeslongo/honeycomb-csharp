@@ -24,7 +24,7 @@ But is not lifecycle-aware (since it is not Android).</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Platform.System.csproj" />
+    <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj" />
   </ItemGroup>
 
 </Project>

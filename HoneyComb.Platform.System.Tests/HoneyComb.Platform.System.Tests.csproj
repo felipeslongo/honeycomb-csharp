@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup Label="Best Practices Configuration">
         <LangVersion>8.0</LangVersion>
@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Platform.System.csproj" />
+        <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj" />
         <ProjectReference Include="..\HoneyComb.TestChamber\HoneyComb.TestChamber.csproj" />
     </ItemGroup>
 
