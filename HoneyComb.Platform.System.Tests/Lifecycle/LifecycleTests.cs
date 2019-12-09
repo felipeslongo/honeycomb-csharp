@@ -3,7 +3,7 @@ using HoneyComb.TestChamber;
 using System;
 using Xunit;
 
-namespace HoneyComb.Platform.System.Tests.Lifecycle
+namespace HoneyComb.Core.Tests.Lifecycle
 {
     public class LifecycleTests : ILifecycleOwner
     {
@@ -14,7 +14,7 @@ namespace HoneyComb.Platform.System.Tests.Lifecycle
             lifecycle = new MutableLifecycle(this);
         }
 
-        public Core.Lifecycle.Lifecycle Lifecycle => lifecycle;      
+        public Core.Lifecycle.Lifecycle Lifecycle => lifecycle;
 
         public class NotifyStateChangeTests : LifecycleTests
         {

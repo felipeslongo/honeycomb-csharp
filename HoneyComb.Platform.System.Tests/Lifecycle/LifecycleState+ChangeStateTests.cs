@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Xunit;
 using HoneyComb.Core.Lifecycle;
 
-namespace HoneyComb.Platform.System.Tests.Lifecycle
+namespace HoneyComb.Core.Tests.Lifecycle
 {
     public class LifecycleState_ChangeStateTests
     {
