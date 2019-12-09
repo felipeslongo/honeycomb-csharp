@@ -14,7 +14,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     {
         private readonly List<EventHandler<TEventArgs>> _handlers = new List<EventHandler<TEventArgs>>();
         private bool _disposed;
-        private LifecycleObservable _lifecycleObservable;
+        private LifecycleObservable? _lifecycleObservable;
         private (object sender, TEventArgs eventArgs)? _pendingEvent;
 
         public LifecycleEventHandler(LifecycleObservable lifecycleObservable)
@@ -40,14 +40,14 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         private void SubscribeToLifecycleEvents()
         {
-            _lifecycleObservable.OnResume += LifecycleObservableOnOnResumeOrOnStart;
-            _lifecycleObservable.OnStart += LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable!.OnResume += LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable!.OnStart += LifecycleObservableOnOnResumeOrOnStart;
         }
 
         private void UnsubscribeToLifecycleEvents()
         {
-            _lifecycleObservable.OnResume -= LifecycleObservableOnOnResumeOrOnStart;
-            _lifecycleObservable.OnStart -= LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable!.OnResume -= LifecycleObservableOnOnResumeOrOnStart;
+            _lifecycleObservable!.OnStart -= LifecycleObservableOnOnResumeOrOnStart;
         }
 
         private void LifecycleObservableOnOnResumeOrOnStart(object sender, EventArgs e)
