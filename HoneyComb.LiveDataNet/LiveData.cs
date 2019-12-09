@@ -120,6 +120,10 @@ namespace HoneyComb.LiveDataNet
 
         public IDisposable BindEventHandler(ILifecycleOwner lifecycleOwner, EventHandler<EventArgs> eventHandler)
         {
+            //No point in subscribe an destroyed/disposed lifecycle bound observer
+            if (lifecycleOwner.Lifecycle.CurrentState == LifecycleState.Disposed)
+                return Disposable.Empty;
+
             var wrapper = new LifecycleBoundObserver(eventHandler);
 #pragma warning disable IDE0067 // Dispose objects before losing scope
             var lifecycleSubscription = lifecycleOwner.Lifecycle.Subscribe(wrapper);
