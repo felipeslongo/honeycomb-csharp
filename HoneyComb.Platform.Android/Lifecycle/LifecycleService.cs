@@ -1,5 +1,4 @@
 ﻿using Android.Arch.Lifecycle;
-using HoneyComb.Core.Lifecycles;
 using HoneyCombLifecycleOwner = HoneyComb.Core.Lifecycles.ILifecycleOwner;
 
 namespace HoneyComb.Platform.Android.Lifecycle

@@ -14,7 +14,7 @@ namespace HoneyComb.Core.Tests.Lifecycles
             lifecycle = new MutableLifecycle(this);
         }
 
-        public Lifecycles.Lifecycle Lifecycle => lifecycle;
+        public Lifecycle Lifecycle => lifecycle;
 
         public class NotifyStateChangeTests : LifecycleTests
         {
