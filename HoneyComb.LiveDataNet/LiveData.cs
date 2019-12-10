@@ -1,4 +1,4 @@
-using HoneyComb.Core.Lifecycle;
+using HoneyComb.Core.Lifecycles;
 using HoneyComb.Reflection;
 using System;
 using System.Collections.Generic;

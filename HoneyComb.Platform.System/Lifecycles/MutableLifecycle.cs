@@ -1,4 +1,4 @@
-﻿namespace HoneyComb.Core.Lifecycle
+﻿namespace HoneyComb.Core.Lifecycles
 {
     /// <summary>
     /// Lifecycle that exposes its State as mutable.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HoneyComb.Core.Lifecycle
+namespace HoneyComb.Core.Lifecycles
 {
     public static class LifecycleState_ChangeState
     {

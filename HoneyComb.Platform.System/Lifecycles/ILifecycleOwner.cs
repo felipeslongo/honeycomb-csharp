@@ -1,4 +1,4 @@
-namespace HoneyComb.Core.Lifecycle
+namespace HoneyComb.Core.Lifecycles
 {
     /// <summary>
     /// A class that has an generic lifecycle.

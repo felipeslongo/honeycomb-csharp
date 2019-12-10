@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using HoneyComb.Core.Lifecycle;
+using HoneyComb.Core.Lifecycles;
 
-namespace HoneyComb.Core.Tests.Lifecycle
+namespace HoneyComb.Core.Tests.Lifecycles
 {
     public class LifecycleState_ChangeStateTests
     {

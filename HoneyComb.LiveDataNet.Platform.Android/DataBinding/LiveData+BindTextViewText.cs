@@ -1,6 +1,6 @@
 ﻿using System;
 using Android.Widget;
-using HoneyComb.Core.Lifecycle;
+using HoneyComb.Core.Lifecycles;
 
 namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
 {
