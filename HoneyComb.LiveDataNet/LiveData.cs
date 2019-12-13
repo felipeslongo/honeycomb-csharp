@@ -128,12 +128,14 @@ namespace HoneyComb.LiveDataNet
 #pragma warning disable IDE0067 // Dispose objects before losing scope
             var lifecycleSubscription = lifecycleOwner.Lifecycle.Subscribe(wrapper);
 #pragma warning restore IDE0067 // Dispose objects before losing scope
-            PropertyChanged += wrapper.Invoke;
+            PropertyChanged += wrapper.Invoke; //simply dispatch values to observer that handles the lifecycle-aware notification
             wrapper.Subscription = Disposable.Create(() =>
             {
                 PropertyChanged -= wrapper.Invoke;
                 lifecycleSubscription.Dispose();
             });
+
+            wrapper.Invoke(this, EventArgs.Empty);//Sync up to current value if needed
 
             return wrapper;
         }

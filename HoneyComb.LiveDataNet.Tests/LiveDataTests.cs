@@ -463,6 +463,28 @@ namespace HoneyComb.LiveDataNet.Tests
             }
 
             [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInitializedStateWithInitialValue_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                var liveData = new MutableLiveData<bool>(true);
+                liveData.Bind(this, () => IsNotified);                
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenActiveStateWithInitialValue_WhenSubscribed_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                var liveData = new MutableLiveData<bool>(true);
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                liveData.Bind(this, () => IsNotified);               
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
             public void GivenActiveState_WhenValueChanges_ShouldNotifyLifecycleBoundObservers()
             {
                 var liveData = new MutableLiveData<bool>();
@@ -525,6 +547,31 @@ namespace HoneyComb.LiveDataNet.Tests
                 lifecycle.NotifyStateChange(LifecycleState.Active);
 
                 Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveStateWithInitialValue_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>(true);  
+                liveData.Bind(this, () => IsNotified);
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveStateWithInitialValue_WhenSubscribed_ShouldNotNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>(true);
+
+                liveData.Bind(this, () => IsNotified);
+
+                Assert.False(IsNotified);
             }
 
             [Fact, Trait(nameof(Category), Category.GarbageCollector)]
