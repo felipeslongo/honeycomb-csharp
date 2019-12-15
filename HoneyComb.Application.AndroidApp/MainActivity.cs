@@ -1,5 +1,4 @@
 ﻿using System;
-using Android;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
@@ -8,15 +7,20 @@ using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
+using HoneyComb.Platform.Android.Lifecycle;
 
 namespace HoneyComb.Application.AndroidApp
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private MainActivityAndroidViewModel viewModel;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            viewModel = this.GetViewModel<MainActivityAndroidViewModel>();
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
