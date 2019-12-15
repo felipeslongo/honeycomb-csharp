@@ -58,6 +58,7 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -130,9 +131,17 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.LiveDataNet.Platform.Android\HoneyComb.LiveDataNet.Platform.Android.csproj">
+      <Project>{c626086e-1361-4efb-a49b-3a72addbba2e}</Project>
+      <Name>HoneyComb.LiveDataNet.Platform.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj">
       <Project>{2cc61505-bed7-4c35-be87-01978d39727a}</Project>
       <Name>HoneyComb.LiveDataNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoneyComb.Platform.Android\HoneyComb.Platform.Android.csproj">
+      <Project>{fc6ed07f-0275-4e62-9cec-90f969ab95e1}</Project>
+      <Name>HoneyComb.Platform.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj">
       <Project>{5ef1b911-2e41-4015-8dfc-2416e8bc290a}</Project>
