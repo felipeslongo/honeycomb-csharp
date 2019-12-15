@@ -28,7 +28,7 @@ namespace HoneyComb.Application.AndroidApp
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            viewModel.ViewModel.Text.BindTextViewText(FindViewById<TextView>(Resource.Id.content_main_textview));
+            viewModel.ViewModel.Text.BindTextViewText(companion.LifecycleOwners.HoneyComb, FindViewById<TextView>(Resource.Id.content_main_textview));
             FindViewById<EditText>(Resource.Id.content_main_edittext).AfterTextChanged += (_, args) =>
             {
                 viewModel.ViewModel.NotifyTextChanged(args.Editable.ToString());
@@ -39,6 +39,11 @@ namespace HoneyComb.Application.AndroidApp
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
+            viewModel.ViewModel.Snackbar.SubscribeToExecuteIfUnhandled(companion.LifecycleOwners.HoneyComb, snackbar =>
+            {
+                Snackbar.Make(fab, snackbar, Snackbar.LengthLong)
+                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
+            });
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -79,12 +84,7 @@ namespace HoneyComb.Application.AndroidApp
             return base.OnOptionsItemSelected(item);
         }
 
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-        }
+        private void FabOnClick(object sender, EventArgs eventArgs) => viewModel.ViewModel.NotifyActionButtonClicked();
 
         public bool OnNavigationItemSelected(IMenuItem item)
         {
