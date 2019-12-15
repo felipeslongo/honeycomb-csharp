@@ -24,23 +24,37 @@ namespace HoneyComb.LiveDataNet
         public const string MessageExpressionLambdaDoesNotReturnAProperty = "The expression lambda does not represent a MemberExpression that returns whose member is a PropertyInfo";
         public const string MessagePropertyHasNoSetter = "The property passed to the bind method is readonly, therefore it has no setter method to bind the value to.";
 
+        private bool isInitialized;
         private T _value;
         private readonly Lazy<IObservable<EventArgs>> _asObservable;
 
+        /// <summary>
+        /// Creates a LiveData Uninitialized with no value assigned to it.
+        /// Uninitialized LiveData uses default keyword to set initial value,
+        /// but do not notify subscribers because it considers an invalid Uninitialized
+        /// value that is not worth it no be dispatched to subscribers.
+        /// </summary>
+        // ReSharper disable once MemberCanBeProtected.Global
+        public LiveData() : this(default!)
+        {
+            isInitialized = false;
+        }
+
+        /// <summary>
+        /// Creates a LiveData initialized with the given <paramref name="value"/>.
+        /// Initialized LiveData notify subscribers when the subscription is made.
+        /// </summary>
+        /// <param name="value">Value to initialize the livedata.</param>
         // ReSharper disable once MemberCanBeProtected.Global
         public LiveData(T value)
         {
+            Value = value;
             _value = value;
 
             _asObservable = new Lazy<IObservable<EventArgs>>(() => Observable.FromEventPattern<EventArgs>(
                 eventHandler => PropertyChanged += eventHandler,
                 eventHandler => PropertyChanged -= eventHandler
                 ).Select(eventPattern => eventPattern.EventArgs));
-        }
-
-        // ReSharper disable once MemberCanBeProtected.Global
-        public LiveData() : this(default!)
-        {
         }
 
         public event EventHandler<EventArgs>? PropertyChanged;
@@ -112,7 +126,7 @@ namespace HoneyComb.LiveDataNet
 
         public IDisposable BindEventHandler(EventHandler<EventArgs> eventHandler)
         {
-            eventHandler(this, EventArgs.Empty);
+            ExecuteIfInitialized(() => eventHandler(this, EventArgs.Empty));
             PropertyChanged += eventHandler;
 
             return Disposable.Create(() => PropertyChanged -= eventHandler);
@@ -135,10 +149,11 @@ namespace HoneyComb.LiveDataNet
                 lifecycleSubscription.Dispose();
             });
 
-            wrapper.Invoke(this, EventArgs.Empty);//Sync up to current value if needed
+            //Sync up to current value if needed
+            ExecuteIfInitialized(() => wrapper.Invoke(this, EventArgs.Empty));
 
             return wrapper;
-        }
+        }        
 
         public static implicit operator T(LiveData<T> liveData) => liveData.Value;
 
@@ -152,6 +167,7 @@ namespace HoneyComb.LiveDataNet
         /// <seealso cref="https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData#setvalue"/>
         private void SetValue(T value)
         {
+            isInitialized = true;
             if (IsValueUnchanged(value))
                 return;
             _value = value;
@@ -185,5 +201,18 @@ namespace HoneyComb.LiveDataNet
         public IDisposable Subscribe(IObserver<EventArgs> observer) => _asObservable.Value.Subscribe(observer);
 
         public virtual void Dispose() => PropertyChanged = null;
+
+        /// <summary>
+        /// Executes the action only if the LiveData is
+        /// in an Initialized state, that is, have a initial value set.
+        /// </summary>
+        /// <param name="action"></param>
+        private void ExecuteIfInitialized(Action action)
+        {
+            if (isInitialized == false)
+                return;
+
+            action();
+        }
     }
 }

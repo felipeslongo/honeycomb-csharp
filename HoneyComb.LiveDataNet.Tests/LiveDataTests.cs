@@ -227,6 +227,34 @@ namespace HoneyComb.LiveDataNet.Tests
                 var exception = Assert.Throws<ArgumentException>("memberLambda", () => liveData.Bind(() => Method()));
 
                 Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
+            }            
+        }
+
+        public class BindEventHandlerTests : LiveDataTests
+        {
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveData_WhenIsInvoked_ShouldNotifySubscriber()
+            {
+                const int inicializationValue = int.MaxValue;
+                var liveData = new MutableLiveData<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler((_, __) => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                var liveData = new MutableLiveData<int>();
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler((_, __) => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
             }
         }
 
@@ -604,6 +632,33 @@ namespace HoneyComb.LiveDataNet.Tests
                 liveData.Value = true;
 
                 Assert.False(IsNotified);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveData_WhenIsInvoked_ShouldNotifySubscriber()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                const int inicializationValue = int.MaxValue;
+                var liveData = new MutableLiveData<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler(this, (_, __) => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                var liveData = new MutableLiveData<int>();
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler(this, (_, __) => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
             }
         }
 
