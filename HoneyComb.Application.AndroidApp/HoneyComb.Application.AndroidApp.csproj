@@ -129,6 +129,20 @@
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj">
+      <Project>{2cc61505-bed7-4c35-be87-01978d39727a}</Project>
+      <Name>HoneyComb.LiveDataNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj">
+      <Project>{5ef1b911-2e41-4015-8dfc-2416e8bc290a}</Project>
+      <Name>HoneyComb.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoneyComb.Reflection\HoneyComb.Reflection.csproj">
+      <Project>{0033096e-287e-4a0d-beae-4e7681696549}</Project>
+      <Name>HoneyComb.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
