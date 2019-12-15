@@ -4,6 +4,13 @@ using System.Linq;
 
 namespace HoneyComb.Core.Linq
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Credits: 
+    ///     https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
+    /// </remarks>
     public static class IEnumerableForEachImmutable
     {
         /// <summary>
