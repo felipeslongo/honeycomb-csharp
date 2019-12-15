@@ -25,6 +25,11 @@ namespace HoneyComb.LiveDataNet
             liveData.Value = new Event<TEventArgs>(value);
         }
 
+        public LiveEvent(MutableLiveData<Event<TEventArgs>> eventSource)
+        {
+            liveData = eventSource;
+        }
+
         /// <summary>
         /// Subscribe to be notified of new events,
         /// even if is already handled.
