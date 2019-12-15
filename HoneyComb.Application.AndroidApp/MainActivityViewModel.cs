@@ -4,7 +4,7 @@ namespace HoneyComb.Application.AndroidApp
 {
     public class MainActivityViewModel
     {
-        private MutableLiveEvent<string> snackbar = new MutableLiveEvent<string>();
+        private MutableLiveEvent<string> snackbar = new MutableLiveEvent<string>("Initial Snackbar State");
         private MutableLiveData<string> text = new MutableLiveData<string>("Initial Text");
 
         public LiveEvent<string> Snackbar => snackbar;
