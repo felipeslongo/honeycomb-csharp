@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
+using System.Linq;
+using HoneyComb.Core.Linq;
 
 namespace HoneyComb.Core.Lifecycles
 {
@@ -93,19 +95,19 @@ namespace HoneyComb.Core.Lifecycles
 
         private void NotifyObserversOfActive()
         {
-            observers.ForEach(observer => observer.OnActive(owner!));
+            observers.ForeachImmutable(observer => observer.OnActive(owner!));
             OnActive?.Invoke(owner!, EventArgs.Empty);
         }
 
         private void NotifyObserversOfDisposed()
         {
-            observers.ForEach(observer => observer.OnDisposed(owner!));
+            observers.ForeachImmutable(observer => observer.OnDisposed(owner!));
             OnDisposed?.Invoke(owner!, EventArgs.Empty);
         }
 
         private void NotifyObserversOfInactive()
         {
-            observers.ForEach(observer => observer.OnInactive(owner!));
+            observers.ForeachImmutable(observer => observer.OnInactive(owner!));
             OnInactive?.Invoke(owner!, EventArgs.Empty);
         }
 

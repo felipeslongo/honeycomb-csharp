@@ -55,78 +55,123 @@ namespace HoneyComb.Core.Tests.Lifecycles
                 var invalid = LifecycleState.Disposed;
 
                 Assert.Throws<InvalidOperationException>(() => lifecycle.NotifyStateChange(invalid));
+            }            
+        }
+
+        public class SubscribeTests : LifecycleTests, ILifecycleObserver
+        {
+            public bool OnActiveNotified { get; private set; }
+            public bool OnDisposedNotified { get; private set; }
+            public bool OnInactiveNotified { get; private set; }
+
+            public event EventHandler? OnActive;
+            public event EventHandler? OnInactive;
+            public event EventHandler? OnDisposed;
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnValidTransition_ShouldNotifyObservers()
+            {
+                Lifecycle.Subscribe(this);
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+
+                Assert.True(OnActiveNotified);
             }
 
-            public class SubscribeTests : LifecycleTests, ILifecycleObserver
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenInitializedState_WhenSubscribe_ShouldNotNotifyObservers()
             {
-                public bool OnActiveNotified { get; private set; }
-                public bool OnDisposedNotified { get; private set; }
-                public bool OnInactiveNotified { get; private set; }
+                Lifecycle.Subscribe(this);
 
-                [Fact, Trait(nameof(Category), Category.Unit)]
-                public void GivenAnValidTransition_ShouldNotifyObservers()
-                {
-                    Lifecycle.Subscribe(this);
+                Assert.False(OnActiveNotified);
+            }
 
-                    lifecycle.NotifyStateChange(LifecycleState.Active);
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenActiveState_WhenSubscribe_ShouldNotifyObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                Lifecycle.Subscribe(this);
+
+                Assert.True(OnActiveNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenInactiveState_WhenSubscribe_ShouldNotifyObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                Lifecycle.Subscribe(this);
+
+                Assert.True(OnInactiveNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenDisposedtate_WhenSubscribe_ShouldNotifyObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                lifecycle.NotifyStateChange(LifecycleState.Disposed);
+                Lifecycle.Subscribe(this);
+
+                Assert.True(OnInactiveNotified);
+                Assert.True(OnDisposedNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnSubscription_WhenUnsubscribeDuringOnActiveNotification_ShouldUnsubscribe()
+            {
+                var subscription = Lifecycle.Subscribe(this);
+                OnActive += (_, __) => subscription.Dispose();
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnSubscription_WhenUnsubscribeDuringOnInactiveNotification_ShouldUnsubscribe()
+            {
+                var subscription = Lifecycle.Subscribe(this);
+                OnInactive += (_, __) => subscription.Dispose();
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnSubscription_WhenUnsubscribeDuringOnDisposedNotification_ShouldUnsubscribe()
+            {
+                var subscription = Lifecycle.Subscribe(this);
+                OnDisposed += (_, __) => subscription.Dispose();
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+
+                lifecycle.NotifyStateChange(LifecycleState.Disposed);
+            }
 
 
-                    Assert.True(OnActiveNotified);
-                }
+            private void Reset()
+            {
+                OnActiveNotified = false;
+                OnDisposedNotified = false;
+                OnInactiveNotified = false;
+            }
 
-                [Fact, Trait(nameof(Category), Category.Unit)]
-                public void GivenInitializedState_WhenSubscribe_ShouldNotNotifyObservers()
-                {
-                    Lifecycle.Subscribe(this);
+            void ILifecycleObserver.OnActive(ILifecycleOwner owner)
+            {
+                OnActiveNotified = true;
+                OnActive?.Invoke(this, EventArgs.Empty);
+            }
 
-                    Assert.False(OnActiveNotified);
-                }
+            void ILifecycleObserver.OnDisposed(ILifecycleOwner owner)
+            {
+                OnDisposedNotified = true;
+                OnDisposed?.Invoke(this, EventArgs.Empty);
+            }
 
-                [Fact, Trait(nameof(Category), Category.Unit)]
-                public void GivenActiveState_WhenSubscribe_ShouldNotifyObservers()
-                {
-                    lifecycle.NotifyStateChange(LifecycleState.Active);
-                    Lifecycle.Subscribe(this);
-
-                    Assert.True(OnActiveNotified);
-                }
-
-                [Fact, Trait(nameof(Category), Category.Unit)]
-                public void GivenInactiveState_WhenSubscribe_ShouldNotifyObservers()
-                {
-                    lifecycle.NotifyStateChange(LifecycleState.Active);
-                    lifecycle.NotifyStateChange(LifecycleState.Inactive);
-                    Lifecycle.Subscribe(this);
-
-                    Assert.True(OnInactiveNotified);
-                }
-
-                [Fact, Trait(nameof(Category), Category.Unit)]
-                public void GivenDisposedtate_WhenSubscribe_ShouldNotifyObservers()
-                {
-                    lifecycle.NotifyStateChange(LifecycleState.Active);
-                    lifecycle.NotifyStateChange(LifecycleState.Inactive);
-                    lifecycle.NotifyStateChange(LifecycleState.Disposed);
-                    Lifecycle.Subscribe(this);
-
-                    Assert.True(OnInactiveNotified);
-                    Assert.True(OnDisposedNotified);
-                }
-
-
-                private void Reset()
-                {
-                    OnActiveNotified = false;
-                    OnDisposedNotified = false;
-                    OnInactiveNotified = false;
-                }
-
-                void ILifecycleObserver.OnActive(ILifecycleOwner owner) => OnActiveNotified = true;
-
-                void ILifecycleObserver.OnDisposed(ILifecycleOwner owner) => OnDisposedNotified = true;
-
-                void ILifecycleObserver.OnInactive(ILifecycleOwner owner) => OnInactiveNotified = true;
-
+            void ILifecycleObserver.OnInactive(ILifecycleOwner owner)
+            {
+                OnInactiveNotified = true;
+                OnInactive?.Invoke(this, EventArgs.Empty);
             }
         }
     }
