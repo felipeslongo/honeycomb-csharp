@@ -7,22 +7,33 @@ using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
+using Android.Widget;
+using HoneyComb.Platform.Android.AppCompat.App;
 using HoneyComb.Platform.Android.Lifecycle;
+using HoneyComb.LiveDataNet.Platform.Android.DataBinding;
 
 namespace HoneyComb.Application.AndroidApp
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+        private ActivityCompanion companion;
         private MainActivityAndroidViewModel viewModel;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            companion = new ActivityCompanion(this);
             viewModel = this.GetViewModel<MainActivityAndroidViewModel>();
-
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            viewModel.ViewModel.Text.BindTextViewText(FindViewById<TextView>(Resource.Id.content_main_textview));
+            FindViewById<EditText>(Resource.Id.content_main_edittext).AfterTextChanged += (_, args) =>
+            {
+                viewModel.ViewModel.NotifyTextChanged(args.Editable.ToString());
+            };
+            
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
