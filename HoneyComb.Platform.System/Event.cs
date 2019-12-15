@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Infraestrutura.UI
+namespace HoneyComb.Core
 {
     /// <summary>
     /// Represents a regular Event
@@ -68,6 +68,6 @@ namespace Core.Infraestrutura.UI
         /// </summary>
         /// <param name="action">Action that consumes the event content.</param>
         public void ExecuteIfUnhandled(Action<T> action) =>
-            base.ExecuteIfUnhandled(() => { action(content); });
+            ExecuteIfUnhandled(() => { action(content); });
     }
 }

@@ -1,5 +1,4 @@
-﻿using Core.Infraestrutura.UI;
-using HoneyComb.TestChamber;
+﻿using HoneyComb.TestChamber;
 using Xunit;
 
 namespace HoneyComb.Core.Tests
