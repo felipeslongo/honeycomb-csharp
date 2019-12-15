@@ -14,7 +14,7 @@ namespace HoneyComb.LiveDataNet
         /// <summary>
         /// LiveData used to delegate the lifecycle-aware responsability.
         /// </summary>
-        private readonly MutableLiveData<Event<TEventArgs>> liveData = new MutableLiveData<Event<TEventArgs>>();
+        protected readonly MutableLiveData<Event<TEventArgs>> liveData = new MutableLiveData<Event<TEventArgs>>();
 
         public LiveEvent()
         {
