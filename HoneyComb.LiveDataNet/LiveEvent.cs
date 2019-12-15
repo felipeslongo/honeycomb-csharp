@@ -14,7 +14,7 @@ namespace HoneyComb.LiveDataNet
         /// <summary>
         /// LiveData used to delegate the lifecycle-aware responsability.
         /// </summary>
-        private readonly MutableLiveData<Event<TEventArgs>> _liveData = new MutableLiveData<Event<TEventArgs>>();
+        private readonly MutableLiveData<Event<TEventArgs>> liveData = new MutableLiveData<Event<TEventArgs>>();
 
         public LiveEvent()
         {
@@ -22,7 +22,7 @@ namespace HoneyComb.LiveDataNet
 
         public LiveEvent(TEventArgs value)
         {
-            _liveData.Value = new Event<TEventArgs>(value);
+            liveData.Value = new Event<TEventArgs>(value);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace HoneyComb.LiveDataNet
         /// <returns>Unsubscription delegate.</returns>
         public IDisposable Subscribe(ILifecycleOwner lifecycleOwner, EventHandler<Event<TEventArgs>> subscriber)
         {
-            return _liveData.BindMethod(lifecycleOwner, NotifySubscriber);
+            return liveData.BindMethod(lifecycleOwner, NotifySubscriber);
 
             void NotifySubscriber(Event<TEventArgs> @event) => subscriber(this, @event);
         }
