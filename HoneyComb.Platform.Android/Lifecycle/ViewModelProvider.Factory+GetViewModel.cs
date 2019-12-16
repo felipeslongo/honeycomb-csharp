@@ -29,7 +29,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         /// <param name="this">Fragment with scope.</param>
         /// <param name="creator">Optional delegate factory method.</param>
         /// <returns>An existing ViewModel or a new one in the scope.</returns>
-        public static TViewModel GetViewModel<TViewModel>(this Fragment @this, Func<TViewModel>? creator = null)
+        public static TViewModel GetViewModel<TViewModel>(this Fragment @this, Func<TViewModel> creator = null)
             where TViewModel : ViewModel
         {
             var javaClass = Class.FromType(typeof(TViewModel));
@@ -51,7 +51,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         /// <param name="this">Activity with scope.</param>
         /// <param name="creator">Optional delegate factory method.</param>
         /// <returns>An existing ViewModel or a new one in the scope.</returns>
-        public static TViewModel GetViewModel<TViewModel>(this FragmentActivity @this, Func<TViewModel>? creator = null)
+        public static TViewModel GetViewModel<TViewModel>(this FragmentActivity @this, Func<TViewModel> creator = null)
             where TViewModel : ViewModel
         {
             var javaClass = Class.FromType(typeof(TViewModel));
@@ -61,7 +61,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         }
 
         private static object GetViewModelFromViewModelProviders<TViewModel>(Fragment fragment,
-            Func<TViewModel>? creator, Class javaClass)
+            Func<TViewModel> creator, Class javaClass)
             where TViewModel : ViewModel
         {
             if (creator is null)
@@ -71,7 +71,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
         }
 
         private static object GetViewModelFromViewModelProviders<TViewModel>(FragmentActivity activity,
-            Func<TViewModel>? creator, Class javaClass)
+            Func<TViewModel> creator, Class javaClass)
             where TViewModel : ViewModel
         {
             if (creator is null)

@@ -26,7 +26,7 @@ namespace HoneyComb.Platform.Android.Fragments.App
     /// <typeparam name="TViewModel">Type of Activity ViewModel</typeparam>
     public sealed class FragmentCompanion<TViewModel> : FragmentCompanion where TViewModel : ViewModel
     {
-        public FragmentCompanion(Fragment fragment, Func<TViewModel>? creator = null) : base(fragment)
+        public FragmentCompanion(Fragment fragment, Func<TViewModel> creator = null) : base(fragment)
         {
             ViewModel = fragment.GetViewModel(creator);
         }

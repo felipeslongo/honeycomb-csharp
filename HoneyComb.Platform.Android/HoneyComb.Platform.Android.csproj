@@ -3,7 +3,7 @@
   
   <PropertyGroup Label="Best Practices Configuration">
     <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">

@@ -19,7 +19,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </remarks>
     public class LifecycleObservable : JavaObject, ILifecycleObserver
     {
-        private ILifecycleOwner? _lifecycleOwner = null;
+        private ILifecycleOwner _lifecycleOwner = null;
 
         internal LifecycleObservable(ILifecycleOwner lifecycleOwner)
         {
@@ -30,20 +30,20 @@ namespace HoneyComb.Platform.Android.Lifecycle
         ///     Gets the Lifecycle <see cref="global::Android.Arch.Lifecycle.Lifecycle.CurrentState" /> current state.
         ///     Return null when this observer is removed from the <see cref="global::Android.Arch.Lifecycle.Lifecycle" /> or disposed.
         /// </summary>
-        public State? StateCurrent => _lifecycleOwner?.Lifecycle.CurrentState;
+        public State StateCurrent => _lifecycleOwner?.Lifecycle.CurrentState;
 
         /// <summary>
         ///     Gets the last <see cref="StateCurrent" /> captured.
         /// </summary>
         public State StateLastKnown { get; private set; } = State.Initialized;
 
-        public event EventHandler? OnAny;
-        public event EventHandler? OnCreate;
-        public event EventHandler? OnDestroy;
-        public event EventHandler? OnPause;
-        public event EventHandler? OnResume;
-        public event EventHandler? OnStart;
-        public event EventHandler? OnStop;
+        public event EventHandler OnAny;
+        public event EventHandler OnCreate;
+        public event EventHandler OnDestroy;
+        public event EventHandler OnPause;
+        public event EventHandler OnResume;
+        public event EventHandler OnStart;
+        public event EventHandler OnStop;
 
         public void SetLifecycleOwner(ILifecycleOwner lifecycleOwner)
         {

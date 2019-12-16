@@ -14,7 +14,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     {
         private readonly List<EventHandler<TEventArgs>> _handlers = new List<EventHandler<TEventArgs>>();
         private bool _disposed;
-        private LifecycleObservable? _lifecycleObservable;
+        private LifecycleObservable _lifecycleObservable;
         private (object sender, TEventArgs eventArgs)? _pendingEvent;
 
         public LifecycleEventHandler(LifecycleObservable lifecycleObservable)

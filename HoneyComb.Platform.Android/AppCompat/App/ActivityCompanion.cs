@@ -26,7 +26,7 @@ namespace HoneyComb.Platform.Android.AppCompat.App
     /// <typeparam name="TViewModel">Type of Activity ViewModel</typeparam>
     public sealed class ActivityCompanion<TViewModel> : ActivityCompanion where TViewModel : ViewModel
     {
-        public ActivityCompanion(AppCompatActivity activity, Func<TViewModel>? creator = null) : base(activity)
+        public ActivityCompanion(AppCompatActivity activity, Func<TViewModel> creator = null) : base(activity)
         {
             ViewModel = activity.GetViewModel(creator);
         }
