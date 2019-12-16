@@ -7,7 +7,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">
-    <Version>1.0.0-beta02</Version>
+    <Version>1.0.0-beta03</Version>
     <Authors>Felipe de Souza Longo</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
