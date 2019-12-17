@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using HoneyComb.Platform.System.Threading.Tasks;
+using HoneyComb.Core.Threading.Tasks;
 using HoneyComb.TestChamber;
 using Xunit;
 
-namespace HoneyComb.Platform.System.Tests.Threading.Tasks
+namespace HoneyComb.Core.Tests.Threading.Tasks
 {
     public class TaskTimeoutAfterTests
     {

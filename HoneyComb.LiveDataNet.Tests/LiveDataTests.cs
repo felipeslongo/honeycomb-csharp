@@ -1,3 +1,4 @@
+using HoneyComb.Core.Lifecycles;
 using HoneyComb.TestChamber;
 using System;
 using System.Collections.Generic;
@@ -226,6 +227,34 @@ namespace HoneyComb.LiveDataNet.Tests
                 var exception = Assert.Throws<ArgumentException>("memberLambda", () => liveData.Bind(() => Method()));
 
                 Assert.Contains(LiveData<int>.MessageExpressionLambdaDoesNotReturnAProperty, exception.Message);
+            }            
+        }
+
+        public class BindEventHandlerTests : LiveDataTests
+        {
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveData_WhenIsInvoked_ShouldNotifySubscriber()
+            {
+                const int inicializationValue = int.MaxValue;
+                var liveData = new MutableLiveData<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler((_, __) => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                var liveData = new MutableLiveData<int>();
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler((_, __) => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
             }
         }
 
@@ -423,6 +452,213 @@ namespace HoneyComb.LiveDataNet.Tests
                 var threshold = TimeSpan.FromMilliseconds(150).TotalMilliseconds;
                 var actual = timer.ElapsedMilliseconds;
                 Assert.True(actual < threshold, $"Should be executed in less than {threshold} miliseconds, but was {actual} miliseconds.");
+            }
+        }
+
+        public class LifecycleSupportTests : LiveDataTests, ILifecycleOwner
+        {
+            private readonly MutableLifecycle lifecycle;
+
+            public LifecycleSupportTests()
+            {
+                lifecycle = new MutableLifecycle(this);
+            }
+
+            public Lifecycle Lifecycle => lifecycle;
+            public bool IsNotified { get; set; }
+
+            [Fact,Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInitializedState_WhenValueChanges_ShouldNotNotifyLifecycleBoundObservers()
+            {
+                var liveData = new MutableLiveData<bool>();
+                liveData.Bind(this, () => IsNotified);
+
+                liveData.Value = true;
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInitializedState_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObservers()
+            {
+                var liveData = new MutableLiveData<bool>();
+                liveData.Bind(this, () => IsNotified);
+                liveData.Value = true;
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInitializedStateWithInitialValue_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                var liveData = new MutableLiveData<bool>(true);
+                liveData.Bind(this, () => IsNotified);                
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenActiveStateWithInitialValue_WhenSubscribed_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                var liveData = new MutableLiveData<bool>(true);
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                liveData.Bind(this, () => IsNotified);               
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenActiveState_WhenValueChanges_ShouldNotifyLifecycleBoundObservers()
+            {
+                var liveData = new MutableLiveData<bool>();
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                liveData.Bind(this, () => IsNotified);                
+
+                liveData.Value = true;
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenActiveState_WhenStateChangesToInactive_ShouldNotNotifyLifecycleBoundObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                var liveData = new MutableLiveData<bool>();                
+                liveData.Bind(this, () => IsNotified);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+
+                liveData.Value = true;
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenActiveStateDisposedSubscription_WhenValueChanges_ShouldNotNotifyLifecycleBoundObservers()
+            {
+                var liveData = new MutableLiveData<bool>();
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                var subscription = liveData.Bind(this, () => IsNotified);
+                subscription.Dispose();
+
+                liveData.Value = true;
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveState_WhenValueChanges_ShouldNotNotifyLifecycleBoundObservers()
+            {                
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>();
+                liveData.Bind(this, () => IsNotified);                
+
+                liveData.Value = true;
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveState_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>();
+                liveData.Bind(this, () => IsNotified);
+                liveData.Value = true;
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveStateWithInitialValue_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>(true);  
+                liveData.Bind(this, () => IsNotified);
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.True(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveStateWithInitialValue_WhenSubscribed_ShouldNotNotifyLifecycleBoundObserversToSyncUpToCurrentValue()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var liveData = new MutableLiveData<bool>(true);
+
+                liveData.Bind(this, () => IsNotified);
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenInactiveState_WhenStateChangesToActive_ShouldNotifyLifecycleBoundObserversWithOnlyTheMostRecentValue()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                var valuesDispatched = new List<int>();
+                var liveData = new MutableLiveData<int>();
+                liveData.BindMethod(this, valuesDispatched.Add);
+                liveData.Value = 1;
+                liveData.Value = 2;
+                liveData.Value = 3;
+
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+
+                Assert.Single(valuesDispatched);
+                Assert.Equal(liveData.Value, valuesDispatched.Single());
+            }
+
+            [Fact, Trait(nameof(Category), Category.GarbageCollector)]
+            public void GivenDisposedState_WhenValueChanges_ShouldNotNotifyLifecycleBoundObservers()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                lifecycle.NotifyStateChange(LifecycleState.Inactive);
+                lifecycle.NotifyStateChange(LifecycleState.Disposed);
+                var liveData = new MutableLiveData<bool>();
+                liveData.Bind(this, () => IsNotified);
+
+                liveData.Value = true;
+
+                Assert.False(IsNotified);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveData_WhenIsInvoked_ShouldNotifySubscriber()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                const int inicializationValue = int.MaxValue;
+                var liveData = new MutableLiveData<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler(this, (_, __) => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact]
+            [Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                lifecycle.NotifyStateChange(LifecycleState.Active);
+                var liveData = new MutableLiveData<int>();
+                var isNotifyInvoked = false;
+
+                liveData.BindEventHandler(this, (_, __) => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
             }
         }
 

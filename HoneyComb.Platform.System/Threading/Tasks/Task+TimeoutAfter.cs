@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HoneyComb.Platform.System.Threading.Tasks
+namespace HoneyComb.Core.Threading.Tasks
 {
     /// <summary>
     ///     Static class for the extension method TimeoutAfter in Task.
@@ -38,7 +38,7 @@ namespace HoneyComb.Platform.System.Threading.Tasks
         /// </remarks>
         public static async Task<TResult> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
         {
-            await TimeoutAfter(task as Task, timeout);
+            await (task as Task).TimeoutAfter(timeout);
             return await task; // Very important in order to propagate exceptions
 
             // using var timeoutCancellationTokenSource = new CancellationTokenSource();
