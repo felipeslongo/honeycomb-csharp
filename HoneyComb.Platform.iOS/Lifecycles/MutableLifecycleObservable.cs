@@ -8,22 +8,22 @@
     /// </summary>
     public class MutableLifecycleObservable : LifecycleObservable
     {
-        protected void NotifyLoadView() => InvokeLoadView();
+        public void NotifyLoadView() => InvokeLoadView();
 
-        protected void NotifyLoadViewIfNeeded() => InvokeLoadViewIfNeeded();
+        public void NotifyLoadViewIfNeeded() => InvokeLoadViewIfNeeded();
 
-        protected void NotifyViewDidLoad() => InvokeViewDidLoad();
+        public void NotifyViewDidLoad() => InvokeViewDidLoad();
 
-        protected void NotifyViewWillAppear() => InvokeViewWillAppear();
+        public void NotifyViewWillAppear() => InvokeViewWillAppear();
 
-        protected void NotifyViewWillLayoutSubviews() => InvokeViewWillLayoutSubviews();
+        public void NotifyViewWillLayoutSubviews() => InvokeViewWillLayoutSubviews();
 
-        protected void NotifyViewDidLayoutSubviews() => InvokeViewDidLayoutSubviews();
+        public void NotifyViewDidLayoutSubviews() => InvokeViewDidLayoutSubviews();
 
-        protected void NotifyViewDidAppear() => InvokeViewDidAppear();
+        public void NotifyViewDidAppear() => InvokeViewDidAppear();
 
-        protected void NotifyViewWillDisappear() => InvokeViewWillDisappear();
+        public void NotifyViewWillDisappear() => InvokeViewWillDisappear();
 
-        protected void NotifyViewDidDisappear() => InvokeViewDidDisappear();
+        public void NotifyViewDidDisappear() => InvokeViewDidDisappear();
     }
 }
