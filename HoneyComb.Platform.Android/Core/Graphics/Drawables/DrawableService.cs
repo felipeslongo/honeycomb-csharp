@@ -20,7 +20,7 @@ namespace HoneyComb.Platform.Android.Core.Graphics.Drawables
         /// <param name="drawable">Original drawable to be tinted</param>
         /// <param name="color">Tint to be applied</param>
         /// <returns>New Drawable instance with tint applied</returns>
-        public static Drawable CreateDrawableWithColorStateListTint(Drawable drawable, ColorStateList color)
+        public static Drawable CreateDrawableWithTint(Drawable drawable, ColorStateList color)
         {
             var drawableWrapper = DrawableCompat.Wrap(drawable).Mutate();
             DrawableCompat.SetTintList(drawableWrapper, color);
