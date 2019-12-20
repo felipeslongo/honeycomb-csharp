@@ -30,6 +30,10 @@ namespace HoneyComb.Platform.Android.Widget
         /// <summary>
         ///     Sets the the left, right, top and bottom drawable tint for devices below API 23
         /// </summary>
+        /// <remarks>
+        /// Credits
+        ///     https://stackoverflow.com/questions/41588148/android-textview-drawabletint-on-pre-v23-devices
+        /// </remarks>
         /// <param name="this"></param>
         /// <param name="color"></param>
         private static void SetCompoundDrawableTintListForApisBelow23(this TextView @this, ColorStateList color)
