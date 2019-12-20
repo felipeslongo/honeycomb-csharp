@@ -16,6 +16,7 @@ namespace HoneyComb.Platform.Android.Core.Graphics.Drawables
         ///     Credits:
         ///     https://stackoverflow.com/questions/26788251/android-tint-using-drawablecompat
         ///     https://stackoverflow.com/questions/30872101/drawablecompat-tinting-does-not-work-on-pre-lollipop
+        ///     https://stackoverflow.com/questions/29155463/drawable-tinting-for-api-21
         /// </remarks>
         /// <param name="drawable">Original drawable to be tinted</param>
         /// <param name="color">Tint to be applied</param>
