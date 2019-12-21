@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Android.Content.Res;
+﻿using Android.Content.Res;
 using Android.Widget;
 using HoneyComb.Platform.Android.Content.Res;
 using HoneyComb.Platform.Android.Core.Graphics.Drawables;
@@ -31,19 +29,14 @@ namespace HoneyComb.Platform.Android.Widget
         ///     Sets the the left, right, top and bottom drawable tint for devices below API 23
         /// </summary>
         /// <remarks>
-        /// Credits
+        ///     Credits
         ///     https://stackoverflow.com/questions/41588148/android-textview-drawabletint-on-pre-v23-devices
         /// </remarks>
         /// <param name="this"></param>
         /// <param name="color"></param>
         private static void SetCompoundDrawableTintListForApisBelow23(this TextView @this, ColorStateList color)
         {
-            throw new NotImplementedException();
-            //TODO Finish SetCompoundDrawableTintListForBelowApi23
-            foreach (var drawable in @this.GetCompoundDrawables().Where(d => d != null))
-            {
-                var tintedDrawable = DrawableService.CreateDrawableWithTint(drawable, color);
-            }
+            TextViewDrawables.ApplyAndSet(@this, drawable => DrawableService.CreateDrawableWithTint(drawable, color));
         }
     }
 }
