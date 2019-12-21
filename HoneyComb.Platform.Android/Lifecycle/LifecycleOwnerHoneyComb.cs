@@ -7,7 +7,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// </summary>
     internal sealed class LifecycleOwnerHoneyComb : ILifecycleOwner
     {
-        public Core.Lifecycles.Lifecycle Lifecycle { get; private set; }
+        public HoneyComb.Core.Lifecycles.Lifecycle Lifecycle { get; private set; }
 
         public LifecycleOwnerHoneyComb(LifecycleObservable lifecycleObservable)
         {

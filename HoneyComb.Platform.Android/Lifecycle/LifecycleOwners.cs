@@ -19,7 +19,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
 
         public ILifecycleOwner Android { get; }
         public LifecycleDisposable Disposable { get; }
-        public Core.Lifecycles.ILifecycleOwner HoneyComb { get; }
+        public HoneyComb.Core.Lifecycles.ILifecycleOwner HoneyComb { get; }
         public LifecycleObservable Observable { get; }
     }
 }
