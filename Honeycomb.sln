@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Core", "HoneyComb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Core.Tests", "HoneyComb.Platform.System.Tests\HoneyComb.Core.Tests.csproj", "{C8B7594D-11DC-418C-8B2B-81344B02A68D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Application.AndroidApp", "HoneyComb.Application.AndroidApp\HoneyComb.Application.AndroidApp.csproj", "{2A449FD2-378E-4193-82CC-FAEA71A8AC27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,12 @@ Global
 		{C8B7594D-11DC-418C-8B2B-81344B02A68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8B7594D-11DC-418C-8B2B-81344B02A68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8B7594D-11DC-418C-8B2B-81344B02A68D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A449FD2-378E-4193-82CC-FAEA71A8AC27}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
