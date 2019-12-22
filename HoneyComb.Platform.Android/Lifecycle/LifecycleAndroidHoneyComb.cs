@@ -7,7 +7,7 @@ namespace HoneyComb.Platform.Android.Lifecycle
     /// <summary>
     /// Android Lifecycle bound implementation of <see cref="Core.Lifecycles.Lifecycle"/>
     /// </summary>
-    internal sealed class LifecycleAndroidHoneyComb : Core.Lifecycles.Lifecycle
+    internal sealed class LifecycleAndroidHoneyComb : HoneyComb.Core.Lifecycles.Lifecycle
     {
         private LifecycleDisposable _lifecycleDisposable;
 
