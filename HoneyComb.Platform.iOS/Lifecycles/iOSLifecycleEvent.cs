@@ -6,7 +6,7 @@
     /// <remarks>
     /// Credits: https://developer.android.com/reference/androidx/lifecycle/Lifecycle.Event.html
     /// </remarks>
-    public enum LifecycleEvent
+    public enum iOSLifecycleEvent
     {
         LoadView,
 
