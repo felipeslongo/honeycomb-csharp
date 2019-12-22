@@ -1,4 +1,6 @@
-﻿namespace HoneyComb.Platform.iOS.Lifecycles
+﻿using UIKit;
+
+namespace HoneyComb.Platform.iOS.Lifecycles
 {
     /// <summary>
     /// Implementation of <see cref="LifecycleObservable"/>
@@ -8,6 +10,8 @@
     /// </summary>
     public class MutableLifecycleObservable : LifecycleObservable
     {
+        private bool isBeingDismissedOrRemoved;
+
         public void NotifyLoadView() => InvokeLoadView();
 
         public void NotifyLoadViewIfNeeded() => InvokeLoadViewIfNeeded();
@@ -22,8 +26,19 @@
 
         public void NotifyViewDidAppear() => InvokeViewDidAppear();
 
-        public void NotifyViewWillDisappear() => InvokeViewWillDisappear();
+        public void NotifyViewWillDisappear(UIViewController controller) 
+        { 
+            InvokeViewWillDisappear();
+            isBeingDismissedOrRemoved = LifecycleService.IsBeingDismissedOrRemoved(controller);
+            if (isBeingDismissedOrRemoved)
+                InvokeViewWillDestroy();
+        }
 
-        public void NotifyViewDidDisappear() => InvokeViewDidDisappear();
+        public void NotifyViewDidDisappear()
+        {
+            InvokeViewDidDisappear();
+            if (isBeingDismissedOrRemoved)
+                InvokeViewDidDestroy();
+        }
     }
 }

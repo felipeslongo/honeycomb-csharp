@@ -80,7 +80,7 @@ namespace HoneyComb.Platform.iOS.Lifecycles
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            lifecycleObservable.NotifyViewWillDisappear();
+            lifecycleObservable.NotifyViewWillDisappear(this);
         }
 
         public override void ViewDidDisappear(bool animated)
