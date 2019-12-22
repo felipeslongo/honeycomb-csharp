@@ -34,6 +34,11 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         public event EventHandler? ViewDidDisappear;
 
+        /// <summary>
+        ///     Gets the last current state captured.
+        /// </summary>
+        public iOSLifecycleState StateLastKnown { get; internal set; } = iOSLifecycleState.Initialized;
+
         protected void InvokeLoadView() => LoadView?.Invoke(this, EventArgs.Empty);
 
         protected void InvokeLoadViewIfNeeded() => LoadViewIfNeeded?.Invoke(this, EventArgs.Empty);
