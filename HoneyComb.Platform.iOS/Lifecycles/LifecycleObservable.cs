@@ -58,5 +58,9 @@ namespace HoneyComb.Platform.iOS.Lifecycles
         protected void InvokeViewWillDisappear() => ViewWillDisappear?.Invoke(this, EventArgs.Empty);
 
         protected void InvokeViewDidDisappear() => ViewDidDisappear?.Invoke(this, EventArgs.Empty);
+
+        protected void InvokeViewWillDestroy() => ViewWillDestroy?.Invoke(this, EventArgs.Empty);
+
+        protected void InvokeViewDidDestroy() => ViewDidDestroy?.Invoke(this, EventArgs.Empty);
     }
 }
