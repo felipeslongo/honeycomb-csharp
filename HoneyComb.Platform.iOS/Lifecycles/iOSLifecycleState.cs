@@ -6,7 +6,7 @@
     /// <remarks>
     /// Credits: https://developer.android.com/reference/androidx/lifecycle/Lifecycle.Event.html
     /// </remarks>
-    public enum LifecycleState
+    public enum iOSLifecycleState
     {
         /// <summary>
         /// Initialized state for a LifecycleOwner. For an ViewController, this is the state when it is constructed but has not received ViewDidLoad yet.
