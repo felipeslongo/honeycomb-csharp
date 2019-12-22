@@ -32,9 +32,9 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         public event EventHandler? ViewDidDisappear;
 
-        public event EventHandler? ViewWillDestroy;
+        public event EventHandler? ViewWillDismissOrRemove;
 
-        public event EventHandler? ViewDidDestroy;
+        public event EventHandler? ViewDidDismissOrRemove;
 
         /// <summary>
         ///     Gets the last current state captured.
@@ -59,8 +59,8 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         protected void InvokeViewDidDisappear() => ViewDidDisappear?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewWillDestroy() => ViewWillDestroy?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewWillDismissOrRemove() => ViewWillDismissOrRemove?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewDidDestroy() => ViewDidDestroy?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewDidDismissOrRemove() => ViewDidDismissOrRemove?.Invoke(this, EventArgs.Empty);
     }
 }

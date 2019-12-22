@@ -31,14 +31,14 @@ namespace HoneyComb.Platform.iOS.Lifecycles
             InvokeViewWillDisappear();
             isBeingDismissedOrRemoved = LifecycleService.IsBeingDismissedOrRemoved(controller);
             if (isBeingDismissedOrRemoved)
-                InvokeViewWillDestroy();
+                InvokeViewWillDismissOrRemove();
         }
 
         public void NotifyViewDidDisappear()
         {
             InvokeViewDidDisappear();
             if (isBeingDismissedOrRemoved)
-                InvokeViewDidDestroy();
+                InvokeViewDidDismissOrRemove();
         }
     }
 }
