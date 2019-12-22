@@ -3,6 +3,7 @@ using Android.Widget;
 using HoneyComb.Platform.Android.Content.Res;
 using HoneyComb.Platform.Android.Core.Graphics.Drawables;
 using HoneyComb.Platform.Android.OS;
+using HoneyComb.Platform.Android.OS.Support;
 
 namespace HoneyComb.Platform.Android.Widget
 {
@@ -16,7 +17,7 @@ namespace HoneyComb.Platform.Android.Widget
         public static void SetCompoundDrawableTintList(this TextView @this, int colorResourceId)
         {
             var color = ColorService.GetColorStateList(@this.Context, colorResourceId);
-            if (BuildVersionService.IsBelowApi23())
+            if (SupportService.GetSupport(@this).IsCompoundDrawableTintListSetterUnsupported(@this))
             {
                 @this.SetCompoundDrawableTintListForApisBelow23(color);
                 return;
