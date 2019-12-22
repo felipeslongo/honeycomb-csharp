@@ -17,8 +17,13 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         public LifecycleDisposable(LifecycleObservable observable)
         {
-            disposables.Add(() => observable.ViewDidDestroy -= LifecycleObservableViewDidDestroy);
-            observable.ViewDidDestroy += LifecycleObservableViewDidDestroy;
+            disposables.Add(() => 
+            {
+                observable.ViewWillDismissOrRemove -= LifecycleObservableViewWillOrDidDismissOrRemove;
+                observable.ViewDidDismissOrRemove -= LifecycleObservableViewWillOrDidDismissOrRemove; 
+            });
+            observable.ViewWillDismissOrRemove += LifecycleObservableViewWillOrDidDismissOrRemove;
+            observable.ViewDidDismissOrRemove += LifecycleObservableViewWillOrDidDismissOrRemove;
         }
 
         public bool IsDisposed { get; private set; }
@@ -46,6 +51,12 @@ namespace HoneyComb.Platform.iOS.Lifecycles
                 throw new ObjectDisposedException(nameof(LifecycleDisposable));
         }
 
-        private void LifecycleObservableViewDidDestroy(object sender, EventArgs e) => Dispose();
+        private void LifecycleObservableViewWillOrDidDismissOrRemove(object sender, EventArgs e)
+        {
+            if (IsDisposed)
+                return;
+
+            Dispose();
+        }
     }
 }
