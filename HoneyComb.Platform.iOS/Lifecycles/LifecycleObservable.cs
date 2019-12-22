@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HoneyComb.Platform.iOS.Lifecycles
 {
@@ -33,6 +31,10 @@ namespace HoneyComb.Platform.iOS.Lifecycles
         public event EventHandler? ViewWillDisappear;
 
         public event EventHandler? ViewDidDisappear;
+
+        public event EventHandler? ViewWillDestroy;
+
+        public event EventHandler? ViewDidDestroy;
 
         /// <summary>
         ///     Gets the last current state captured.
