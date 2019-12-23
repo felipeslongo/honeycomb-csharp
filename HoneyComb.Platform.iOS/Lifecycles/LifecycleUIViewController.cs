@@ -12,29 +12,29 @@ namespace HoneyComb.Platform.iOS.Lifecycles
     /// </summary>
     public abstract class LifecycleUIViewController : UIViewController
     {
-        public LifecycleUIViewController()
+        public LifecycleUIViewController() : base()
         {
-            Companion = new UIViewControllerCompanion(this);
+            Companion = CreateCompanion();
         }
 
         public LifecycleUIViewController(NSCoder coder) : base(coder)
         {
-            Companion = new UIViewControllerCompanion(this);
+            Companion = CreateCompanion();
         }
 
         public LifecycleUIViewController(string nibName, NSBundle bundle) : base(nibName, bundle)
         {
-            Companion = new UIViewControllerCompanion(this);
+            Companion = CreateCompanion();
         }
 
         protected LifecycleUIViewController(NSObjectFlag t) : base(t)
         {
-            Companion = new UIViewControllerCompanion(this);
+            Companion = CreateCompanion();
         }
 
         protected internal LifecycleUIViewController(IntPtr handle) : base(handle)
         {
-            Companion = new UIViewControllerCompanion(this);
+            Companion = CreateCompanion();
         }
 
         public UIViewControllerCompanion Companion { get; private set; }
@@ -92,5 +92,45 @@ namespace HoneyComb.Platform.iOS.Lifecycles
             base.ViewDidDisappear(animated);
             Companion.MutableLifecycleOwners.MutableObservable.NotifyViewDidDisappear();
         }
+
+        protected virtual UIViewControllerCompanion CreateCompanion() =>
+            new UIViewControllerCompanion(this);
+    }
+
+    /// <summary>
+    /// Lifecycle-Aware UIViewController.
+    /// Use it to remove boilerplate code
+    /// needed to invoke events from each state.
+    /// 
+    /// With a ViewModel generic Companion.
+    /// </summary>
+    public abstract class LifecycleUIViewController<TViewModel> : LifecycleUIViewController
+    {
+        public LifecycleUIViewController() : base()
+        {
+        }
+
+        public LifecycleUIViewController(NSCoder coder) : base(coder)
+        {
+        }
+
+        public LifecycleUIViewController(string nibName, NSBundle bundle) : base(nibName, bundle)
+        {
+        }
+
+        protected LifecycleUIViewController(NSObjectFlag t) : base(t)
+        {
+        }
+
+        protected internal LifecycleUIViewController(IntPtr handle) : base(handle)
+        {
+        }
+
+        public new UIViewControllerCompanion<TViewModel> Companion => (UIViewControllerCompanion<TViewModel>)base.Companion;
+
+        protected override UIViewControllerCompanion CreateCompanion() =>
+            new UIViewControllerCompanion<TViewModel>(this, CreateViewModel());
+
+        protected abstract TViewModel CreateViewModel();
     }
 }
