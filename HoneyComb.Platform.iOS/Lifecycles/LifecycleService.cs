@@ -23,5 +23,8 @@ namespace HoneyComb.Platform.iOS.Lifecycles
         /// <returns></returns>
         public static bool IsBeingDismissedOrRemoved(UIViewController controller) =>
             IsUIViewControllerBeingDismissedOrPoppedOfFromTheNavigationControllUsecase.Execute(controller);
+
+        internal static MutableLifecycleObservable GetMutableObservable(UIViewController controller) =>
+            new MutableLifecycleObservable();
     }
 }
