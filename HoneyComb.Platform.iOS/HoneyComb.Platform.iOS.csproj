@@ -18,6 +18,7 @@
     <PackageTags>android;xamarin;xamarin.ios</PackageTags>
     <Description>
       Helpers and Utils to be used in a Xamarin.iOS project.
+        -Lifecycle-Aware
     </Description>
   </PropertyGroup>
   
