@@ -59,7 +59,7 @@ namespace HoneyComb.Platform.iOS.Lifecycles
                     NotifyStateChange(LifecycleState.Inactive);
                     break;
 
-                case iOSLifecycleState.Destroyed:
+                case iOSLifecycleState.DismissedOrRemoved:
                     NotifyStateChange(LifecycleState.Inactive);
                     NotifyStateChange(LifecycleState.Disposed);
                     break;

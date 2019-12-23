@@ -25,8 +25,8 @@
         /// </summary>
         Disappeared,
         /// <summary>
-        /// Destroyed state for a LifecycleOwner. After this event, this Lifecycle will not dispatch any more events.
+        /// Dismissed Or Removed as child controller state for a LifecycleOwner. After this event, this Lifecycle will not dispatch any more events.
         /// </summary>
-        Destroyed,
+        DismissedOrRemoved,
     }
 }
