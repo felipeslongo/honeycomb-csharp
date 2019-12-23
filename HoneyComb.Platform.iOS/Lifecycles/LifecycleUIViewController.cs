@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using HoneyComb.Platform.iOS.UIKitX;
 using System;
 using UIKit;
 
@@ -11,82 +12,85 @@ namespace HoneyComb.Platform.iOS.Lifecycles
     /// </summary>
     public abstract class LifecycleUIViewController : UIViewController
     {
-        private MutableLifecycleObservable lifecycleObservable = new MutableLifecycleObservable();
-
         public LifecycleUIViewController()
         {
+            Companion = new UIViewControllerCompanion(this);
         }
 
         public LifecycleUIViewController(NSCoder coder) : base(coder)
         {
+            Companion = new UIViewControllerCompanion(this);
         }
 
         public LifecycleUIViewController(string nibName, NSBundle bundle) : base(nibName, bundle)
         {
+            Companion = new UIViewControllerCompanion(this);
         }
 
         protected LifecycleUIViewController(NSObjectFlag t) : base(t)
         {
+            Companion = new UIViewControllerCompanion(this);
         }
 
         protected internal LifecycleUIViewController(IntPtr handle) : base(handle)
         {
+            Companion = new UIViewControllerCompanion(this);
         }
 
-        public LifecycleObservable LifecycleObservable => lifecycleObservable;
+        public UIViewControllerCompanion Companion { get; private set; }
 
         public override void LoadView()
         {
             base.LoadView();
-            lifecycleObservable.NotifyLoadView();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyLoadView();
         }
 
         public override void LoadViewIfNeeded()
         {
             base.LoadViewIfNeeded();
-            lifecycleObservable.NotifyLoadViewIfNeeded();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyLoadViewIfNeeded();
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            lifecycleObservable.NotifyViewDidLoad();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewDidLoad();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            lifecycleObservable.NotifyViewWillAppear();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewWillAppear();
         }
 
         public override void ViewWillLayoutSubviews()
         {
             base.ViewWillLayoutSubviews();
-            lifecycleObservable.NotifyViewWillLayoutSubviews();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewWillLayoutSubviews();
         }
 
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
-            lifecycleObservable.NotifyViewDidLayoutSubviews();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewDidLayoutSubviews();
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            lifecycleObservable.NotifyViewDidAppear();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewDidAppear();
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            lifecycleObservable.NotifyViewWillDisappear(this);
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewWillDisappear(this);
         }
 
         public override void ViewDidDisappear(bool animated)
         {
             base.ViewDidDisappear(animated);
-            lifecycleObservable.NotifyViewDidDisappear();
+            Companion.MutableLifecycleOwners.MutableObservable.NotifyViewDidDisappear();
         }
     }
 }
