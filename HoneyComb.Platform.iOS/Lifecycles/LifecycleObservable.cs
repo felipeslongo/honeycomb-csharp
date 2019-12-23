@@ -53,14 +53,26 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         protected void InvokeViewDidLayoutSubviews() => ViewDidLayoutSubviews?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewDidAppear() => ViewDidAppear?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewDidAppear()
+        {
+            StateLastKnown = iOSLifecycleState.Appeared;
+            ViewDidAppear?.Invoke(this, EventArgs.Empty);
+        }
 
         protected void InvokeViewWillDisappear() => ViewWillDisappear?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewDidDisappear() => ViewDidDisappear?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewDidDisappear()
+        {
+            StateLastKnown = iOSLifecycleState.Disappeared;
+            ViewDidDisappear?.Invoke(this, EventArgs.Empty);
+        }
 
         protected void InvokeViewWillDismissOrRemove() => ViewWillDismissOrRemove?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewDidDismissOrRemove() => ViewDidDismissOrRemove?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewDidDismissOrRemove()
+        {
+            StateLastKnown = iOSLifecycleState.DismissedOrRemoved;
+            ViewDidDismissOrRemove?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
