@@ -19,6 +19,22 @@ namespace HoneyComb.LiveDataNet
 
         /// <summary>
         /// Starts to listen the given source LiveData,
+        /// converter action will be called when source value was changed,
+        /// and the returned value will be set into this Mediator instance.
+        /// </summary>
+        /// <typeparam name="TSource">LiveData source type.</typeparam>
+        /// <param name="source">the LiveData to listen to.</param>
+        /// <param name="converter">the conversion from <typeparamref name="TSource"/> to <typeparamref name="T"/></param>
+        /// <returns>Unsubscription IDisposable</returns>
+        public IDisposable AddSource<TSource>(LiveData<TSource> source, Func<TSource, T> converter)
+        {
+            return AddSource(source, OnSourceChanged);
+
+            void OnSourceChanged(TSource sourceValue) => Value = converter(sourceValue);
+        }
+
+        /// <summary>
+        /// Starts to listen the given source LiveData,
         /// onSourceChanged action will be called when source value was changed.
         /// </summary>
         /// <param name="source">the LiveData to listen to.</param>

@@ -6,7 +6,7 @@ namespace HoneyComb.LiveDataNet.Tests
 {
     public class MediatorLiveDataTest
     {
-        public class AddSourceTests : MediatorLiveDataTest
+        public class AddSourceTests_Action : MediatorLiveDataTest
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
             public void GivenADisposedOfSubscription_WhenDisposedOfAgain_ShouldDoNothing()
@@ -71,6 +71,21 @@ namespace HoneyComb.LiveDataNet.Tests
                 source.Value = int.MaxValue;
 
                 Assert.False(isOnSourceChangedInvoked);
+            }
+        }
+
+        public class AddSourceTests_Func : MediatorLiveDataTest
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAMediatorWithASource_WhenSourceChanges_ShouldInvokeSetValueUsingConverter()
+            {
+                var source = new MutableLiveData<int>();
+                var mediator = new MediatorLiveData<bool>();
+                mediator.AddSource(source, Convert.ToBoolean);
+
+                source.Value = 1;
+
+                Assert.True(mediator.Value);
             }
         }
 
