@@ -63,6 +63,14 @@ namespace HoneyComb.LiveDataNet
         }
 
         /// <summary>
+        /// Starts to listen the given sources of LiveData of same type,
+        /// and the returned value of each source will be set into this Mediator instance.
+        /// </summary>
+        /// <param name="sources">the sources of type LiveData to listen to.</param>
+        /// <returns>Unsubscriptions IDisposables. Each index position matches the source index position.</returns>
+        public IDisposable[] AddSources(params LiveData<T>[] sources) => sources.Select(AddSource).ToArray();
+
+        /// <summary>
         /// Stops to listen the given LiveData.
         ///
         /// If the passed LiveData is not a source, this method does nothing.

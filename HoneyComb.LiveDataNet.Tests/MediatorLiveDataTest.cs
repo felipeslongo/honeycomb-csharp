@@ -7,6 +7,46 @@ namespace HoneyComb.LiveDataNet.Tests
 {
     public class MediatorLiveDataTest
     {
+        public class AddSourcesTests : MediatorLiveDataTest
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAMediatorWithMultipleSources_WhenOneSourceIsDisposed_ShouldStopListeningToThatSourceChanges()
+            {
+                var source1 = new MutableLiveData<int>();
+                var source2 = new MutableLiveData<int>();
+                var source3 = new MutableLiveData<int>();
+                var mediator = new MediatorLiveData<int>();
+                var subscriptions = mediator.AddSources(source1, source2, source3);
+                var mediatorDispatchedValues = new List<int>();
+                _ = mediator.BindMethod(mediatorDispatchedValues.Add);
+
+                subscriptions[1].Dispose();
+                source1.Value = 1;
+                source2.Value = 2;
+                source3.Value = 3;
+
+                Assert.Equal(new[] { 1, 3 }, mediatorDispatchedValues);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAMediatorWithMultipleSources_WhenSourcesChanges_ShouldSetValueUsingEachSourceValue()
+            {
+                var source1 = new MutableLiveData<int>();
+                var source2 = new MutableLiveData<int>();
+                var source3 = new MutableLiveData<int>();
+                var mediator = new MediatorLiveData<int>();
+                _ = mediator.AddSources(source1, source2, source3);
+                var mediatorDispatchedValues = new List<int>();
+                _ = mediator.BindMethod(mediatorDispatchedValues.Add);
+
+                source1.Value = 1;
+                source2.Value = 2;
+                source3.Value = 3;
+
+                Assert.Equal(new[] { 1, 2, 3 }, mediatorDispatchedValues);
+            }
+        }
+
         public class AddSourceTests : MediatorLiveDataTest
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
@@ -14,7 +54,7 @@ namespace HoneyComb.LiveDataNet.Tests
             {
                 var source = new MutableLiveData<int>();
                 var mediator = new MediatorLiveData<int>();
-                mediator.AddSource(source);
+                _ = mediator.AddSource(source);
 
                 source.Value = int.MaxValue;
 
@@ -28,9 +68,9 @@ namespace HoneyComb.LiveDataNet.Tests
                 var source2 = new MutableLiveData<int>();
                 var source3 = new MutableLiveData<int>();
                 var mediator = new MediatorLiveData<int>();
-                mediator.AddSource(source1);
-                mediator.AddSource(source2);
-                mediator.AddSource(source3);
+                _ = mediator.AddSource(source1);
+                _ = mediator.AddSource(source2);
+                _ = mediator.AddSource(source3);
                 var mediatorDispatchedValues = new List<int>();
                 mediator.BindMethod(mediatorDispatchedValues.Add);
 
