@@ -25,7 +25,7 @@ namespace HoneyComb.LiveDataNet
         /// <param name="onSourceChanged">The observer that will receive the events.</param>
         /// <returns>Unsubscription IDisposable</returns>
         /// <exception cref="InvalidOperationException">If the given LiveData is already added as a source but with a different Observer</exception>
-        public IDisposable AddSource(LiveData<T> source, Action<T> onSourceChanged)
+        public IDisposable AddSource<TSource>(LiveData<TSource> source, Action<TSource> onSourceChanged)
         {
             if (GetSubscription(source) is Subscription existingSubscription)
                 return ReturnExistingSubscriptionIfValid(onSourceChanged, existingSubscription);
@@ -39,16 +39,16 @@ namespace HoneyComb.LiveDataNet
         /// If the passed LiveData is not a source, this method does nothing.
         /// </summary>
         /// <param name="source">LiveData to stop to listen</param>
-        public void RemoveSource(LiveData<T> source) => GetSubscription(source)?.Dispose();
+        public void RemoveSource<TSource>(LiveData<TSource> source) => GetSubscription(source)?.Dispose();
 
-        private static IDisposable ReturnExistingSubscriptionIfValid(Action<T> onSourceChanged, MediatorLiveData<T>.Subscription existingSubscription)
+        private static IDisposable ReturnExistingSubscriptionIfValid<TSource>(Action<TSource> onSourceChanged, MediatorLiveData<T>.Subscription existingSubscription)
         {
             if (existingSubscription.IsSameOnSourceChanged(onSourceChanged) == false)
                 throw new InvalidOperationException("The given LiveData is already added as a source but with a different Observer");
             return existingSubscription;
         }
 
-        private IDisposable CreateSubscription(LiveData<T> source, Action<T> onSourceChanged)
+        private IDisposable CreateSubscription<TSource>(LiveData<TSource> source, Action<TSource> onSourceChanged)
         {
             var sourceSubscription = source.BindMethod(onSourceChanged);
             var subscription = new Subscription(source, onSourceChanged, sourceSubscription);
@@ -56,7 +56,7 @@ namespace HoneyComb.LiveDataNet
             return subscription;
         }
 
-        private Subscription GetSubscription(LiveData<T> source) => subscriptions.FirstOrDefault(sub => sub.IsSameSource(source));
+        private Subscription GetSubscription<TSource>(LiveData<TSource> source) => subscriptions.FirstOrDefault(sub => sub.IsSameSource(source));
 
         private class Subscription : IDisposable
         {
