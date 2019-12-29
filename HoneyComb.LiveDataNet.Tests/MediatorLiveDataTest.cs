@@ -1,11 +1,47 @@
 ﻿using HoneyComb.TestChamber;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace HoneyComb.LiveDataNet.Tests
 {
     public class MediatorLiveDataTest
     {
+        public class AddSourceTests : MediatorLiveDataTest
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAMediatorWithASource_WhenSourceChanges_ShouldSetValueUsingSourceValue()
+            {
+                var source = new MutableLiveData<int>();
+                var mediator = new MediatorLiveData<int>();
+                mediator.AddSource(source);
+
+                source.Value = int.MaxValue;
+
+                Assert.Equal(source.Value, mediator.Value);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAMediatorWithMultipleSources_WhenSourcesChanges_ShouldSetValueUsingEachSourceValue()
+            {
+                var source1 = new MutableLiveData<int>();
+                var source2 = new MutableLiveData<int>();
+                var source3 = new MutableLiveData<int>();
+                var mediator = new MediatorLiveData<int>();
+                mediator.AddSource(source1);
+                mediator.AddSource(source2);
+                mediator.AddSource(source3);
+                var mediatorDispatchedValues = new List<int>();
+                mediator.BindMethod(mediatorDispatchedValues.Add);
+
+                source1.Value = 1;
+                source2.Value = 2;
+                source3.Value = 3;
+
+                Assert.Equal(new[] { 1, 2, 3 }, mediatorDispatchedValues);
+            }
+        }
+
         public class AddSourceTests_Action : MediatorLiveDataTest
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
@@ -77,7 +113,7 @@ namespace HoneyComb.LiveDataNet.Tests
         public class AddSourceTests_Func : MediatorLiveDataTest
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
-            public void GivenAMediatorWithASource_WhenSourceChanges_ShouldInvokeSetValueUsingConverter()
+            public void GivenAMediatorWithASource_WhenSourceChanges_ShouldSetValueConvertingSourceValue()
             {
                 var source = new MutableLiveData<int>();
                 var mediator = new MediatorLiveData<bool>();

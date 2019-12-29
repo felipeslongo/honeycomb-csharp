@@ -18,6 +18,19 @@ namespace HoneyComb.LiveDataNet
         private readonly List<Subscription> subscriptions = new List<Subscription>();
 
         /// <summary>
+        /// Starts to listen the given source LiveData of same type,
+        /// and the returned value will be set into this Mediator instance.
+        /// </summary>
+        /// <param name="source">the LiveData to listen to.</param>
+        /// <returns>Unsubscription IDisposable</returns>
+        public IDisposable AddSource(LiveData<T> source)
+        {
+            return AddSource(source, OnSourceChanged);
+
+            void OnSourceChanged(T sourceValue) => Value = sourceValue;
+        }
+
+        /// <summary>
         /// Starts to listen the given source LiveData,
         /// converter action will be called when source value was changed,
         /// and the returned value will be set into this Mediator instance.
