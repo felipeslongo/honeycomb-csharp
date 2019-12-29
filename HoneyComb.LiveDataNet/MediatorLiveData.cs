@@ -73,9 +73,9 @@ namespace HoneyComb.LiveDataNet
 
             public void Dispose() => subscription.Dispose();
 
-            internal bool IsSameOnSourceChanged(object onSourceChanged) => this.onSourceChanged == onSourceChanged;
+            internal bool IsSameOnSourceChanged<TSource>(Action<TSource> onSourceChanged) => this.onSourceChanged == onSourceChanged as object;
 
-            internal bool IsSameSource(object source) => this.source == source;
+            internal bool IsSameSource<TSource>(LiveData<TSource> source) => this.source == source;
         }
     }
 }
