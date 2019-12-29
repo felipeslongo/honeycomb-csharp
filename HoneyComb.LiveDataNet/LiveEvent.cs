@@ -8,6 +8,9 @@ namespace HoneyComb.LiveDataNet
     /// Lifecycle-aware EventHandler.
     /// Similar to <see cref="LiveData{T}"/>
     /// but dispatch events only once.
+    ///
+    /// It's the notion that events should
+    /// be consumed and handled only once.
     /// </summary>
     public class LiveEvent<TEventArgs>
     {
@@ -18,17 +21,26 @@ namespace HoneyComb.LiveDataNet
 
         public LiveEvent()
         {
+            Init();
         }
 
         public LiveEvent(TEventArgs value)
         {
             liveData.Value = new Event<TEventArgs>(value);
+            Init();
         }
 
         public LiveEvent(MutableLiveData<Event<TEventArgs>> eventSource)
         {
             liveData = eventSource;
+            Init();
         }
+
+        /// <summary>
+        /// Subscribe to be notified of new events,
+        /// even if is already handled.
+        /// </summary>
+        public event EventHandler<Event<TEventArgs>>? EventChanged;
 
         /// <summary>
         /// Subscribe to be notified of new events,
@@ -80,5 +92,9 @@ namespace HoneyComb.LiveDataNet
             void UnwrapEventAndNotifySubscriber(object _, Event<TEventArgs> @event) => @event.ExecuteIfUnhandled(NotifySubscriber);
             void NotifySubscriber(TEventArgs content) => subscriber(this, content);
         }
+
+        private void Init() => liveData.BindMethod(InvokeEventChanged);
+
+        private void InvokeEventChanged(Event<TEventArgs> @event) => EventChanged?.Invoke(this, @event);
     }
 }
