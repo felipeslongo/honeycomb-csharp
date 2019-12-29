@@ -95,6 +95,9 @@ namespace HoneyComb.LiveDataNet
 
         private Subscription GetSubscription<TSource>(LiveData<TSource> source) => subscriptions.FirstOrDefault(sub => sub.IsSameSource(source));
 
+        /// <summary>
+        /// Simple data class to wrap everithing needed to make comparisons easier.
+        /// </summary>
         private class Subscription : IDisposable
         {
             private readonly object onSourceChanged;
