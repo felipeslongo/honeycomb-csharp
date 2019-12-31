@@ -109,6 +109,32 @@ namespace HoneyComb.LiveDataNet.Tests
             [Fact, Trait(nameof(Category), Category.Unit)]
             public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
             {
+                const int inicializationValue = int.MaxValue;
+                var liveEvent = new MutableLiveEvent<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveEvent.SubscribeToExecuteIfUnhandled(_ => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                var liveEvent = new MutableLiveEvent<int>();
+                var isNotifyInvoked = false;
+
+                liveEvent.SubscribeToExecuteIfUnhandled(_ => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
+            }
+        }
+
+        public class SubscribeToExecuteIfUnhandledTests_ILifecycleOwner : LiveEventTests
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
+            {
                 lifecycle.NotifyStateChange(LifecycleState.Active);
                 const int inicializationValue = int.MaxValue;
                 var liveEvent = new MutableLiveEvent<int>(inicializationValue);

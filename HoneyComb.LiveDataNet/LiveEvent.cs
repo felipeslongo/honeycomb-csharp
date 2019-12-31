@@ -79,6 +79,21 @@ namespace HoneyComb.LiveDataNet
         /// It's useless to subscribe to multiple subscribers because the first
         /// one will handle the event, and the subsequent ones will not be notified.
         /// </summary>
+        /// <param name="subscriber">Action delegate</param>
+        /// <returns>Unsubscription delegate.</returns>
+        public IDisposable SubscribeToExecuteIfUnhandled(Action<TEventArgs> subscriber)
+        {
+            return Subscribe(@event => UnwrapEventAndNotifySubscriber(@event));
+
+            void UnwrapEventAndNotifySubscriber(Event<TEventArgs> @event) => @event.ExecuteIfUnhandled(NotifySubscriber);
+            void NotifySubscriber(TEventArgs content) => subscriber(content);
+        }
+
+        /// <summary>
+        /// Subscribe to be notified only if the event is not handled.
+        /// It's useless to subscribe to multiple subscribers because the first
+        /// one will handle the event, and the subsequent ones will not be notified.
+        /// </summary>
         /// <param name="lifecycleOwner">LifecycleOwner</param>
         /// <param name="subscriber">Action delegate</param>
         /// <returns>Unsubscription delegate.</returns>
