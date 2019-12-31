@@ -46,6 +46,14 @@ namespace HoneyComb.LiveDataNet
         /// Subscribe to be notified of new events,
         /// even if is already handled.
         /// </summary>
+        /// <param name="subscriber">Action delegate</param>
+        /// <returns>Unsubscription delegate.</returns>
+        public IDisposable Subscribe(Action<Event<TEventArgs>> subscriber) => liveData.BindMethod(subscriber);
+
+        /// <summary>
+        /// Subscribe to be notified of new events,
+        /// even if is already handled.
+        /// </summary>
         /// <param name="lifecycleOwner">LifecycleOwner</param>
         /// <param name="subscriber">Action delegate</param>
         /// <returns>Unsubscription delegate.</returns>

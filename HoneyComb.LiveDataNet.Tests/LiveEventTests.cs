@@ -64,6 +64,21 @@ namespace HoneyComb.LiveDataNet.Tests
         public class SubscribeTests : LiveEventTests
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenALiveEvent_WhenInvoked_ShouldNotifySubscriber()
+            {
+                var liveEvent = new MutableLiveEvent<bool>();
+                var isNotified = false;
+                liveEvent.Subscribe(eventValue => isNotified = eventValue.PeekContent);
+
+                liveEvent.Invoke(true);
+
+                Assert.True(isNotified);
+            }
+        }
+
+        public class SubscribeTests_ILifecycleOwner : LiveEventTests
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
             public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
             {
                 lifecycle.NotifyStateChange(LifecycleState.Active);
