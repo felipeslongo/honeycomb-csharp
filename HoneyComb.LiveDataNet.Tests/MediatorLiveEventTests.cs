@@ -152,6 +152,31 @@ namespace HoneyComb.LiveEventNet.Tests
 
                 Assert.False(isOnSourceChangedInvoked);
             }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenASourceWithoutValueSet_WhenSourceIsAdded_ShouldNotInvokeOnSourceChanged()
+            {
+                var sourceWithoutValue = new MutableLiveEvent<int>();
+                var mediator = new MediatorLiveEvent<int>();
+                var isOnSourceChangedInvoked = false;
+
+                mediator.AddSource(sourceWithoutValue, _ => isOnSourceChangedInvoked = true);
+
+                Assert.False(isOnSourceChangedInvoked);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenASourceWithValueSet_WhenSourceIsAdded_ShouldInvokeOnSourceChanged()
+            {
+                var sourceWithoutValue = new MutableLiveEvent<int>();
+                sourceWithoutValue.Invoke(int.MaxValue);
+                var mediator = new MediatorLiveEvent<int>();
+                var isOnSourceChangedInvoked = false;
+
+                mediator.AddSource(sourceWithoutValue, _ => isOnSourceChangedInvoked = true);
+
+                Assert.True(isOnSourceChangedInvoked);
+            }
         }
 
         public class AddSourceTests_Func : MediatorLiveEventTests
