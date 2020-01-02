@@ -15,6 +15,21 @@ namespace HoneyComb.LiveDataNet.Tests
 
         public Lifecycle Lifecycle => lifecycle;
 
+        public class EventChangedTests : LiveEventTests
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenALiveEvent_WhenInvoked_ShouldNotifySubscriber()
+            {
+                var liveEvent = new MutableLiveEvent<bool>();
+                var isNotified = false;
+                liveEvent.EventChanged += (_, eventValue) => isNotified = eventValue.PeekContent;
+
+                liveEvent.Invoke(true);
+
+                Assert.True(isNotified);
+            }
+        }
+
         public class InvokeTests : LiveEventTests
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
@@ -49,6 +64,21 @@ namespace HoneyComb.LiveDataNet.Tests
         public class SubscribeTests : LiveEventTests
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenALiveEvent_WhenInvoked_ShouldNotifySubscriber()
+            {
+                var liveEvent = new MutableLiveEvent<bool>();
+                var isNotified = false;
+                liveEvent.Subscribe(eventValue => isNotified = eventValue.PeekContent);
+
+                liveEvent.Invoke(true);
+
+                Assert.True(isNotified);
+            }
+        }
+
+        public class SubscribeTests_ILifecycleOwner : LiveEventTests
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
             public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
             {
                 lifecycle.NotifyStateChange(LifecycleState.Active);
@@ -75,6 +105,32 @@ namespace HoneyComb.LiveDataNet.Tests
         }
 
         public class SubscribeToExecuteIfUnhandledTests : LiveEventTests
+        {
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
+            {
+                const int inicializationValue = int.MaxValue;
+                var liveEvent = new MutableLiveEvent<int>(inicializationValue);
+                var isNotifyInvoked = false;
+
+                liveEvent.SubscribeToExecuteIfUnhandled(_ => isNotifyInvoked = true);
+
+                Assert.True(isNotifyInvoked);
+            }
+
+            [Fact, Trait(nameof(Category), Category.Unit)]
+            public void GivenAnUninitializedLiveData_WhenIsInvoked_ShouldNotNotifySubscriber()
+            {
+                var liveEvent = new MutableLiveEvent<int>();
+                var isNotifyInvoked = false;
+
+                liveEvent.SubscribeToExecuteIfUnhandled(_ => isNotifyInvoked = true);
+
+                Assert.False(isNotifyInvoked);
+            }
+        }
+
+        public class SubscribeToExecuteIfUnhandledTests_ILifecycleOwner : LiveEventTests
         {
             [Fact, Trait(nameof(Category), Category.Unit)]
             public void GivenAnInitializedLiveEvent_WhenIsInvoked_ShouldNotifySubscriber()
