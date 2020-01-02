@@ -14,15 +14,7 @@ jobs:
       uses: actions/setup-dotnet@v1.0.0
       with:
         dotnet-version: '3.1.100' # SDK Version to use.
-    - name: Build with dotnet HoneyComb.Reflection.csproj
-      run: dotnet build HoneyComb.Reflection/HoneyComb.Reflection.csproj --configuration Release
-    - name: Test with dotnet HoneyComb.Reflection.Tests.csproj
-      run: dotnet test HoneyComb.Reflection.Tests/HoneyComb.Reflection.Tests.csproj --configuration Release
-    - name: Build with dotnet HoneyComb.Core.csproj
-      run: dotnet build HoneyComb.Platform.System/HoneyComb.Core.csproj --configuration Release
-    - name: Test with dotnet HoneyComb.Core.Tests.csproj
-      run: dotnet test HoneyComb.Platform.System.Tests/HoneyComb.Core.Tests.csproj --configuration Release
-    - name: Build with dotnet HoneyComb.LiveDataNet.csproj
-      run: dotnet build HoneyComb.LiveDataNet/HoneyComb.LiveDataNet.csproj --configuration Release
-    - name: Test with dotnet HoneyComb.LiveDataNet.Tests.csproj
-      run: dotnet test HoneyComb.LiveDataNet.Tests/HoneyComb.LiveDataNet.Tests.csproj --configuration Release
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Test with dotnet
+      run: dotnet test --configuration Release
