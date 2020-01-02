@@ -26,3 +26,9 @@ jobs:
       run: dotnet build HoneyComb.LiveDataNet/HoneyComb.LiveDataNet.csproj --configuration Release
     - name: Test with dotnet HoneyComb.LiveDataNet.Tests.csproj
       run: dotnet test HoneyComb.LiveDataNet.Tests/HoneyComb.LiveDataNet.Tests.csproj --configuration Release
+    - name: Build with dotnet HoneyComb.Platform.Android.csproj 
+      run: dotnet build HoneyComb.Platform.Android/HoneyComb.Platform.Android.csproj --configuration Release
+    - name: Build with dotnet HoneyComb.LiveDataNet.Platform.Android.csproj 
+      run: dotnet build HoneyComb.LiveDataNet.Platform.Android/HoneyComb.LiveDataNet.Platform.Android.csproj --configuration Release
+    - name: Build with dotnet HoneyComb.Application.AndroidApp.csproj
+      run: dotnet build HoneyComb.Application.AndroidApp/HoneyComb.Application.AndroidApp.csproj --configuration Release
