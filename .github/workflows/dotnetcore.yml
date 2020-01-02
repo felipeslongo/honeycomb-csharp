@@ -14,7 +14,11 @@ jobs:
       uses: actions/setup-dotnet@v1.0.0
       with:
         dotnet-version: '3.1.100' # SDK Version to use.
-    - name: Build with dotnet
+    - name: Build with dotnet Core.csproj
       run: dotnet build Core/Core.csproj --configuration Release
-    - name: Test with dotnet
+    - name: Test with dotnet Core.csproj
       run: dotnet test CoreTests/CoreTests.csproj --configuration Release
+    - name: Build with dotnet HoneyComb.LiveDataNet.csproj
+      run: dotnet build HoneyComb.LiveDataNet/HoneyComb.LiveDataNet.csproj --configuration Release
+    - name: Test with dotnet HoneyComb.LiveDataNet.Tests.csproj
+      run: dotnet test HoneyComb.LiveDataNet.Tests/HoneyComb.LiveDataNet.Tests.csproj --configuration Release
