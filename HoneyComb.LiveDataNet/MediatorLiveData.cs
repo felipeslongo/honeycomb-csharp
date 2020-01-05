@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoneyComb.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,6 +78,14 @@ namespace HoneyComb.LiveDataNet
         /// </summary>
         /// <param name="source">LiveData to stop to listen</param>
         public void RemoveSource<TSource>(LiveData<TSource> source) => GetSubscription(source)?.Dispose();
+
+        /// <summary>
+        /// Convenience factory to create a <see cref="LiveEvent{TEventArgs}"/> mediator.
+        /// which may observe other LiveEvent objects
+        /// and react on <see cref="LiveEvent{T}.EventChanged"/> events from them.
+        /// </summary>
+        /// <returns>Mediator instance.</returns>
+        public static MediatorLiveData<Event<T>> CreateMediatorLiveEvent() => new MediatorLiveData<Event<T>>();
 
         private static IDisposable ReturnExistingSubscriptionIfValid<TSource>(Action<TSource> onSourceChanged, MediatorLiveData<T>.Subscription existingSubscription)
         {

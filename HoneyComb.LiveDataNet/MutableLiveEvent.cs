@@ -29,6 +29,6 @@ namespace HoneyComb.LiveDataNet
         /// Invoke/Notify the subscribers with a new event.
         /// </summary>
         /// <param name="eventArgs"></param>
-        public void Invoke(TEventArgs eventArgs) => liveData.Value = new Event<TEventArgs>(eventArgs);
+        public void Invoke(TEventArgs eventArgs) => Value = new Event<TEventArgs>(eventArgs);
     }
 }
