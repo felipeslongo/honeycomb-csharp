@@ -12,27 +12,20 @@ namespace HoneyComb.LiveDataNet
     /// It's the notion that events should
     /// be consumed and handled only once.
     /// </summary>
-    public class LiveEvent<TEventArgs>
+    public class LiveEvent<TEventArgs> : LiveData<Event<TEventArgs>>
     {
-        /// <summary>
-        /// LiveData used to delegate the lifecycle-aware responsability.
-        /// </summary>
-        protected readonly MutableLiveData<Event<TEventArgs>> liveData = new MutableLiveData<Event<TEventArgs>>();
-
-        public LiveEvent()
+        public LiveEvent() : base()
         {
             Init();
         }
 
-        public LiveEvent(TEventArgs value)
+        public LiveEvent(TEventArgs value) : base(new Event<TEventArgs>(value))
         {
-            liveData.Value = new Event<TEventArgs>(value);
             Init();
         }
 
-        public LiveEvent(MutableLiveData<Event<TEventArgs>> eventSource)
+        public LiveEvent(MutableLiveData<Event<TEventArgs>> eventSource) : base(eventSource)
         {
-            liveData = eventSource;
             Init();
         }
 
@@ -48,7 +41,7 @@ namespace HoneyComb.LiveDataNet
         /// </summary>
         /// <param name="subscriber">Action delegate</param>
         /// <returns>Unsubscription delegate.</returns>
-        public IDisposable Subscribe(Action<Event<TEventArgs>> subscriber) => liveData.BindMethod(subscriber);
+        public IDisposable Subscribe(Action<Event<TEventArgs>> subscriber) => BindMethod(subscriber);
 
         /// <summary>
         /// Subscribe to be notified of new events,
@@ -69,7 +62,7 @@ namespace HoneyComb.LiveDataNet
         /// <returns>Unsubscription delegate.</returns>
         public IDisposable Subscribe(ILifecycleOwner lifecycleOwner, EventHandler<Event<TEventArgs>> subscriber)
         {
-            return liveData.BindMethod(lifecycleOwner, NotifySubscriber);
+            return BindMethod(lifecycleOwner, NotifySubscriber);
 
             void NotifySubscriber(Event<TEventArgs> @event) => subscriber(this, @event);
         }
@@ -116,7 +109,7 @@ namespace HoneyComb.LiveDataNet
             void NotifySubscriber(TEventArgs content) => subscriber(this, content);
         }
 
-        private void Init() => liveData.BindMethod(InvokeEventChanged);
+        private void Init() => BindMethod(InvokeEventChanged);
 
         private void InvokeEventChanged(Event<TEventArgs> @event) => EventChanged?.Invoke(this, @event);
     }

@@ -29,7 +29,7 @@ namespace HoneyComb.LiveEventNet
         {
             return AddSource(source, OnSourceChanged);
 
-            void OnSourceChanged(Event<TEventArgs> sourceValue) => liveData.Value = sourceValue;
+            void OnSourceChanged(Event<TEventArgs> sourceValue) => Value = sourceValue;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace HoneyComb.LiveEventNet
         {
             return AddSource(source, OnSourceChanged);
 
-            void OnSourceChanged(Event<TSource> sourceValue) => liveData.Value = converter(sourceValue);
+            void OnSourceChanged(Event<TSource> sourceValue) => Value = converter(sourceValue);
         }
 
         /// <summary>
