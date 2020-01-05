@@ -12,6 +12,11 @@ namespace HoneyComb.Platform.iOS.Lifecycles
     /// </summary>
     public sealed class AppLifecycleObservable
     {
+        /// <summary>
+        /// There is no reason not to be a singleton instance...
+        /// </summary>
+        private static readonly Lazy<AppLifecycleObservable> singleton = new Lazy<AppLifecycleObservable>(() => new AppLifecycleObservable());
+
         private AppLifecycleObservable()
         {
             SubscribeToUIApplicationLifecycle();
@@ -40,6 +45,8 @@ namespace HoneyComb.Platform.iOS.Lifecycles
         ///     Gets the Global Application Lifecycle <see cref="UIApplicationState" /> current state.
         /// </summary>
         public UIApplicationState StateCurrent => UIApplication.SharedApplication.ApplicationState;
+
+        internal static AppLifecycleObservable Create() => singleton.Value;
 
         private void Dispose()
         {

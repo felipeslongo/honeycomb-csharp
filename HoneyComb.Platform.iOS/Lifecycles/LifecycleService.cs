@@ -10,6 +10,12 @@ namespace HoneyComb.Platform.iOS.Lifecycles
     /// </summary>
     public static class LifecycleService
     {
+        /// <summary>
+        /// Gets an <see cref="AppLifecycleObservable"/> instance.
+        /// </summary>
+        /// <returns>Instance</returns>
+        public static AppLifecycleObservable GetAppLifecycleObservable() => AppLifecycleObservable.Create();
+
         public static LifecycleDisposable GetDisposable(LifecycleObservable lifecycleObservable) =>
             new LifecycleDisposable(lifecycleObservable);
 
