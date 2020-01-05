@@ -17,7 +17,7 @@ namespace HoneyComb.LiveEventNet.Tests
                 var source1 = new MutableLiveEvent<int>();
                 var source2 = new MutableLiveEvent<int>();
                 var source3 = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var subscriptions = mediator.AddSources(source1, source2, source3);
                 var mediatorDispatchedValues = new List<int>();
                 _ = mediator.SubscribeToExecuteIfUnhandled(mediatorDispatchedValues.Add);
@@ -36,7 +36,7 @@ namespace HoneyComb.LiveEventNet.Tests
                 var source1 = new MutableLiveEvent<int>();
                 var source2 = new MutableLiveEvent<int>();
                 var source3 = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 _ = mediator.AddSources(source1, source2, source3);
                 var mediatorDispatchedValues = new List<int>();
                 _ = mediator.SubscribeToExecuteIfUnhandled(mediatorDispatchedValues.Add);
@@ -55,7 +55,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceChanges_ShouldSetValueUsingSourceValue()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 _ = mediator.AddSource(source);
                 var mediatorEventArgs = 0;
                 mediator.SubscribeToExecuteIfUnhandled(eventArgs => mediatorEventArgs = eventArgs);
@@ -71,7 +71,7 @@ namespace HoneyComb.LiveEventNet.Tests
                 var source1 = new MutableLiveEvent<int>();
                 var source2 = new MutableLiveEvent<int>();
                 var source3 = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 _ = mediator.AddSource(source1);
                 _ = mediator.AddSource(source2);
                 _ = mediator.AddSource(source3);
@@ -92,7 +92,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenADisposedOfSubscription_WhenDisposedOfAgain_ShouldDoNothing()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var subscription = mediator.AddSource(source, _ => { });
                 subscription.Dispose();
 
@@ -103,7 +103,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceChanges_ShouldInvokeOnSourceChanged()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var isOnSourceChangedInvoked = false;
                 mediator.AddSource(source, _ => isOnSourceChangedInvoked = true);
 
@@ -116,7 +116,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceIsAddedAgainWithADifferentOnSourceChanged_ShouldThrowException()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 Action<Event<int>> handlerOne = _ => { };
                 Action<Event<int>> handlerTwo = _ => { };
                 mediator.AddSource(source, handlerOne);
@@ -128,7 +128,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceIsAddedAgainWithTheSameOnSourceChanged_ShouldInvokeOnSourceChangedJustOnce()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var onSourceChangeCallCount = 0;
                 Action<Event<int>> sameHandler = _ => onSourceChangeCallCount++;
                 mediator.AddSource(source, sameHandler);
@@ -143,7 +143,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSubscriptionIsDisposed_ShouldStopListeningToTheUnsubscribedSource()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var isOnSourceChangedInvoked = false;
                 var subscription = mediator.AddSource(source, _ => isOnSourceChangedInvoked = true);
                 subscription.Dispose();
@@ -157,7 +157,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenASourceWithoutValueSet_WhenSourceIsAdded_ShouldNotInvokeOnSourceChanged()
             {
                 var sourceWithoutValue = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var isOnSourceChangedInvoked = false;
 
                 mediator.AddSource(sourceWithoutValue, _ => isOnSourceChangedInvoked = true);
@@ -170,7 +170,7 @@ namespace HoneyComb.LiveEventNet.Tests
             {
                 var sourceWithoutValue = new MutableLiveEvent<int>();
                 sourceWithoutValue.Invoke(int.MaxValue);
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var isOnSourceChangedInvoked = false;
 
                 mediator.AddSource(sourceWithoutValue, _ => isOnSourceChangedInvoked = true);
@@ -185,7 +185,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceChanges_ShouldSetValueConvertingSourceValue()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<bool>();
+                var mediator = MediatorLiveData<bool>.CreateMediatorLiveEvent();
                 mediator.AddSource(source, sourceEvent => new Event<bool>(Convert.ToBoolean(sourceEvent.PeekContent)));
                 var mediatorEventArgs = false;
                 mediator.SubscribeToExecuteIfUnhandled(eventArgs => mediatorEventArgs = eventArgs);
@@ -202,7 +202,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorAndANotObservedSource_WhenSourceIsRemoved_ShouldDoNothing()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
 
                 mediator.RemoveSource(source);
             }
@@ -211,7 +211,7 @@ namespace HoneyComb.LiveEventNet.Tests
             public void GivenAMediatorWithASource_WhenSourceIsRemoved_ShouldStopListeningToTheUnsubscribedSource()
             {
                 var source = new MutableLiveEvent<int>();
-                var mediator = new MediatorLiveEvent<int>();
+                var mediator = MediatorLiveData<int>.CreateMediatorLiveEvent();
                 var isOnSourceChangedInvoked = false;
                 mediator.AddSource(source, _ => isOnSourceChangedInvoked = true);
                 mediator.RemoveSource(source);
