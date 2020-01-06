@@ -10,12 +10,12 @@
 
   <PropertyGroup Label="NuGet">
     <Version>1.0.0</Version>
-    <PackageVersion>1.0.0-alpha01</PackageVersion>
+    <PackageVersion>1.0.0-alpha02</PackageVersion>
     <Authors>Felipe de Souza Longo</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
-    <PackageTags>android;xamarin;xamarin.ios</PackageTags>
+    <PackageTags>ios;xamarin;xamarin.ios</PackageTags>
     <Description>
       Helpers and Utils to be used in a Xamarin.iOS project.
         -Lifecycle-Aware
