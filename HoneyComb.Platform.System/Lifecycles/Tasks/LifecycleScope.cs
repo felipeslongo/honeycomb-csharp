@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using HoneyComb.Core.Threading.Tasks;
 
 namespace HoneyComb.Core.Lifecycles.Tasks
 {
@@ -10,10 +11,52 @@ namespace HoneyComb.Core.Lifecycles.Tasks
     /// </summary>
     /// <remarks>
     ///     Credits
-    ///         Source Code: https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-activity-release/lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle
-    ///         https://developer.android.com/topic/libraries/architecture/coroutines#lifecyclescope
+    ///     Source Code:
+    ///     https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-activity-release/lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle
+    ///     https://developer.android.com/topic/libraries/architecture/coroutines#lifecyclescope
     /// </remarks>
-    public sealed class LifecycleScope
+    public sealed class LifecycleScope : ITaskScope
     {
+        private readonly Lifecycle lifecycle;
+        private readonly CancellationTokenSource tokenSouce = new CancellationTokenSource();
+
+        public LifecycleScope(Lifecycle lifecycle)
+        {
+            this.lifecycle = lifecycle;
+            Init();
+        }
+
+        public CancellationToken CancellationToken => tokenSouce.Token;
+
+        public async Task Launch(Func<CancellationToken, Task> block)
+        {
+            if (tokenSouce.IsCancellationRequested)
+                return;
+
+            try
+            {
+                await block(CancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        private void Init()
+        {
+            if (lifecycle.CurrentState == LifecycleState.Disposed)
+            {
+                tokenSouce.Cancel();
+                return;
+            }
+
+            lifecycle.OnDisposed += LifecycleOnOnDisposed;
+        }
+
+        private void LifecycleOnOnDisposed(object sender, EventArgs e)
+        {
+            tokenSouce.Cancel();
+            lifecycle.OnDisposed -= LifecycleOnOnDisposed;
+        }
     }
 }
