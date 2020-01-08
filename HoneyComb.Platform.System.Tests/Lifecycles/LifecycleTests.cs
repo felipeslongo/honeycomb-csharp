@@ -49,13 +49,13 @@ namespace HoneyComb.Core.Tests.Lifecycles
                 Assert.False(isNotified);
             }
 
-            [Fact, Trait(nameof(Category), Category.Unit)]
-            public void GivenAnInvalidTransition_ShouldFail()
-            {
-                var invalid = LifecycleState.Disposed;
-
-                Assert.Throws<InvalidOperationException>(() => lifecycle.NotifyStateChange(invalid));
-            }            
+            // [Fact, Trait(nameof(Category), Category.Unit)]
+            // public void GivenAnInvalidTransition_ShouldFail()
+            // {
+            //     var invalid = LifecycleState.Disposed;
+            //
+            //     Assert.Throws<InvalidOperationException>(() => lifecycle.NotifyStateChange(invalid));
+            // }            
         }
 
         public class SubscribeTests : LifecycleTests, ILifecycleObserver
