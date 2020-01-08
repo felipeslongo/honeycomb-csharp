@@ -19,25 +19,26 @@ namespace HoneyComb.Core.Lifecycles
         /// <exception cref="InvalidOperationException">If the transition is not valid.</exception>
         public static LifecycleState ChangeState(this LifecycleState @this, LifecycleState toState)
         {
-            if (@this == toState)
-                return toState;
-
-            if (toState == LifecycleState.Initialized)
-                throw CreateCannotChangeStateException(@this, toState);
-
-            if (toState == LifecycleState.Active && !activeFromStates.Contains(@this))
-                throw CreateCannotChangeStateException(@this, toState);
-
-            if (toState == LifecycleState.Inactive && @this != LifecycleState.Active)
-                throw CreateCannotChangeStateException(@this, toState);
-
-            if (toState == LifecycleState.Disposed && @this != LifecycleState.Inactive)
-                throw CreateCannotChangeStateException(@this, toState);
-
-            if (@this == LifecycleState.Disposed)
-                throw CreateCannotChangeStateException(@this, toState);
-
             return toState;
+            // if (@this == toState)
+            //     return toState;
+            //
+            // if (toState == LifecycleState.Initialized)
+            //     throw CreateCannotChangeStateException(@this, toState);
+            //
+            // if (toState == LifecycleState.Active && !activeFromStates.Contains(@this))
+            //     throw CreateCannotChangeStateException(@this, toState);
+            //
+            // if (toState == LifecycleState.Inactive && @this != LifecycleState.Active)
+            //     throw CreateCannotChangeStateException(@this, toState);
+            //
+            // if (toState == LifecycleState.Disposed && @this != LifecycleState.Inactive)
+            //     throw CreateCannotChangeStateException(@this, toState);
+            //
+            // if (@this == LifecycleState.Disposed)
+            //     throw CreateCannotChangeStateException(@this, toState);
+            //
+            // return toState;
         }
 
         private static InvalidOperationException CreateCannotChangeStateException(LifecycleState fromState, LifecycleState toState) =>
