@@ -51,19 +51,19 @@ namespace HoneyComb.LiveDataNet.Tests
             }
         }
 
-        public class StartTests : TimerLiveDataTests
-        {
-            [Fact]
-            [Trait(nameof(Category), Category.Unit)]
-            public async Task GivenAnStartedInstance_ShouldStartNotifying_WhenStartIsCalled()
-            {
-                Timer.Start();
-                await Task.Delay(interval);
+        //public class StartTests : TimerLiveDataTests
+        //{
+        //    [Fact]
+        //    [Trait(nameof(Category), Category.Unit)]
+        //    public async Task GivenAnStartedInstance_ShouldStartNotifying_WhenStartIsCalled()
+        //    {
+        //        Timer.Start();
+        //        await Task.Delay(interval);
 
-                Assert.Equal(interval, TimerLiveDataValue);
-                Assert.Equal(1, Ticks);
-            }
-        }
+        //        Assert.Equal(interval, TimerLiveDataValue);
+        //        Assert.Equal(1, Ticks);
+        //    }
+        //}
 
         public class StopTests : TimerLiveDataTests
         {
