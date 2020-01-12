@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
-using System.Linq;
 using HoneyComb.Core.Linq;
 
 namespace HoneyComb.Core.Lifecycles
@@ -21,11 +20,17 @@ namespace HoneyComb.Core.Lifecycles
         protected Lifecycle(ILifecycleOwner owner)
         {
             this.owner = owner;
+            Advanced = new LifecycleAdvanced(this);
         }
 
         public event EventHandler<EventArgs>? OnActive;
         public event EventHandler<EventArgs>? OnInactive;
         public event EventHandler<EventArgs>? OnDisposed;
+
+        /// <summary>
+        ///     Provides advanced lifecycle usecases.
+        /// </summary>
+        public LifecycleAdvanced Advanced { get; }
 
         /// <summary>
         /// Returns the current state of the Lifecycle.
