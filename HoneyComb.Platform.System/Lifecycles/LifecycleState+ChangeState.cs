@@ -10,6 +10,17 @@ namespace HoneyComb.Core.Lifecycles
         private static LifecycleState[] activeFromStates = new LifecycleState[] { LifecycleState.Initialized, LifecycleState.Inactive };
 
         /// <summary>
+        /// Changes one state to another
+        /// </summary>
+        /// <param name="this">Current from state</param>
+        /// <param name="toState">New to State</param>
+        /// <returns></returns>
+        public static LifecycleState ChangeState(this LifecycleState @this, LifecycleState toState)
+        {
+            return toState;
+        }
+
+        /// <summary>
         /// Validates is the transition from the current state
         /// to the new state is valid.
         /// </summary>
@@ -17,26 +28,26 @@ namespace HoneyComb.Core.Lifecycles
         /// <param name="toState">New to State</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException">If the transition is not valid.</exception>
-        public static LifecycleState ChangeState(this LifecycleState @this, LifecycleState toState)
+        public static LifecycleState ChangeStateStrict(this LifecycleState @this, LifecycleState toState)
         {
             if (@this == toState)
                 return toState;
-
+            
             if (toState == LifecycleState.Initialized)
                 throw CreateCannotChangeStateException(@this, toState);
-
+            
             if (toState == LifecycleState.Active && !activeFromStates.Contains(@this))
                 throw CreateCannotChangeStateException(@this, toState);
-
+            
             if (toState == LifecycleState.Inactive && @this != LifecycleState.Active)
                 throw CreateCannotChangeStateException(@this, toState);
-
+            
             if (toState == LifecycleState.Disposed && @this != LifecycleState.Inactive)
                 throw CreateCannotChangeStateException(@this, toState);
-
+            
             if (@this == LifecycleState.Disposed)
                 throw CreateCannotChangeStateException(@this, toState);
-
+            
             return toState;
         }
 

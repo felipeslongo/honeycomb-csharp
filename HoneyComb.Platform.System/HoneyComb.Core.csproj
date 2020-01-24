@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="NuGet">
-        <Version>1.0.0-beta02</Version>
+        <Version>1.0.0-beta04</Version>
         <Authors>Felipe de Souza Longo</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/felipeslongo/honeycomb-csharp</PackageProjectUrl>
@@ -17,6 +17,9 @@
             Utilities build upon the .NET Core 3.0 to be used to help in development.
             It follows the same namespace from Microsoft but with HoneyComb.Core.* prefix
             - Lifecyles: Platform agnostic lifecycle-aware componentes.
+            
+            Changelog
+              - LifecycleAdvanced
         </Description>
     </PropertyGroup>
     
