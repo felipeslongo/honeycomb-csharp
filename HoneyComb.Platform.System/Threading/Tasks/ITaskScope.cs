@@ -7,6 +7,8 @@ namespace HoneyComb.Core.Threading.Tasks
     /// </summary>
     /// <remarks>
     ///     Credits
+    ///     https://medium.com/@elizarov/structured-concurrency-722d765aa952
+    ///     https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/
     ///     https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/CoroutineScope.kt
     ///     https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/common/src/Builders.common.kt
     /// </remarks>
