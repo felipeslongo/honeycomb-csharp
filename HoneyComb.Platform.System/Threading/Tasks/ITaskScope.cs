@@ -17,6 +17,7 @@ namespace HoneyComb.Core.Threading.Tasks
         /// <summary>
         ///     Cancellation token associated with this scope.
         ///     Will be cancelled when this scope finishes.
+        ///     It will never be revived/relaunched once its finished.
         /// </summary>
         CancellationToken CancellationToken { get; }
     }
