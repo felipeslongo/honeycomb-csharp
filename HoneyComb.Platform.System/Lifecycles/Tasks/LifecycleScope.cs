@@ -7,7 +7,7 @@ namespace HoneyComb.Core.Lifecycles.Tasks
 {
     /// <summary>
     ///     TaskScope tied to an a Lifecycle and a Main/UI SynchronizationContext.
-    ///     This scope will be cancelled when the is destroyed/disposed.
+    ///     This scope will be cancelled when the Lifecycle is destroyed/disposed.
     /// </summary>
     /// <remarks>
     ///     Credits
