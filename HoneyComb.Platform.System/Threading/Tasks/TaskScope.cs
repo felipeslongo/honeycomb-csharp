@@ -5,10 +5,10 @@ namespace HoneyComb.Core.Threading.Tasks
     /// <summary>
     /// Basic implementation of <see cref="ITaskScope"/>.
     /// </summary>
-    internal class TaskScope : ITaskScope
+    internal class TaskScope : ITaskScopeMutable
     {
-        private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+        public CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
 
-        public CancellationToken CancellationToken => tokenSource.Token;
+        public CancellationToken CancellationToken => CancellationTokenSource.Token;
     }
 }

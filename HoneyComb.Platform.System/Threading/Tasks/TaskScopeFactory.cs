@@ -9,6 +9,6 @@ namespace HoneyComb.Core.Threading.Tasks
     /// </summary>
     public static class TaskScopeFactory
     {
-        public static ITaskScope Create() => new TaskScope();
+        public static ITaskScopeMutable Create() => new TaskScope();
     }
 }
