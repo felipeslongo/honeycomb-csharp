@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HoneyComb.Core.Threading.Tasks
 {
@@ -14,5 +16,12 @@ namespace HoneyComb.Core.Threading.Tasks
         ///     It will never be revived/relaunched once its finished.
         /// </summary>
         CancellationTokenSource CancellationTokenSource { get; }
+
+        /// <summary>
+        ///     Defines a task for this scope.
+        ///     Allows this scope to be awaited to finish with success,
+        ///     or for Exceptions or Cancellations.
+        /// </summary>
+        TaskCompletionSource<EventArgs> ScopeTaskCompletionSource { get; }
     }
 }
