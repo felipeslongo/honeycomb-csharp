@@ -48,12 +48,11 @@ namespace HoneyComb.Core.Threading.Tasks
         /// <param name="cancellableAsyncAction">The cancellable work to execute asynchronously</param>
         /// <returns>A task that represents the work queued to execute in the thread pool.</returns>
         public static async Task RunScoped(this ITaskScope scope, Func<CancellationToken, Task> cancellableAsyncAction) =>
-            await scope.RunScoped(async token => 
+            await scope.RunScoped(async token =>
             {
                 await cancellableAsyncAction(token);
                 return Task.FromResult(EventArgs.Empty);
             });
-            
 
         /// <summary>
         ///     Queues the specified work to run on the thread pool and returns a proxy for the
@@ -71,13 +70,13 @@ namespace HoneyComb.Core.Threading.Tasks
             {
                 return await scope.Run(cancellableAsyncFunc);
             }
-            catch (OperationCanceledException) 
+            catch (OperationCanceledException)
             {
                 if (scope is ITaskScopeMutable mutableScope)
                     mutableScope.TryCancel();
                 throw;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (scope is ITaskScopeMutable mutableScope)
                     mutableScope.TryFinishWithException(e);
