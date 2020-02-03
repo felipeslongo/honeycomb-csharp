@@ -47,5 +47,27 @@ namespace HoneyComb.Core.Tests.Threading.Tasks
 
             Assert.Equal(exception, result);
         }
+
+        [Fact]
+        [Trait(nameof(Category), Category.Unit)]
+        public async Task GivenAScope_WhenInvokedWithAException_ShouldNotCancelItsToken()
+        {
+            var exception = new ApplicationException("Message");
+
+            _ = await Assert.ThrowsAsync<ApplicationException>(() => taskScope.Run(_ => throw exception));
+
+            Assert.False(taskScope.CancellationToken.IsCancellationRequested);
+        }
+
+        [Fact]
+        [Trait(nameof(Category), Category.Unit)]
+        public async Task GivenAScope_WhenInvokedWithAException_ShouldSetToFaltedItsScopeTask()
+        {
+            var exception = new ApplicationException("Message");
+
+            _ = await Assert.ThrowsAsync<ApplicationException>(() => taskScope.Run(_ => throw exception));
+
+            Assert.False(taskScope.ScopeTask.IsFaulted);
+        }
     }
 }
