@@ -28,6 +28,8 @@ namespace HoneyComb.Core.Lifecycles.Tasks
 
         public CancellationToken CancellationToken => tokenSouce.Token;
 
+        public Task ScopeTask => throw new NotImplementedException();
+
         public async Task Launch(Func<CancellationToken, Task> block)
         {
             if (tokenSouce.IsCancellationRequested)
