@@ -18,6 +18,7 @@
             this.mutableObservable = mutableObservable;
         }
 
+        public void NotifyViewWillAppear() => mutableObservable.NotifyViewWillAppear();
         public void NotifyViewDidAppear() => mutableObservable.NotifyViewDidAppear();
         public void NotifyViewWillDisappear(UIKit.UIViewController controller) => mutableObservable.NotifyViewWillDisappear(controller);
         public void NotifyViewDidDisappear() => mutableObservable.NotifyViewDidDisappear();

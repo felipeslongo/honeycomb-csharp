@@ -77,6 +77,7 @@ namespace HoneyComb.Platform.iOS.Lifecycles
                 case iOSLifecycleState.Loaded:
                     break;
 
+                case iOSLifecycleState.ReadyToAppear:
                 case iOSLifecycleState.Appeared:
                     NotifyStateChange(LifecycleState.Active);
                     break;

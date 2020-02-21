@@ -47,7 +47,11 @@ namespace HoneyComb.Platform.iOS.Lifecycles
 
         protected void InvokeViewDidLoad() => ViewDidLoad?.Invoke(this, EventArgs.Empty);
 
-        protected void InvokeViewWillAppear() => ViewWillAppear?.Invoke(this, EventArgs.Empty);
+        protected void InvokeViewWillAppear()
+        {
+            StateLastKnown = iOSLifecycleState.ReadyToAppear;
+            ViewWillAppear?.Invoke(this, EventArgs.Empty);
+        }
 
         protected void InvokeViewWillLayoutSubviews() => ViewWillLayoutSubviews?.Invoke(this, EventArgs.Empty);
 
