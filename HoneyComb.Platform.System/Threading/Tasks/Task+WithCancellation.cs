@@ -40,7 +40,7 @@ namespace HoneyComb.Platform.System.Threading.Tasks
         public static async Task WithCancellation(this Task task, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();
-            await using (cancellationToken.Register(SetResultOfTaskSourceObjectInCancellationTokenCallback, tcs))
+            using (cancellationToken.Register(SetResultOfTaskSourceObjectInCancellationTokenCallback, tcs))
             {
                 if (task != await Task.WhenAny(task, tcs.Task))
                     throw new OperationCanceledException(cancellationToken);
