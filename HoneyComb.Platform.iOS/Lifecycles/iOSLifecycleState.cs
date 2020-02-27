@@ -17,6 +17,10 @@
         /// </summary>
         Loaded,
         /// <summary>
+        /// Ready to appear state for a LifecycleOwner. For an ViewController, this is the state after ViewWillAppear was called.
+        /// </summary>
+        ReadyToAppear,
+        /// <summary>
         /// Appeared state for a LifecycleOwner. For an ViewController, this is the state after ViewDidAppear was called.
         /// </summary>
         Appeared,
