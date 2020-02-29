@@ -210,6 +210,7 @@ namespace HoneyComb.Core.Tests.Threading.Tasks
             {
                 throw firstFaultException;
             }));
+            await firstFaultTask;
             awaiter.SetResult(EventArgs.Empty);
             await Task.WhenAll(firstFaultTask, secondFaultTask);
 
