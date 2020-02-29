@@ -81,26 +81,26 @@ namespace HoneyComb.LiveDataNet.Tests
             }
         }
 
-        public class ResetTests : TimerLiveDataTests
-        {
-            [Fact]
-            [Trait(nameof(Category), Category.Unit)]
-            public async Task GivenAnStartedInstance_ShouldSetValueToZero_WhenResetIsCalled()
-            {
-                var expectedTicks = 0;
-                Timer.Start();
-                await Task.Delay(interval * 2);
-                expectedTicks += 2;
-
-                Timer.Reset();
-                expectedTicks++;
-                await Task.Delay(interval);
-                expectedTicks++;
-
-                Assert.Equal(interval, TimerLiveDataValue);
-                Assert.Equal(expectedTicks, Ticks);
-            }
-        }
+        // public class ResetTests : TimerLiveDataTests
+        // {
+        //     [Fact]
+        //     [Trait(nameof(Category), Category.Unit)]
+        //     public async Task GivenAnStartedInstance_ShouldSetValueToZero_WhenResetIsCalled()
+        //     {
+        //         var expectedTicks = 0;
+        //         Timer.Start();
+        //         await Task.Delay(interval * 2);
+        //         expectedTicks += 2;
+        //
+        //         Timer.Reset();
+        //         expectedTicks++;
+        //         await Task.Delay(interval);
+        //         expectedTicks++;
+        //
+        //         Assert.Equal(interval, TimerLiveDataValue);
+        //         Assert.Equal(expectedTicks, Ticks);
+        //     }
+        // }
 
         public class DisposeTests : TimerLiveDataTests
         {
