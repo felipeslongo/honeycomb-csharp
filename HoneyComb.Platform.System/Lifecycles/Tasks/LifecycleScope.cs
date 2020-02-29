@@ -15,7 +15,7 @@ namespace HoneyComb.Core.Lifecycles.Tasks
     ///     https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-activity-release/lifecycle/lifecycle-runtime-ktx/src/main/java/androidx/lifecycle
     ///     https://developer.android.com/topic/libraries/architecture/coroutines#lifecyclescope
     /// </remarks>
-    public sealed class LifecycleScope : ITaskScope
+    internal sealed class LifecycleScope : ITaskScope
     {
         private readonly Lifecycle lifecycle;
         private readonly CancellationTokenSource tokenSouce = new CancellationTokenSource();
