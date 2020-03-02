@@ -16,19 +16,19 @@ namespace HoneyComb.Core.Tests.Threading.Tasks
         {
             var minimumDelay = TimeSpan.FromMilliseconds(500);
             var taskDuration = TimeSpan.FromMilliseconds(250);
+            var timer = Stopwatch.StartNew();
             var task = Task.Run(async () =>
             {
                 await Task.Delay(taskDuration);
                 return Unit.Default;
             });
-            var timer = Stopwatch.StartNew();
 
             _ = await task.WithMinimumDelay(minimumDelay);
             
             Assert.InRange(
                 timer.Elapsed, 
                 minimumDelay, 
-                minimumDelay + TimeSpan.FromMilliseconds(10));
+                minimumDelay + TimeSpan.FromMilliseconds(100));
         }
         
         [Fact]
@@ -37,19 +37,19 @@ namespace HoneyComb.Core.Tests.Threading.Tasks
         {
             var minimumDelay = TimeSpan.FromMilliseconds(250);
             var taskDuration = TimeSpan.FromMilliseconds(300);
+            var timer = Stopwatch.StartNew();
             var task = Task.Run(async () =>
             {
                 await Task.Delay(taskDuration);
                 return Unit.Default;
             });
-            var timer = Stopwatch.StartNew();
 
             _ = await task.WithMinimumDelay(minimumDelay);
             
             Assert.InRange(
                 timer.Elapsed, 
                 taskDuration, 
-                taskDuration + TimeSpan.FromMilliseconds(10));
+                taskDuration + TimeSpan.FromMilliseconds(100));
         }
     }
 }
