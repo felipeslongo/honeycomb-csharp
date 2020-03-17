@@ -430,3 +430,9 @@ MigrationBackup/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+### Miscellaneous
+.idea/.idea.Honeycomb/.idea/.name
+.idea/.idea.Honeycomb/.idea/modules.xml
+.idea/.idea.Honeycomb/HoneyComb.Application.AndroidApp.iml
+.idea/.idea.Honeycomb/HoneyComb.LiveDataNet.Platform.Android.iml
+.idea/.idea.Honeycomb/riderModule.iml
