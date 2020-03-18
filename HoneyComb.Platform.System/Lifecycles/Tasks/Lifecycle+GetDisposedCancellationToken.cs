@@ -16,7 +16,7 @@ namespace HoneyComb.Core.Lifecycles.Tasks
             if (@this.CurrentState == LifecycleState.Disposed)
                 return new CancellationToken(true);
 
-            var token = CancellationTokenFactory.FromEvent<EventArgs?>(
+            var token = CancellationTokenFactory.FromEvent<EventArgs>(
                 handler => @this.OnDisposed += handler,
                 handler => @this.OnDisposed -= handler
             );
