@@ -21,11 +21,11 @@ namespace HoneyComb.Core.Lifecycles.Tasks
             if (@this.CurrentState == LifecycleState.Active)
                 return;
 
-            await TaskFactory.FromEvent<EventArgs?>(
-                    handler => @this.OnActive += handler,
-                    handler => @this.OnActive -= handler
-                )
-                .WithCancellationIgnore();
+            await TaskFactory.FromEvent<EventArgs>(
+                handler => @this.OnActive += handler,
+                handler => @this.OnActive -= handler,
+                @this.GetDisposedCancellationToken()
+            );
         }
     }
 }
