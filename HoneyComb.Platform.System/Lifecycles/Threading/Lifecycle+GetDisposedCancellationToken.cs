@@ -4,6 +4,7 @@ using HoneyComb.Core.Threading;
 
 namespace HoneyComb.Core.Lifecycles.Threading
 {
+    // ReSharper disable once InconsistentNaming
     public static class Lifecycle_GetDisposedCancellationToken
     {
         /// <summary>
