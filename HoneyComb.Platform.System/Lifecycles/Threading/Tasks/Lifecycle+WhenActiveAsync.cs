@@ -4,6 +4,7 @@ using TaskFactory = HoneyComb.Core.Threading.Tasks.TaskFactory;
 
 namespace HoneyComb.Core.Lifecycles.Threading.Tasks
 {
+    // ReSharper disable once InconsistentNaming
     public static class Lifecycle_WhenActiveAsync
     {
         /// <summary>
