@@ -2,11 +2,11 @@ using System;
 
 namespace HoneyComb.Core.Lifecycles.Threading.Tasks
 {
-    public sealed class LifecycleRecycler : Lifecycle
+    public sealed class LifecycleOfLifecycles : Lifecycle
     {
         private Lifecycle? lifecycle;
 
-        public LifecycleRecycler(ILifecycleOwner owner) : base(owner)
+        public LifecycleOfLifecycles(ILifecycleOwner owner) : base(owner)
         {
         }
 
