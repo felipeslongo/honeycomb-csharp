@@ -1,6 +1,6 @@
 using System;
 
-namespace HoneyComb.Core.Lifecycles.Threading.Tasks
+namespace HoneyComb.Core.Lifecycles
 {
     public sealed class LifecycleOfLifecycles : Lifecycle
     {
