@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using HoneyComb.Core.Threading;
 
-namespace HoneyComb.Core.Lifecycles.Tasks
+namespace HoneyComb.Core.Lifecycles.Threading.Tasks
 {
     public static class Lifecycle_GetDisposedCancellationToken
     {

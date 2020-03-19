@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HoneyComb.Core.Threading.Tasks;
 
-namespace HoneyComb.Core.Lifecycles.Tasks
+namespace HoneyComb.Core.Lifecycles.Threading.Tasks
 {
     /// <summary>
     ///     TaskScope tied to an a Lifecycle and a Main/UI SynchronizationContext.

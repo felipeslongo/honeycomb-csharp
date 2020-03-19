@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using HoneyComb.Platform.System.Threading.Tasks;
 using TaskFactory = HoneyComb.Core.Threading.Tasks.TaskFactory;
 
-namespace HoneyComb.Core.Lifecycles.Tasks
+namespace HoneyComb.Core.Lifecycles.Threading.Tasks
 {
     public static class Lifecycle_WhenActiveAsync
     {
