@@ -10,6 +10,8 @@ namespace HoneyComb.Core.Lifecycles
         {
         }
 
+        public event EventHandler<EventArgs>? Renewed;
+
         public Lifecycle? GetCurrentLifecycle()
         {
             return lifecycle;
@@ -17,11 +19,19 @@ namespace HoneyComb.Core.Lifecycles
 
         public void SetLifecycle(Lifecycle lifecycle)
         {
+            var isLifecycleRenewed = false;
             if (this.lifecycle != null)
+            {
                 UnsubscribeFromLifecycleEvents(this.lifecycle);
+                isLifecycleRenewed = true;
+            }
+
             this.lifecycle = lifecycle;
             SubscribeToLifecycleEvents(this.lifecycle);
             SynchronizeUpToCurrentState(this.lifecycle.CurrentState);
+            
+            if(isLifecycleRenewed)
+                Renewed?.Invoke(this, EventArgs.Empty);
         }
 
         public override void Dispose()
