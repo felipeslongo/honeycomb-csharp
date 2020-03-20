@@ -5,23 +5,25 @@ using HoneyComb.Core.Lifecycles.Threading.Tasks;
 
 namespace HoneyComb.UI
 {
-    public sealed class UserInteractionViewModel : ILifecycleOwner
+    public sealed class UserInteractionViewModel
     {
-        public UserInteractionViewModel()
+        private readonly LifecycleOfLifecycles lifecycle;
+        
+        public UserInteractionViewModel(LifecycleOfLifecycles lifecycleOfLifecycles)
         {
-            Lifecycle = new LifecycleOfLifecycles(this);
+            lifecycle = lifecycleOfLifecycles;
         }
         
         public async Task<T> InteractAsync<T>(Func<TaskCompletionSource<T>, Task> interactAsync)
         {
-            await Lifecycle.WhenActiveAsync();
+            await lifecycle.WhenActiveAsync();
             var interactionTaskSource = new TaskCompletionSource<T>();
             
             EventHandler<EventArgs> onLifecycleRenewed = async (_, __) =>
             {
                 try
                 {
-                    await Lifecycle.WhenActiveAsync();
+                    await lifecycle.WhenActiveAsync();
                     await interactAsync(interactionTaskSource);
                 }
                 catch (OperationCanceledException)
@@ -37,8 +39,8 @@ namespace HoneyComb.UI
 
             try
             {
-                Lifecycle.Renewed += onLifecycleRenewed;
-                Lifecycle.OnDisposed += onLifecycleDisposed;
+                lifecycle.Renewed += onLifecycleRenewed;
+                lifecycle.OnDisposed += onLifecycleDisposed;
 
                 try
                 {
@@ -57,13 +59,9 @@ namespace HoneyComb.UI
             }
             finally
             {
-                Lifecycle.Renewed -= onLifecycleRenewed;
-                Lifecycle.OnDisposed -= onLifecycleDisposed;
+                lifecycle.Renewed -= onLifecycleRenewed;
+                lifecycle.OnDisposed -= onLifecycleDisposed;
             }
         }
-        
-        public LifecycleOfLifecycles Lifecycle { get; }
-
-        Lifecycle ILifecycleOwner.Lifecycle => Lifecycle;
     }
 }
