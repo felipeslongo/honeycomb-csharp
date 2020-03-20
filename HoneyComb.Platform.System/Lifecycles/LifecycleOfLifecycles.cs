@@ -10,12 +10,18 @@ namespace HoneyComb.Core.Lifecycles
         {
         }
 
+        public Lifecycle? GetCurrentLifecycle()
+        {
+            return lifecycle;
+        }
+
         public void SetLifecycle(Lifecycle lifecycle)
         {
             if (this.lifecycle != null)
                 UnsubscribeFromLifecycleEvents(this.lifecycle);
             this.lifecycle = lifecycle;
             SubscribeToLifecycleEvents(this.lifecycle);
+            SynchronizeUpToCurrentState(this.lifecycle.CurrentState);
         }
 
         public override void Dispose()
