@@ -27,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj" />
       <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj" />
     </ItemGroup>
 
