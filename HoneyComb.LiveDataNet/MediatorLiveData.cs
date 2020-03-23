@@ -26,7 +26,7 @@ namespace HoneyComb.LiveDataNet
         /// <returns>Unsubscription IDisposable</returns>
         public IDisposable AddSource(LiveData<T> source)
         {
-            return AddSource(source, OnSourceChanged);
+            return AddSource(source, (Action<T>)OnSourceChanged);
 
             void OnSourceChanged(T sourceValue) => Value = sourceValue;
         }
@@ -42,7 +42,7 @@ namespace HoneyComb.LiveDataNet
         /// <returns>Unsubscription IDisposable</returns>
         public IDisposable AddSource<TSource>(LiveData<TSource> source, Func<TSource, T> converter)
         {
-            return AddSource(source, OnSourceChanged);
+            return AddSource(source, (Action<TSource>)OnSourceChanged);
 
             void OnSourceChanged(TSource sourceValue) => Value = converter(sourceValue);
         }
