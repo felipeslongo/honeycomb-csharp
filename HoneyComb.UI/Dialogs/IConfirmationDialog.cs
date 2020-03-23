@@ -1,6 +1,6 @@
 namespace HoneyComb.UI.Dialogs
 {
-    public interface IBinaryDialog
+    public interface IConfirmationDialog
     {
     }
 }
