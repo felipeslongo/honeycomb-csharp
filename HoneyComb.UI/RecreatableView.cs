@@ -32,16 +32,11 @@ namespace HoneyComb.UI
         {
             await lifecycle.WhenActiveAsync();
             var interactionTaskSource = new TaskCompletionSource<T>();
-            
-            EventHandler<EventArgs> onLifecycleRenewed = async (_, __) =>
-            {
-                if (interactionTaskSource.Task.IsCompleted)
-                    return;
 
-                await lifecycle.WhenActiveAsync();
-                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(interactionTaskSource, interactAsync);
-            };
-            EventHandler<EventArgs> onLifecycleDisposed = (_, __) => interactionTaskSource.TrySetCanceled();
+            var onLifecycleRenewed =
+                CreateEventHandlerForReinvokeAsyncTaskOnLifecycleRenewed(interactionTaskSource, interactAsync);
+            
+            var onLifecycleDisposed = CreateEventHandlerForCancelTaskSourceOnLifecycleDisposed(interactionTaskSource);
 
             try
             {
@@ -58,7 +53,24 @@ namespace HoneyComb.UI
                 lifecycle.OnDisposed -= onLifecycleDisposed;
             }
         }
+
+        private EventHandler<EventArgs> CreateEventHandlerForReinvokeAsyncTaskOnLifecycleRenewed<T>(
+            TaskCompletionSource<T> taskSource, 
+            Func<TaskCompletionSource<T>, Task> asyncTask)
+        {
+            return async (_, __) =>
+            {
+                if (taskSource.Task.IsCompleted)
+                    return;
+
+                await lifecycle.WhenActiveAsync();
+                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(taskSource, asyncTask);
+            };
+        }
         
+        private EventHandler<EventArgs> CreateEventHandlerForCancelTaskSourceOnLifecycleDisposed<T>(
+            TaskCompletionSource<T> taskSource) => (_, __) => taskSource.TrySetCanceled();
+
         private async Task InvokeAsyncTaskAndHandleExceptionIntoTaskSource<T>(
             TaskCompletionSource<T> taskSource, 
             Func<TaskCompletionSource<T>, Task> asyncTask)
