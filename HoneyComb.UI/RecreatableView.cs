@@ -26,7 +26,7 @@ namespace HoneyComb.UI
                 NotifyViewSet();
             }
         }
-        
+
         public async Task<T> WhenActiveAsync<T>(Func<TaskCompletionSource<T>, Task> interactAsync)
         {
             await lifecycle.WhenActiveAsync();
@@ -34,22 +34,11 @@ namespace HoneyComb.UI
             
             EventHandler<EventArgs> onLifecycleRenewed = async (_, __) =>
             {
-                try
-                {
-                    if (interactionTaskSource.Task.IsCompleted)
-                        return;
-                    
-                    await lifecycle.WhenActiveAsync();
-                    await interactAsync(interactionTaskSource);
-                }
-                catch (OperationCanceledException)
-                {
-                    interactionTaskSource.TrySetCanceled();
-                }
-                catch (Exception e)
-                {
-                    interactionTaskSource.TrySetException(e);
-                }
+                if (interactionTaskSource.Task.IsCompleted)
+                    return;
+
+                await lifecycle.WhenActiveAsync();
+                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(interactionTaskSource, interactAsync);
             };
             EventHandler<EventArgs> onLifecycleDisposed = (_, __) => interactionTaskSource.TrySetCanceled();
 
@@ -58,18 +47,7 @@ namespace HoneyComb.UI
                 lifecycle.Renewed += onLifecycleRenewed;
                 lifecycle.OnDisposed += onLifecycleDisposed;
 
-                try
-                {
-                    await interactAsync(interactionTaskSource);
-                }
-                catch (OperationCanceledException)
-                {
-                    interactionTaskSource.TrySetCanceled();
-                }
-                catch (Exception e)
-                {
-                    interactionTaskSource.TrySetException(e);
-                }
+                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(interactionTaskSource, interactAsync);
                 
                 return await interactionTaskSource.Task;
             }
@@ -77,6 +55,24 @@ namespace HoneyComb.UI
             {
                 lifecycle.Renewed -= onLifecycleRenewed;
                 lifecycle.OnDisposed -= onLifecycleDisposed;
+            }
+        }
+        
+        private async Task InvokeAsyncTaskAndHandleExceptionIntoTaskSource<T>(
+            TaskCompletionSource<T> taskSource, 
+            Func<TaskCompletionSource<T>, Task> asyncTask)
+        {
+            try
+            {
+                await asyncTask(taskSource);
+            }
+            catch (OperationCanceledException)
+            {
+                taskSource.TrySetCanceled();
+            }
+            catch (Exception e)
+            {
+                taskSource.TrySetException(e);
             }
         }
 
