@@ -5,6 +5,7 @@ using HoneyComb.Core.Lifecycles.Threading.Tasks;
 
 namespace HoneyComb.UI
 {
+    //Rename to RenewableView ?
     public sealed class RecreatableView<TView> : ILifecycleOwner where TView : class, ILifecycleOwner
     {
         private readonly LifecycleOfLifecycles lifecycle;
