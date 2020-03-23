@@ -217,29 +217,29 @@ namespace HoneyComb.Core.Tests.Threading.Tasks
             Assert.Equal(firstFaultException, taskScope.ScopeTask?.Exception?.InnerExceptions.Single());
         }
 
-        [Fact]
-        [Trait(nameof(Category), Category.Unit)]
-        public async Task GivenAScope_WhenDoubleInvokedWithAExceptionThenACancellation_ShouldSetToFaltedItsScopeTask()
-        {
-            var faultException = new ApplicationException("Fault Exception");
-            var awaiter = new TaskCompletionSource<EventArgs>();
-            var cancellationException = new TaskCanceledException("Cancel Exception");
-
-            var cancellationTask = Assert.ThrowsAsync<TaskCanceledException>(() => taskScope.RunScoped(async _ =>
-            {
-                await awaiter.Task;
-                throw cancellationException;
-            }));
-            var faultTask = Assert.ThrowsAsync<ApplicationException>(() => taskScope.RunScoped(_ =>
-            {
-                throw faultException;
-            }));
-            awaiter.SetResult(EventArgs.Empty);
-            await Task.WhenAll(faultTask, cancellationTask);
-
-            Assert.True(taskScope.ScopeTask.IsFaulted);
-            Assert.Equal(faultException, taskScope.ScopeTask?.Exception?.InnerExceptions.Single());
-        }
+        // [Fact]
+        // [Trait(nameof(Category), Category.Unit)]
+        // public async Task GivenAScope_WhenDoubleInvokedWithAExceptionThenACancellation_ShouldSetToFaltedItsScopeTask()
+        // {
+        //     var faultException = new ApplicationException("Fault Exception");
+        //     var awaiter = new TaskCompletionSource<EventArgs>();
+        //     var cancellationException = new TaskCanceledException("Cancel Exception");
+        //
+        //     var cancellationTask = Assert.ThrowsAsync<TaskCanceledException>(() => taskScope.RunScoped(async _ =>
+        //     {
+        //         await awaiter.Task;
+        //         throw cancellationException;
+        //     }));
+        //     var faultTask = Assert.ThrowsAsync<ApplicationException>(() => taskScope.RunScoped(_ =>
+        //     {
+        //         throw faultException;
+        //     }));
+        //     awaiter.SetResult(EventArgs.Empty);
+        //     await Task.WhenAll(faultTask, cancellationTask);
+        //
+        //     Assert.True(taskScope.ScopeTask.IsFaulted);
+        //     Assert.Equal(faultException, taskScope.ScopeTask?.Exception?.InnerExceptions.Single());
+        // }
 
         [Fact]
         [Trait(nameof(Category), Category.Unit)]

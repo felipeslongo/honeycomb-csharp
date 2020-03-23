@@ -17,7 +17,9 @@ namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
         /// <exception cref="Exception">To be added</exception>
         public static IDisposable BindTextViewTextColor(this LiveData<int> liveData, TextView textView)
         {
+#pragma warning disable 8622
             return liveData.BindMethod(textView.SetTextColorStateList);
+#pragma warning restore 8622
         }
 
         /// <summary>
@@ -31,7 +33,9 @@ namespace HoneyComb.LiveDataNet.Platform.Android.DataBinding
         public static IDisposable BindTextViewTextColor(this LiveData<int> liveData, ILifecycleOwner lifecycleOwner,
             TextView textView)
         {
+#pragma warning disable 8622
             return liveData.BindMethod(lifecycleOwner, textView.SetTextColorStateList);
+#pragma warning restore 8622
         }
     }
 }
