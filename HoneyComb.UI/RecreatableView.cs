@@ -28,24 +28,29 @@ namespace HoneyComb.UI
             }
         }
 
-        public async Task<T> WhenActiveAsync<T>(Func<TaskCompletionSource<T>, Task> interactAsync)
+        public async Task<T> WhenActiveAsync<T>(Func<TaskCompletionSource<T>, Task> asyncTask)
         {
             await lifecycle.WhenActiveAsync();
-            var interactionTaskSource = new TaskCompletionSource<T>();
-
-            var onLifecycleRenewed =
-                CreateEventHandlerForReinvokeAsyncTaskOnLifecycleRenewed(interactionTaskSource, interactAsync);
+            await InvokeAsyncTaskHandlingLifecycleRenewEventsForResult(asyncTask);
+        }
+        
+        private async Task<T> InvokeAsyncTaskHandlingLifecycleRenewEventsForResult<T>(Func<TaskCompletionSource<T>, Task> asyncTask)
+        {
+            var taskSource = new TaskCompletionSource<T>();
             
-            var onLifecycleDisposed = CreateEventHandlerForCancelTaskSourceOnLifecycleDisposed(interactionTaskSource);
-
+            var onLifecycleRenewed =
+                CreateEventHandlerForReinvokeAsyncTaskOnLifecycleRenewed(taskSource, asyncTask);
+            
+            var onLifecycleDisposed = CreateEventHandlerForCancelTaskSourceOnLifecycleDisposed(taskSource);
+            
             try
             {
                 lifecycle.Renewed += onLifecycleRenewed;
                 lifecycle.OnDisposed += onLifecycleDisposed;
 
-                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(interactionTaskSource, interactAsync);
+                await InvokeAsyncTaskAndHandleExceptionIntoTaskSource(taskSource, asyncTask);
                 
-                return await interactionTaskSource.Task;
+                return await taskSource.Task;
             }
             finally
             {
