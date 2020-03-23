@@ -31,7 +31,7 @@ namespace HoneyComb.UI
         public async Task<T> WhenActiveAsync<T>(Func<TaskCompletionSource<T>, Task> asyncTask)
         {
             await lifecycle.WhenActiveAsync();
-            await InvokeAsyncTaskHandlingLifecycleRenewEventsForResult(asyncTask);
+            return await InvokeAsyncTaskHandlingLifecycleRenewEventsForResult(asyncTask);
         }
         
         private async Task<T> InvokeAsyncTaskHandlingLifecycleRenewEventsForResult<T>(Func<TaskCompletionSource<T>, Task> asyncTask)
