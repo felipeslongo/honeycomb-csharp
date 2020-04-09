@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Platform.iOS", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.UI", "HoneyComb.UI\HoneyComb.UI.csproj", "{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Platform.UI.AndroidS", "HoneyComb.Platform.UI.AndroidS\HoneyComb.Platform.UI.AndroidS.csproj", "{614F2347-919B-4B31-B813-A1DD94E2B8F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
