@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace HoneyComb.Core.Lifecycles
 {
+    /// <summary>
+    ///     Represents the concept of an Busy state
+    ///     to be used in a ViewModel.
+    /// </summary>
     public sealed class IsBusy : IDisposable
     {
         private readonly MutexLockAsync throttler;
