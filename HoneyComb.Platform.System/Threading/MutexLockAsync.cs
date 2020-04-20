@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace HoneyComb.Core.Threading
 {
+    /// <summary>
+    ///     Mutex Lock that never executes more than one Task at a time.
+    /// </summary>
     public sealed class MutexLockAsync : IDisposable
     {
         private readonly SemaphoreSlim throttler;
