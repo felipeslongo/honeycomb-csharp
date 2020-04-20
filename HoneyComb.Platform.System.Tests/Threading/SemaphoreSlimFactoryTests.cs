@@ -13,7 +13,7 @@ namespace HoneyComb.Core.Tests.Threading
             [Trait(nameof(Category), Category.Unit)]
             public void GivenNoParameter_WhenInvoked_ShouldReturnASemaphoreWithCurrentCountOfOne()
             {
-                var semaphore = SemaphoreSlimFactory.CreateMutexLock();
+                using var semaphore = SemaphoreSlimFactory.CreateMutexLock();
 
                 Assert.Equal(1, semaphore.CurrentCount);
             }
@@ -22,7 +22,7 @@ namespace HoneyComb.Core.Tests.Threading
             [Trait(nameof(Category), Category.Unit)]
             public void GivenNoParameter_WhenInvoked_ShouldReturnASemaphoreWithMaxCountOfOne()
             {
-                var semaphore = SemaphoreSlimFactory.CreateMutexLock();
+               using var semaphore = SemaphoreSlimFactory.CreateMutexLock();
 
                 Assert.Throws<SemaphoreFullException>(() => semaphore.Release());
             }
@@ -31,7 +31,7 @@ namespace HoneyComb.Core.Tests.Threading
             [Trait(nameof(Category), Category.Unit)]
             public void GivenTrueParameter_WhenInvoked_ShouldReturnASemaphoreWithCurrentCountOfZero()
             {
-                var semaphore = SemaphoreSlimFactory.CreateMutexLock(true);
+                using var semaphore = SemaphoreSlimFactory.CreateMutexLock(true);
 
                 Assert.Equal(0, semaphore.CurrentCount);
             }
