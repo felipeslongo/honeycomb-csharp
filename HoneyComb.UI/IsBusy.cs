@@ -4,7 +4,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace HoneyComb.Core.Lifecycles
+namespace HoneyComb.UI
 {
     /// <summary>
     ///     Represents the concept of an Busy state
