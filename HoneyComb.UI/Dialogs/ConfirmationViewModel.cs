@@ -33,20 +33,20 @@ namespace HoneyComb.UI.Dialogs
 
         public void NotifyCancellation()
         {
-            currentShowAsyncTask.Recycle(false);
             Dismiss();
+            currentShowAsyncTask.Recycle(false);
         }
 
         public void NotifyConfirmation()
         {
-            currentShowAsyncTask.Recycle(true);
             Dismiss();
+            currentShowAsyncTask.Recycle(true);            
         }
 
         public void NotifyException(Exception exception)
         {
-            currentShowAsyncTask.Recycle(exception);
             Dismiss();
+            currentShowAsyncTask.Recycle(exception);            
         }
 
         public async Task<bool> ShowAsync(ConfirmationViewState viewState)
@@ -65,13 +65,7 @@ namespace HoneyComb.UI.Dialogs
             SetStateToPlaceholder();
         }
 
-        private void SetStateToPlaceholder()
-        {
-            Title = "Title";
-            Message = "Message";
-            Confirm = "Confirm";
-            Cancel = "Cancel";
-        }
+        private void SetStateToPlaceholder() => SetViewState(new ConfirmationViewState());
 
         private void SetViewState(ConfirmationViewState viewState)
         {
