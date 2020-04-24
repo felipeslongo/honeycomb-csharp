@@ -3,10 +3,10 @@ namespace HoneyComb.UI.Dialogs
     public sealed class ConfirmationViewState
     {
         public ConfirmationViewState(
-            string title,
-            string message,
-            string confirm,
-            string cancel
+            string title = "Title",
+            string message = "Message",
+            string confirm = "Confirm",
+            string cancel = "Cancel"
             )
         {
             Title = title;
