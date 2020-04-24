@@ -49,22 +49,6 @@ namespace HoneyComb.UI.Dialogs
             Dismiss();
         }
 
-        public void SetStateToPlaceholder()
-        {
-            Title = "Title";
-            Message = "Message";
-            Confirm = "Confirm";
-            Cancel = "Cancel";
-        }
-
-        public void SetViewState(ConfirmationViewState viewState)
-        {
-            Title = viewState.Title;
-            Message = viewState.Message;
-            Confirm = viewState.Confirm;
-            Cancel = viewState.Cancel;
-        }
-
         public async Task<bool> ShowAsync(ConfirmationViewState viewState)
         {
             using (await IsBusy.WaitAsync())
@@ -79,6 +63,22 @@ namespace HoneyComb.UI.Dialogs
         {
             visible.Value = false;
             SetStateToPlaceholder();
+        }
+
+        private void SetStateToPlaceholder()
+        {
+            Title = "Title";
+            Message = "Message";
+            Confirm = "Confirm";
+            Cancel = "Cancel";
+        }
+
+        private void SetViewState(ConfirmationViewState viewState)
+        {
+            Title = viewState.Title;
+            Message = viewState.Message;
+            Confirm = viewState.Confirm;
+            Cancel = viewState.Cancel;
         }
     }
 }
