@@ -16,7 +16,7 @@ namespace HoneyComb.UI.Tests
             public void GivenAShowAsyncTask_WhenInvoked_ShouldBeTrue()
             {
                 var viewModel = new ConfirmationViewModel();
-                var task = viewModel.ShowAsync(new ConfirmationViewState());
+                _ = viewModel.ShowAsync(new ConfirmationViewState());
 
                 var actual = viewModel.IsBusy;
 
@@ -25,11 +25,11 @@ namespace HoneyComb.UI.Tests
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAShowAsyncTask_WhenTaskCompletes_ShouldBeFalse()
+            public async Task GivenAShowAsyncTask_WhenTaskCompletes_ShouldBeFalse()
             {
                 var viewModel = new ConfirmationViewModel();
-                var task = viewModel.ShowAsync(new ConfirmationViewState());
-                viewModel.NotifyConfirmation();
+                _ = viewModel.ShowAsync(new ConfirmationViewState());
+                await viewModel.NotifyConfirmationAsync();
 
                 var actual = viewModel.IsBusy;
 
@@ -46,7 +46,7 @@ namespace HoneyComb.UI.Tests
                 var viewModel = new ConfirmationViewModel();
                 var task = viewModel.ShowAsync(new ConfirmationViewState());
 
-                viewModel.NotifyCancellation();
+                await viewModel.NotifyCancellationAsync();
 
                 Assert.True(task.IsCompletedSuccessfully);
                 Assert.False(await task);
@@ -62,7 +62,7 @@ namespace HoneyComb.UI.Tests
                 var viewModel = new ConfirmationViewModel();
                 var task = viewModel.ShowAsync(new ConfirmationViewState());
 
-                viewModel.NotifyConfirmation();
+                await viewModel.NotifyConfirmationAsync();
 
                 Assert.True(task.IsCompletedSuccessfully);
                 Assert.True(await task);
@@ -79,7 +79,7 @@ namespace HoneyComb.UI.Tests
                 var task = viewModel.ShowAsync(new ConfirmationViewState());
                 var expectedException = new ApplicationException();
 
-                viewModel.NotifyException(expectedException);
+                await viewModel.NotifyExceptionAsync(expectedException);
 
                 Assert.True(task.IsFaulted);
                 await Assert.ThrowsAsync<ApplicationException>(async () => await task);
@@ -93,7 +93,7 @@ namespace HoneyComb.UI.Tests
             public void GivenAShowAsyncTask_WhenInvoked_ShouldBeTrue()
             {
                 var viewModel = new ConfirmationViewModel();
-                var task = viewModel.ShowAsync(new ConfirmationViewState());
+                _ = viewModel.ShowAsync(new ConfirmationViewState());
 
                 var actual = viewModel.Visible;
 
@@ -102,11 +102,11 @@ namespace HoneyComb.UI.Tests
 
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
-            public void GivenAShowAsyncTask_WhenTaskCompletes_ShouldBeFalse()
+            public async Task GivenAShowAsyncTask_WhenTaskCompletes_ShouldBeFalse()
             {
                 var viewModel = new ConfirmationViewModel();
-                var task = viewModel.ShowAsync(new ConfirmationViewState());
-                viewModel.NotifyConfirmation();
+                _ = viewModel.ShowAsync(new ConfirmationViewState());
+                await viewModel.NotifyConfirmationAsync();
 
                 var actual = viewModel.Visible;
 
@@ -125,12 +125,9 @@ namespace HoneyComb.UI.Tests
                 var task2Canceled = viewModel.ShowAsync(new ConfirmationViewState());
                 var task3Confirmed = viewModel.ShowAsync(new ConfirmationViewState());
 
-                viewModel.NotifyException(new Exception());
-                await task1Falted.WithExceptionIgnore();
-                viewModel.NotifyCancellation();
-                await task2Canceled;
-                viewModel.NotifyConfirmation();
-                await task3Confirmed;
+                await viewModel.NotifyExceptionAsync(new Exception());
+                await viewModel.NotifyCancellationAsync();
+                await viewModel.NotifyConfirmationAsync();
 
                 Assert.True(task1Falted.IsFaulted);
                 Assert.True(task2Canceled.IsCompletedSuccessfully);

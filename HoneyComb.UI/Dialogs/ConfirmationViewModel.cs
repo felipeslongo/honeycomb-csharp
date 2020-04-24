@@ -31,22 +31,22 @@ namespace HoneyComb.UI.Dialogs
         public ConfirmationViewState GetViewState() =>
             new ConfirmationViewState(Title, Message, Confirm, Cancel);
 
-        public void NotifyCancellation()
+        public async Task NotifyCancellationAsync()
         {
             Dismiss();
-            currentShowAsyncTask.Recycle(false);
+            await currentShowAsyncTask.RecycleAsync(false);
         }
 
-        public void NotifyConfirmation()
+        public async Task NotifyConfirmationAsync()
         {
             Dismiss();
-            currentShowAsyncTask.Recycle(true);            
+            await currentShowAsyncTask.RecycleAsync(true);
         }
 
-        public void NotifyException(Exception exception)
+        public async Task NotifyExceptionAsync(Exception exception)
         {
             Dismiss();
-            currentShowAsyncTask.Recycle(exception);            
+            await currentShowAsyncTask.RecycleAsync(exception);
         }
 
         public async Task<bool> ShowAsync(ConfirmationViewState viewState)
