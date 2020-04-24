@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HoneyComb.TestChamber\HoneyComb.TestChamber.csproj" />
+    <ProjectReference Include="..\HoneyComb.UI\HoneyComb.UI.csproj" />
   </ItemGroup>
 
 </Project>
