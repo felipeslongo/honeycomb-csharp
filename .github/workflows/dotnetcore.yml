@@ -26,5 +26,7 @@ jobs:
       run: dotnet build HoneyComb.LiveDataNet/HoneyComb.LiveDataNet.csproj --configuration Release
     - name: Test with dotnet HoneyComb.LiveDataNet.Tests.csproj
       run: dotnet test HoneyComb.LiveDataNet.Tests/HoneyComb.LiveDataNet.Tests.csproj --configuration Release
+    - name: Build with dotnet HoneyComb.UI.csproj
+      run: dotnet build HoneyComb.UI/HoneyComb.UI.csproj --configuration Release
     - name: Test with dotnet HoneyComb.UI.Tests.csproj
       run: dotnet test HoneyComb.UI.Tests/HoneyComb.UI.Tests.csproj --configuration Release
