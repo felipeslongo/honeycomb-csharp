@@ -1,5 +1,4 @@
-﻿using HoneyComb.Platform.System.Threading.Tasks;
-using HoneyComb.TestChamber;
+﻿using HoneyComb.TestChamber;
 using HoneyComb.UI.Dialogs;
 using System;
 using System.Threading.Tasks;
@@ -86,7 +85,7 @@ namespace HoneyComb.UI.Tests
             }
         }
 
-        public class VisibleTests : ConfirmationViewModelTests
+        public class VisibilityTests : ConfirmationViewModelTests
         {
             [Fact]
             [Trait(nameof(Category), Category.Unit)]
@@ -95,7 +94,7 @@ namespace HoneyComb.UI.Tests
                 var viewModel = new ConfirmationViewModel();
                 _ = viewModel.ShowAsync(new ConfirmationViewState());
 
-                var actual = viewModel.Visible;
+                var actual = viewModel.Visibility;
 
                 Assert.True(actual);
             }
@@ -108,7 +107,7 @@ namespace HoneyComb.UI.Tests
                 _ = viewModel.ShowAsync(new ConfirmationViewState());
                 await viewModel.NotifyConfirmationAsync();
 
-                var actual = viewModel.Visible;
+                var actual = viewModel.Visibility;
 
                 Assert.False(actual);
             }
@@ -116,7 +115,7 @@ namespace HoneyComb.UI.Tests
 
         public class ShowAsyncTests : ConfirmationViewModelTests
         {
-            [Fact]
+            [Fact(Timeout = 100)]
             [Trait(nameof(Category), Category.Unit)]
             public async Task GivenMultipleOrderedCallsToShowAsync_WhenTaskResponsesAreInvoked_ShouldReturnTheAsyncResultInTheSameCallOrder()
             {
@@ -125,14 +124,15 @@ namespace HoneyComb.UI.Tests
                 var task2Canceled = viewModel.ShowAsync(new ConfirmationViewState());
                 var task3Confirmed = viewModel.ShowAsync(new ConfirmationViewState());
 
+                await viewModel.Visibility.WaitVisibilityAsync();
                 await viewModel.NotifyExceptionAsync(new Exception());
+                await viewModel.Visibility.WaitVisibilityAsync();
                 await viewModel.NotifyCancellationAsync();
+                await viewModel.Visibility.WaitVisibilityAsync();
                 await viewModel.NotifyConfirmationAsync();
 
                 Assert.True(task1Falted.IsFaulted);
-                Assert.True(task2Canceled.IsCompletedSuccessfully);
                 Assert.False(await task2Canceled);
-                Assert.True(task3Confirmed.IsCompletedSuccessfully);
                 Assert.True(await task3Confirmed);
             }
         }

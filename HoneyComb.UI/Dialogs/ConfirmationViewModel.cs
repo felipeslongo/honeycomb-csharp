@@ -8,7 +8,6 @@ namespace HoneyComb.UI.Dialogs
     public sealed class ConfirmationViewModel : IDisposable
     {
         private readonly TaskCompletionSourceRecycler<bool> currentShowAsyncTask = new TaskCompletionSourceRecycler<bool>();
-        private readonly MutableLiveData<bool> visible = new MutableLiveData<bool>(false);
 
         public ConfirmationViewModel()
         {
@@ -20,12 +19,12 @@ namespace HoneyComb.UI.Dialogs
         public IsBusy IsBusy { get; } = new IsBusy();
         public string Message { get; private set; } = string.Empty;
         public string Title { get; private set; } = string.Empty;
-        public LiveData<bool> Visible => visible;
+        public Visibility Visibility { get; } = new Visibility(false);
 
         public void Dispose()
         {
             IsBusy.Dispose();
-            visible.Dispose();
+            Visibility.Dispose();
         }
 
         public ConfirmationViewState GetViewState() =>
@@ -54,14 +53,14 @@ namespace HoneyComb.UI.Dialogs
             using (await IsBusy.WaitAsync())
             {
                 SetViewState(viewState);
-                visible.Value = true;
+                Visibility.SetValue(true);
                 return await currentShowAsyncTask.Task;
             }
         }
 
         private void Dismiss()
         {
-            visible.Value = false;
+            Visibility.SetValue(false);
             SetStateToPlaceholder();
         }
 
