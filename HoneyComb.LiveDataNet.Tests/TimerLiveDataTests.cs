@@ -1,4 +1,4 @@
-﻿using HoneyComb.TestChamber;
+﻿/*using HoneyComb.TestChamber;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -119,3 +119,4 @@ namespace HoneyComb.LiveDataNet.Tests
         }
     }
 }
+*/
