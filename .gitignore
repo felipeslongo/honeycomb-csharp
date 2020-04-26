@@ -22,6 +22,9 @@
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+# Xamarin Android Files
+*/Resources/Resource.designer.cs
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries

@@ -27,7 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Core.Tests", "Hon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Application.AndroidApp", "HoneyComb.Application.AndroidApp\HoneyComb.Application.AndroidApp.csproj", "{2A449FD2-378E-4193-82CC-FAEA71A8AC27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.Platform.iOS", "HoneyComb.Platform.iOS\HoneyComb.Platform.iOS.csproj", "{85BE5CFB-B392-4A93-8662-EE14EA0C1A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Platform.iOS", "HoneyComb.Platform.iOS\HoneyComb.Platform.iOS.csproj", "{85BE5CFB-B392-4A93-8662-EE14EA0C1A42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.UI", "HoneyComb.UI\HoneyComb.UI.csproj", "{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneyComb.Platform.UI.AndroidS", "HoneyComb.Platform.UI.AndroidS\HoneyComb.Platform.UI.AndroidS.csproj", "{614F2347-919B-4B31-B813-A1DD94E2B8F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyComb.UI.Tests", "HoneyComb.UI.Tests\HoneyComb.UI.Tests.csproj", "{81854618-2892-4CC8-9273-DC91C626A71C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +95,18 @@ Global
 		{85BE5CFB-B392-4A93-8662-EE14EA0C1A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85BE5CFB-B392-4A93-8662-EE14EA0C1A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85BE5CFB-B392-4A93-8662-EE14EA0C1A42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD6A7AF-03A7-4F95-93F7-1E511B28C465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{614F2347-919B-4B31-B813-A1DD94E2B8F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81854618-2892-4CC8-9273-DC91C626A71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81854618-2892-4CC8-9273-DC91C626A71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81854618-2892-4CC8-9273-DC91C626A71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81854618-2892-4CC8-9273-DC91C626A71C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
