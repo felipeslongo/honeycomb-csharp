@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/felipeslongo/honeycomb-csharp</RepositoryUrl>
     <PackageTags>android;xamarin;xamarin.android</PackageTags>
     <Description>
-      Helpers and Utils (related to the UI) to be used in a Xamarin.Android project.
+      Helpers and Utils (related to the UI).
     </Description>
   </PropertyGroup>
   
