@@ -3,7 +3,7 @@
 
   <PropertyGroup Label="Best Practices Configuration">
     <LangVersion>8.0</LangVersion>
-    <!--<Nullable>enable</Nullable>-->
+    <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC};{9A19103F-16F7-4668-BE54-9A1E7A4F7556}</ProjectTypeGuids>
   </PropertyGroup>
@@ -224,6 +224,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HoneyComb.LiveDataNet.Platform.Android\HoneyComb.LiveDataNet.Platform.Android.csproj" />
+    <ProjectReference Include="..\HoneyComb.LiveDataNet\HoneyComb.LiveDataNet.csproj" />
+    <ProjectReference Include="..\HoneyComb.Platform.Android\HoneyComb.Platform.Android.csproj" />
+    <ProjectReference Include="..\HoneyComb.Platform.System\HoneyComb.Core.csproj" />
+    <ProjectReference Include="..\HoneyComb.UI\HoneyComb.UI.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
