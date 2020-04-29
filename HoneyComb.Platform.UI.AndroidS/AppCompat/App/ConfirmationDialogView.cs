@@ -1,7 +1,7 @@
 ﻿using Android.Support.V4.App;
 using HoneyComb.Core.Lifecycles;
 
-namespace HoneyComb.Platform.UI.AndroidS
+namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
 {
     public sealed class ConfirmationDialogView
     {

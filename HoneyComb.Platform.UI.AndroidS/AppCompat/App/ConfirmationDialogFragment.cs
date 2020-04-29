@@ -6,7 +6,7 @@ using HoneyComb.Platform.Android.Fragments.App;
 using System;
 using AlertDialog = Android.Support.V7.App.AlertDialog;
 
-namespace HoneyComb.Platform.UI.AndroidS
+namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
 {
     public sealed class ConfirmationDialogFragment : AppCompatDialogFragment
     {
