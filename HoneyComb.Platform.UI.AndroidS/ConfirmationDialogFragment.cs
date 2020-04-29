@@ -37,6 +37,7 @@ namespace HoneyComb.Platform.UI.AndroidS
         {
             base.OnCreate(savedInstanceState);
             companion = new FragmentCompanion<ConfirmationAndroidViewModel>(this, viewModelFactory);
+            companion.DestroyedForRecreation.HasBeen.NotifySavedInstanceState(savedInstanceState);
         }
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
@@ -60,7 +61,15 @@ namespace HoneyComb.Platform.UI.AndroidS
         public override async void OnDismiss(IDialogInterface dialog)
         {
             base.OnDismiss(dialog);
+            if (companion!.DestroyedForRecreation.IsBeing)
+                return;
             await companion!.ViewModel.ViewModelCore.NotifyCancellationAsync();
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            companion!.DestroyedForRecreation.IsBeing.NotifyOnSaveInstanceState(outState);
         }
     }
 }
