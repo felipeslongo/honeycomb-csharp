@@ -8,6 +8,9 @@ using AlertDialog = Android.Support.V7.App.AlertDialog;
 
 namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
 {
+    /// <summary>
+    ///     DialogFragment for a Confirmation Alert Dialog workflow.
+    /// </summary>
     public sealed class ConfirmationDialogFragment : AppCompatDialogFragment
     {
         private FragmentCompanion<ConfirmationAndroidViewModel>? companion;

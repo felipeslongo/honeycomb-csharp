@@ -3,6 +3,9 @@ using HoneyComb.Core.Lifecycles;
 
 namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
 {
+    /// <summary>
+    ///     View for a Confirmation Alert Dialog workflow.
+    /// </summary>
     public sealed class ConfirmationDialogView
     {
         private readonly FragmentActivity activity;
