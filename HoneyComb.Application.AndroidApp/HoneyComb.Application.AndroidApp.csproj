@@ -204,6 +204,10 @@
       <Project>{5ef1b911-2e41-4015-8dfc-2416e8bc290a}</Project>
       <Name>HoneyComb.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HoneyComb.Platform.UI.AndroidS\HoneyComb.Platform.UI.AndroidS.csproj">
+      <Project>{614f2347-919b-4b31-b813-a1dd94e2b8f7}</Project>
+      <Name>HoneyComb.Platform.UI.AndroidS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HoneyComb.Reflection\HoneyComb.Reflection.csproj">
       <Project>{0033096e-287e-4a0d-beae-4e7681696549}</Project>
       <Name>HoneyComb.Reflection</Name>

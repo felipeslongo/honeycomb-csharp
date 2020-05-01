@@ -1,5 +1,8 @@
 namespace HoneyComb.UI.Dialogs
 {
+    /// <summary>
+    ///     ViewState DTO for a Confirmation Alert Dialog workflow.
+    /// </summary>
     public sealed class ConfirmationViewState
     {
         public ConfirmationViewState(

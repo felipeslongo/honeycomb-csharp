@@ -87,7 +87,7 @@ namespace HoneyComb.UI.Tests
 
         public class ShowAsyncTests : ConfirmationViewModelTests
         {
-            [Fact(Timeout = 100)]
+            [Fact(Timeout = 1000)]
             [Trait(nameof(Category), Category.Unit)]
             public async Task GivenMultipleOrderedCallsToShowAsync_WhenTaskResponsesAreInvoked_ShouldReturnTheAsyncResultInTheSameCallOrder()
             {

@@ -1,6 +1,7 @@
 ﻿using Android.Arch.Lifecycle;
 using Android.Support.V7.App;
 using HoneyComb.Platform.Android.Lifecycle;
+using HoneyComb.Platform.Android.OS;
 using System;
 
 namespace HoneyComb.Platform.Android.AppCompat.App
@@ -15,6 +16,8 @@ namespace HoneyComb.Platform.Android.AppCompat.App
         {
             LifecycleOwners = new LifecycleOwners(activity);
         }
+
+        public DestroyedForRecreation DestroyedForRecreation { get; } = new DestroyedForRecreation();
 
         public LifecycleOwners LifecycleOwners { get; }
     }
