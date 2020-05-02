@@ -1,4 +1,4 @@
-﻿namespace HoneyComb.Platform.Android.OS
+﻿namespace HoneyComb.Platform.Android.Lifecycle
 {
     /// <summary>
     ///     Utility to help standardize the use case of detecting

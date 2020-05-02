@@ -1,7 +1,6 @@
 using Android.Arch.Lifecycle;
 using Android.Support.V4.App;
 using HoneyComb.Platform.Android.Lifecycle;
-using HoneyComb.Platform.Android.OS;
 using System;
 
 namespace HoneyComb.Platform.Android.Fragments.App
