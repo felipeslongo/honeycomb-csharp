@@ -1,4 +1,5 @@
-﻿using HoneyComb.LiveDataNet;
+﻿using HoneyComb.Core.Vault;
+using HoneyComb.LiveDataNet;
 using System;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace HoneyComb.UI
     ///     Represents the concept of an Visibility state
     ///     to be used in a ViewModel.
     /// </summary>
-    public sealed class Visibility : IDisposable
+    public sealed class Visibility : IDisposable, IRestorableUIState
     {
         private readonly MutableLiveData<bool> value;
 
@@ -20,6 +21,8 @@ namespace HoneyComb.UI
         public bool IsInvisible => !IsVisible;
         public bool IsVisible => Value;
         public LiveData<bool> Value => value;
+
+        public string? RestorationIdentifier { get; set; } = typeof(Visibility).FullName;
 
         public static implicit operator bool(Visibility @this) => @this.Value;
 
@@ -46,6 +49,22 @@ namespace HoneyComb.UI
             });
 
             await taskSource.Task;
+        }
+
+        public void OnPreservation(IBundleCoder savedInstanceState)
+        {
+            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
+                return;
+
+            savedInstanceState.Add(RestorationIdentifier!, Value);
+        }
+
+        public void OnRestoration(IBundleCoder savedInstanceState)
+        {
+            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
+                return;
+
+            value.Value = savedInstanceState.GetBoolean(RestorationIdentifier!);
         }
     }
 }
