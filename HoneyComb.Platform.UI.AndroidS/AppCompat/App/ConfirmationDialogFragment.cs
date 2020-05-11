@@ -21,14 +21,15 @@ namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
         /// </summary>
         public ConfirmationDialogFragment()
         {
-            viewModelFactory = () =>
-                throw new InvalidOperationException($"ViewModel not found for {nameof(ConfirmationDialogFragment)}");
+            viewModelFactory = () => new ConfirmationAndroidViewModel();
         }
 
         public ConfirmationDialogFragment(ConfirmationAndroidViewModel viewModel)
         {
             viewModelFactory = () => viewModel;
         }
+
+        public ConfirmationAndroidViewModel? ViewModel => companion?.ViewModel;
 
         public override async void OnCancel(IDialogInterface dialog)
         {
@@ -41,6 +42,7 @@ namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
             base.OnCreate(savedInstanceState);
             companion = new FragmentCompanion<ConfirmationAndroidViewModel>(this, viewModelFactory);
             companion.DestroyedForRecreation.HasBeen.NotifySavedInstanceState(savedInstanceState);
+            companion.ViewModel.OnRestoreInstanceState(savedInstanceState);
         }
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
@@ -64,15 +66,16 @@ namespace HoneyComb.Platform.UI.AndroidS.AppCompat.App
         public override async void OnDismiss(IDialogInterface dialog)
         {
             base.OnDismiss(dialog);
-            if (companion!.DestroyedForRecreation.IsBeing)
+            if (companion!.DestroyedForRecreation.IsBeing)//TODO: Use the ViewModel to see if OnCleared has been called...
                 return;
             await companion!.ViewModel.ViewModelCore.NotifyCancellationAsync();
         }
 
-        public override void OnSaveInstanceState(Bundle outState)
+        public override void OnSaveInstanceState(Bundle savedInstanceState)
         {
-            base.OnSaveInstanceState(outState);
-            companion!.DestroyedForRecreation.IsBeing.NotifyOnSaveInstanceState(outState);
+            base.OnSaveInstanceState(savedInstanceState);
+            companion!.ViewModel.OnSaveInstanceState(savedInstanceState);
+            companion!.DestroyedForRecreation.IsBeing.NotifyOnSaveInstanceState(savedInstanceState);
         }
     }
 }
