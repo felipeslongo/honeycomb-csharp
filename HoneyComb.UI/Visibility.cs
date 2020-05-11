@@ -20,15 +20,30 @@ namespace HoneyComb.UI
 
         public bool IsInvisible => !IsVisible;
         public bool IsVisible => Value;
-        public LiveData<bool> Value => value;
-
         public string? RestorationIdentifier { get; set; } = typeof(Visibility).FullName;
+        public LiveData<bool> Value => value;
 
         public static implicit operator bool(Visibility @this) => @this.Value;
 
         public void Dispose()
         {
             Value.Dispose();
+        }
+
+        public void OnPreservation(IBundleCoder savedInstanceState)
+        {
+            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
+                return;
+
+            savedInstanceState.Add(RestorationIdentifier!, Value);
+        }
+
+        public void OnRestoration(IBundleCoder savedInstanceState)
+        {
+            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
+                return;
+
+            value.Value = savedInstanceState.GetBoolean(RestorationIdentifier!);
         }
 
         public void SetValue(bool isVisible) => value.Value = isVisible;
@@ -49,22 +64,6 @@ namespace HoneyComb.UI
             });
 
             await taskSource.Task;
-        }
-
-        public void OnPreservation(IBundleCoder savedInstanceState)
-        {
-            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
-                return;
-
-            savedInstanceState.Add(RestorationIdentifier!, Value);
-        }
-
-        public void OnRestoration(IBundleCoder savedInstanceState)
-        {
-            if (string.IsNullOrWhiteSpace(RestorationIdentifier))
-                return;
-
-            value.Value = savedInstanceState.GetBoolean(RestorationIdentifier!);
         }
     }
 }
