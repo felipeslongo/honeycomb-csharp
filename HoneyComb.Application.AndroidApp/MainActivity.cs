@@ -10,29 +10,33 @@ using Android.Views;
 using Android.Widget;
 using HoneyComb.LiveDataNet;
 using HoneyComb.Platform.Android.AppCompat.App;
-using HoneyComb.Platform.Android.Lifecycle;
 using HoneyComb.LiveDataNet.Platform.Android.DataBinding;
+using HoneyComb.UI.Dialogs;
+using HoneyComb.Platform.UI.AndroidS.AppCompat.App;
+using HoneyComb.UI;
 
 namespace HoneyComb.Application.AndroidApp
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
-        private ActivityCompanion companion;
-        private MainActivityAndroidViewModel viewModel;
+        private ActivityCompanion<MainActivityAndroidViewModel> companion;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            companion = new ActivityCompanion(this);
-            viewModel = this.GetViewModel<MainActivityAndroidViewModel>();
+            companion = new ActivityCompanion<MainActivityAndroidViewModel>(this);
+            companion.DestroyedForRecreation.HasBeen.NotifySavedInstanceState(savedInstanceState);
+            var viewModel = companion.ViewModel;
+            OnRestoreInstanceStateFromOnCreate();            
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            viewModel.ViewModel.Text.BindTextViewText(companion.LifecycleOwners.HoneyComb, FindViewById<TextView>(Resource.Id.content_main_textview));
+            viewModel.ViewModelCore.Text.BindTextViewText(companion.LifecycleOwners.HoneyComb, FindViewById<TextView>(Resource.Id.content_main_textview));
             FindViewById<EditText>(Resource.Id.content_main_edittext).AfterTextChanged += (_, args) =>
             {
-                viewModel.ViewModel.NotifyTextChanged(args.Editable.ToString());
+                viewModel.ViewModelCore.NotifyTextChanged(args.Editable.ToString());
             };
             
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
@@ -40,7 +44,7 @@ namespace HoneyComb.Application.AndroidApp
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
-            viewModel.ViewModel.Snackbar.SubscribeToExecuteIfUnhandled(companion.LifecycleOwners.HoneyComb, snackbar =>
+            viewModel.ViewModelCore.Snackbar.SubscribeToExecuteIfUnhandled(companion.LifecycleOwners.HoneyComb, snackbar =>
             {
                 Snackbar.Make(fab, snackbar, Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
@@ -53,6 +57,17 @@ namespace HoneyComb.Application.AndroidApp
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
+
+            _ = new ConfirmationDialogView(this, companion.LifecycleOwners.HoneyComb, viewModel.ConfirmationViewModel);
+
+            void OnRestoreInstanceStateFromOnCreate()
+            {
+                if (savedInstanceState is null)
+                    return;
+
+                if (ConfirmationDialogView.GetViewModelFromSavedInstanceState(SupportFragmentManager) is { } restoredViewModel)
+                    viewModel.RestoreViewModel(restoredViewModel);
+            }
         }
 
         public override void OnBackPressed()
@@ -85,7 +100,17 @@ namespace HoneyComb.Application.AndroidApp
             return base.OnOptionsItemSelected(item);
         }
 
-        private void FabOnClick(object sender, EventArgs eventArgs) => viewModel.ViewModel.NotifyActionButtonClicked();
+        private async void FabOnClick(object sender, EventArgs eventArgs)
+        {
+            var viewModel = companion.ViewModel;
+            var result = await viewModel.ConfirmationViewModel.ViewModelCore.ShowAsync(new ConfirmationViewState(
+                    new IntentId("QuerSerMorto"),
+                    "Quer ser morto ?",
+                    "Se voce for morto não vai ter como reviver"
+                ));
+            if(result)
+                viewModel.ViewModelCore.NotifyActionButtonClicked();
+        }
 
         public bool OnNavigationItemSelected(IMenuItem item)
         {
@@ -125,6 +150,12 @@ namespace HoneyComb.Application.AndroidApp
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnSaveInstanceState(Bundle savedInstanceState)
+        {
+            base.OnSaveInstanceState(savedInstanceState);
+            companion.DestroyedForRecreation.IsBeing.NotifyOnSaveInstanceState(savedInstanceState);
         }
     }
 }
