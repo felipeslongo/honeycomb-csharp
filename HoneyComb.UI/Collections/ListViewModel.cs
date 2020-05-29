@@ -12,5 +12,9 @@ namespace HoneyComb.UI.Collections
         public IObservable<ItemRefreshedEvent<T>> ItemRefreshed { get; } = new Subject<ItemRefreshedEvent<T>>();
         public IObservable<ItemRemovedEvent<T>> ItemRemoved { get; } = new Subject<ItemRemovedEvent<T>>();
         public IObservable<ItemReplacedEvent<T>> ItemReplaced { get; } = new Subject<ItemReplacedEvent<T>>();
+
+        public IObservable<ItensAddedEvent<T>> ItensAdded { get; } = new Subject<ItensAddedEvent<T>>();
+        public IObservable<ItensRefreshedEvent<T>> ItensRefreshed { get; } = new Subject<ItensRefreshedEvent<T>>();
+        public IObservable<ItensRemovedEvent<T>> ItensRemoved { get; } = new Subject<ItensRemovedEvent<T>>();
     }
 }
